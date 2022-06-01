@@ -1,6 +1,7 @@
 import argparse
 import sys
 import configparser
+import mariadb as mariaDB
 
 c = configparser.ConfigParser()
 c.read("dbLogin.ini")
@@ -26,6 +27,43 @@ def login(db):
         sys.exit()
 
     print("Connecting to " + database)
+
+if database == "aws-dev":
+    print("Input database " + input_database)
+    conn = mariaDB.connect(user='admin',
+                                passwd='xxxx',
+                                host='frcteam195testinstance.cmdlvflptajw.us-east-1.rds.amazonaws.com',
+                                database='team195_scouting')
+    cursor = conn.cursor()
+        
+elif database == "pi-10":
+    conn = mariaDB.connect(user='admin',
+                            passwd='xxxx',
+                            host='10.0.20.195',
+                            database='team195_scouting')
+    cursor = conn.cursor()
+        
+elif database == "pi-192":
+    conn = mariaDB.connect(user='admin',
+                            passwd='xxxx',
+                            host='192.168.1.195',
+                            database='team195_scouting')
+    cursor = conn.cursor()
+
+elif database == "localhost":
+    conn = mariaDB.connect(user='admin',
+                            passwd='xxxx',
+                            host='localhost',
+                            database='team195_scouting')
+    cursor = conn.cursor()
+
+elif database == "aws-prod":
+    conn = mariaDB.connect(user='admin',
+                            passwd='xxxx',
+                            host='frcteam195.cmdlvflptajw.us-east-1.rds.amazonaws.com',
+                            database='team195_scouting')
+    cursor = conn.cursor()
+
     options = c.options(database)
     for option in options:
         try:
