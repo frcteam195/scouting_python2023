@@ -1,8 +1,8 @@
-import configparser
+#import configparser
 import dbLogin as p
 import argparse
 import sys
-c = configparser.ConfigParser()
+#c = configparser.ConfigParser()
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-db", "--database", help = "Choices: aws-prod, aws-dev", required= True)
