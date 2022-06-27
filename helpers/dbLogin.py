@@ -3,7 +3,7 @@ import sys
 import configparser
 
 configParser = configparser.ConfigParser()
-configParser.read("dbLogin.ini")
+configParser.read("helpers/dbLogin.ini")
 
 optionsDict = {}
 database = ""
