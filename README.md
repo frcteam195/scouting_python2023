@@ -2,7 +2,7 @@
 
 ## **REMINDERS**
 - ***always*** pull from the upstream main repository before editing code
-- perform a pull request when you are finished coding
+- perform a pull request when you are finished coding for a session
 
 ## Folder Structure
 - ***analysisTypes:*** Python analysisType modules for analysisIR.py
