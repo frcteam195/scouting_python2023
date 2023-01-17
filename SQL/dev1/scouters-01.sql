@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS dev1.users (
+CREATE TABLE IF NOT EXISTS dev1.scouters (
     id INT AUTO_INCREMENT NOT NULL,
     firstName VARCHAR(50) NULL,
     lastName VARCHAR(50) NULL,
