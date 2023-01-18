@@ -8,6 +8,6 @@ CREATE TABLE IF NOT EXISTS dev1.matchScouting (
         teamMatchNum INT NULL,
         allianceStationID INT NULL,
         PRIMARY KEY (id),
-        FOREIGN KEY (matchID) REFERENCES matches (id) ON DELETE CASCADE
+        FOREIGN KEY (matchID) REFERENCES matches (id) ON DELETE CASCADE,
         FOREIGN KEY (BAeventID) REFERENCES events (BAeventID) ON DELETE CASCADE
 ) Engine = InnoDB;

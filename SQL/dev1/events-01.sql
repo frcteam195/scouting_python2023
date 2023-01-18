@@ -7,5 +7,5 @@ CREATE TABLE IF NOT EXISTS dev1.events (
         eventStartDate DATE NULL,
         eventEndDate DATE NULL,
         PRIMARY KEY (id),
-        FOREIGN KEY (BAeventID) REFERENCES allEvents (BAeventID)
+        FOREIGN KEY (BAeventID) REFERENCES eventsAll (BAeventID)
 ) Engine = InnoDB;
