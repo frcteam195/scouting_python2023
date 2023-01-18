@@ -2,10 +2,10 @@ import argparse
 import sys
 import configparser
 
-configParser = configparser.ConfigParser()
-configParser.read("helpers/dbLogin.ini")
+c = configparser.ConfigParser()
+c.read("dbLogin.ini")
 
-optionsDict = {}
+dict1 = {}
 database = ""
 
 def login(db):
@@ -26,16 +26,16 @@ def login(db):
         sys.exit()
 
     print("Connecting to " + database)
-    options = configParser.options(database)
+    options = c.options(database)
     for option in options:
         try:
-            optionsDict[option] = configParser.get(database, option)
-            if optionsDict[option] == -1:
+            dict1[option] = c.get(database, option)
+            if dict1[option] == -1:
                 DebugPrint("skip %s" % option)
         except:
                 print("exception on %s!" % option)
-                optionsDict[option] = None
+                dict1[option] = None
 
 def getdict():
-    global optionsDict
-    return optionsDict
+    global dict1
+    return dict1
