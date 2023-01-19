@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS dev1.tmpLevel2 (
         team VARCHAR(10) NOT NULL,
         teamMatchNum INT NULL,
         scoutingRoleID INT NULL,
-        /* add Level 2 columns here. Note that these columns must match those of the level2 DB table */
+        /* add Level 2 columns here. Note that these columns must match those of the matchScouting DB table */
         PRIMARY KEY (matchID),
         FOREIGN KEY (BAeventID) REFERENCES events (BAeventID) ON DELETE CASCADE,
         FOREIGN KEY (matchID) REFERENCES matches (id) ON DELETE CASCADE,
