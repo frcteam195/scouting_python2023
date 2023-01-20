@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS dev1.tmpLevel2 (
+CREATE TABLE IF NOT EXISTS dev1.level2 (
         BAeventID VARCHAR(20) NOT NULL,
         matchID INT NOT NULL,
         matchNum INT NULL,
