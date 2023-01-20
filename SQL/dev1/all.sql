@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS dev1.teams (
+CREATE TABLE IF NOT EXISTS dev1.teamsAll (
         team VARCHAR(10),
         teamName VARCHAR(50),
         teamLocation VARCHAR(50),
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS dev1.events (
         PRIMARY KEY (BAeventID),
         FOREIGN KEY (BAeventID) REFERENCES eventsAll (BAeventID)
 ) Engine = InnoDB;
-CREATE TABLE IF NOT EXISTS dev1.CEteams (
+CREATE TABLE IF NOT EXISTS dev1.teams (
         team VARCHAR(10),
         BAeventID VARCHAR(20),
         teamName VARCHAR(50),
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS dev1.CEteams (
         teamCountry VARCHAR(50),
         PRIMARY KEY(team),
         FOREIGN KEY (BAeventID) REFERENCES events (BAeventID) ON DELETE CASCADE,
-        FOREIGN KEY (team) REFERENCES teams (team) ON DELETE CASCADE
+        FOREIGN KEY (team) REFERENCES teamsAll (team) ON DELETE CASCADE
 ) Engine = InnoDB;
 CREATE TABLE IF NOT EXISTS dev1.pit (
         team VARCHAR(10),
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS dev1.pit (
         driveType VARCHAR(20),
         PRIMARY KEY(team),
         FOREIGN KEY (BAeventID) REFERENCES events (BAeventID) ON DELETE CASCADE,
-        FOREIGN KEY (team) REFERENCES CEteams (team) ON DELETE CASCADE
+        FOREIGN KEY (team) REFERENCES teams (team) ON DELETE CASCADE
 ) Engine = InnoDB;
 CREATE TABLE IF NOT EXISTS dev1.tmpSchedule (
     MatchNum INT NULL,
@@ -117,6 +117,24 @@ CREATE TABLE IF NOT EXISTS dev1.matchScouting (
         FOREIGN KEY (BAeventID) REFERENCES events (BAeventID) ON DELETE CASCADE,
         FOREIGN KEY (matchID) REFERENCES matches (id) ON DELETE CASCADE,
         FOREIGN KEY (scouterID) REFERENCES scouters (id) ON DELETE CASCADE,
-        FOREIGN KEY (team) REFERENCES CEteams (team) ON DELETE CASCADE,
+        FOREIGN KEY (team) REFERENCES teams (team) ON DELETE CASCADE,
+        FOREIGN KEY (scoutingRoleID) REFERENCES scoutingRole (id) ON DELETE CASCADE
+) Engine = InnoDB;
+CREATE TABLE IF NOT EXISTS dev1.level2 (
+        BAeventID VARCHAR(20) NOT NULL,
+        matchID INT NOT NULL,
+        matchNum INT NULL,
+        scouterID INT NULL,
+        scoutingStatus INT NULL,
+        synced2MS BOOLEAN DEFAULT false,
+        team VARCHAR(10) NOT NULL,
+        teamMatchNum INT NULL,
+        scoutingRoleID INT NULL,
+        /* add Level 2 columns here. Note that these columns must match those of the matchScouting DB table */
+        PRIMARY KEY (matchID),
+        FOREIGN KEY (BAeventID) REFERENCES events (BAeventID) ON DELETE CASCADE,
+        FOREIGN KEY (matchID) REFERENCES matches (id) ON DELETE CASCADE,
+        FOREIGN KEY (scouterID) REFERENCES scouters (id) ON DELETE CASCADE,
+        FOREIGN KEY (team) REFERENCES teams (team) ON DELETE CASCADE,
         FOREIGN KEY (scoutingRoleID) REFERENCES scoutingRole (id) ON DELETE CASCADE
 ) Engine = InnoDB;
