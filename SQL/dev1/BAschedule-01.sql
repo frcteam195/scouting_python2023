@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS dev1.tmpSchedule (
+CREATE TABLE IF NOT EXISTS dev1.BAschedule (
     MatchNum INT NULL,
     Red1 VARCHAR(10) NULL,
     Red2 VARCHAR(10) NULL,
