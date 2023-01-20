@@ -13,6 +13,6 @@ CREATE TABLE IF NOT EXISTS dev1.tmpLevel2 (
         FOREIGN KEY (BAeventID) REFERENCES events (BAeventID) ON DELETE CASCADE,
         FOREIGN KEY (matchID) REFERENCES matches (id) ON DELETE CASCADE,
         FOREIGN KEY (scouterID) REFERENCES scouters (id) ON DELETE CASCADE,
-        FOREIGN KEY (team) REFERENCES CEteams (team) ON DELETE CASCADE,
+        FOREIGN KEY (team) REFERENCES teams (team) ON DELETE CASCADE,
         FOREIGN KEY (scoutingRoleID) REFERENCES scoutingRole (id) ON DELETE CASCADE
 ) Engine = InnoDB;
