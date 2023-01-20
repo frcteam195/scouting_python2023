@@ -138,3 +138,32 @@ CREATE TABLE IF NOT EXISTS dev1.level2 (
         FOREIGN KEY (team) REFERENCES teams (team) ON DELETE CASCADE,
         FOREIGN KEY (scoutingRoleID) REFERENCES scoutingRole (id) ON DELETE CASCADE
 ) Engine = InnoDB;
+CREATE TABLE IF NOT EXISTS dev1.analysisTypes (
+        id INT NOT NULL,
+        analysisType VARCHAR(20),
+        teamPickerOrder INT UNIQUE NULL,
+        matchReportOrder INT UNIQUE NULL,
+        snapshotOrder INT UNIQUE NULL,
+        developer VARCHAR(20) NULL,
+        summary VARCHAR(100) NULL,
+        PRIMARY KEY (id)
+) Engine = InnoDB;
+CREATE TABLE IF NOT EXISTS dev1.BAoprs (
+	team VARCHAR(10) NULL,
+	OPR FLOAT NULL,
+	PRIMARY KEY(team),
+	FOREIGN KEY (team) REFERENCES teams (team)
+) Engine = InnoDB;CREATE TABLE IF NOT EXISTS dev1.BArank(
+	team VARCHAR(10) NULL,
+	rank INT NULL,
+	PRIMARY KEY (team),
+	FOREIGN KEY (team) REFERENCES teams (team)
+) Engine = InnoDB;CREATE TABLE IF NOT EXISTS dev1.colorTypes (
+	id INT NOT NULL,
+	colorType VARCHAR(50) NULL,
+	hex VARCHAR(20) NULL,
+	rgb VARCHAR(20) NULL,
+	cmyk VARCHAR(20) NULL,
+	summary VARCHAR(50) NULL,
+	PRIMARY KEY (id)
+) Engine = InnoDB;
