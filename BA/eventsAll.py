@@ -1,87 +1,61 @@
 # Python3 script that pulls all FRC registered teams for the current year and
 #	writes the full team list to the teamsAll table in the Team 195 DB
-# Script is intended to be run once at the beginning of the season
+# Script is intended to be run once at the beginning of the season. Note that 
+#   the script will delete the eventsAll dB table contents. If there are events
+#   entered in the events table it will cause an error due to a foreign key
+#   constraint on the events table to the eventsAll table
 
+# import statements
 import mariadb as mariaDB
 import tbapy
 import datetime
 import re
 import sys
 import argparse
+import configparser
 
+# Define login information for TBA
 tba = tbapy.TBA('Tfr7kbOvWrw0kpnVp5OjeY780ANkzVMyQBZ23xiITUkFo9hWqzOuZVlL3Uy6mLrz')
 currentYear = datetime.datetime.today().year
-database = ''
 
+# parser to choose the database where the table will be written
 parser = argparse.ArgumentParser()
-parser.add_argument("-db", "--database", help = "Choices: aws-dev1, aws-dev2, pi-192, pi-10, localhost", required=True)
+parser.add_argument("-db", "--database", help = "Choices: dev1, dev2, testing, production", required=True)
+parser.add_argument("-host", "--host", help = "Host choices: aws, localhost", required=True)
 args = parser.parse_args()
-input_database = args.database
+input_db = args.database
+input_host = args.host
 
-if input_database == "aws-dev1":
-    database = "aws-dev1"
-elif input_database == "aws-dev2":
-    database = "aws-dev2"
-elif input_database == "pi-192":
-    database = "pi-192"
-elif input_database == "pi-10":
-    database = "pi-10"
-elif input_database == "localhost":
-    database = "localhost"
+if input_host == "aws":
+    server = "scouting.team195.com"
+elif input_host == "pi-10":
+    server = "10.0.20.195"
+elif input_host == "localhost":
+    server = "localhost"
 else:
-    print(input_database + " is not a invalid database choice. See --help for choices")
+    print(input_host + " is not a invalid choice. See --help for choices")
     sys.exit()
 
-print ("Connecting to " + database)
+# Read the configuration file
+config = configparser.ConfigParser()
+config.read('../helpers/config.ini')
+
+# Get the database login information from the configuration (ini) file
+host = config[input_host+"-"+input_db]['host']
+user = config[input_host+"-"+input_db]['user']
+passwd = config[input_host+"-"+input_db]['passwd']
+database = config[input_host+"-"+input_db]['database']
+print(host + " " + user + " " + passwd + " " + database)
+conn = mariaDB.connect(user=user, passwd=passwd, host=host, database=database)
+cursor = conn.cursor()
+
+def onlyascii(s):
+    return "".join(i for i in s if ord(i) < 128 and ord(i) != 39)
 
 def wipeBAE():
         cursor.execute("DELETE FROM eventsAll;")
         cursor.execute("ALTER TABLE eventsAll AUTO_INCREMENT = 1;")
         conn.commit()
-      
-
-def onlyascii(s):
-    return "".join(i for i in s if ord(i) < 128 and ord(i) != 39)
-if database == "aws-dev1":
-            print("Input database " + input_database)
-            conn = mariaDB.connect(user='',
-                                       passwd='',
-                                        host='',
-                                       database='dev1')
-            cursor = conn.cursor()
-        
-elif database == "pi-10":
-            conn = mariaDB.connect(user='',
-                                passwd='',
-                                host='10.0.20.195',
-                                database='team195_scouting')
-            cursor = conn.cursor()
-            
-elif database == "pi-192":
-            conn = mariaDB.connect(user='',
-                                passwd='',
-                                host='192.168.1.195',
-                                database='team195_scouting')
-            cursor = conn.cursor()
-
-elif database == "localhost":
-        conn = mariaDB.connect(user='',
-                                passwd='',
-                                host='localhost',
-                                database='team195_scouting')
-        cursor = conn.cursor()
-
-elif database == "aws-prod":
-        conn = mariaDB.connect(user='',
-                                passwd='',
-                                host='',
-                                database='team195_scouting')
-        cursor = conn.cursor()
-
-else: 
-        print ("no love for Harish!")
-        sys.exit()
-
 wipeBAE() 
 
 totalEvents = tba.events(year=currentYear)
@@ -99,8 +73,6 @@ for event in totalEvents:
     eventEndDate = event.get('end_date')
     BAEventID = event.get('key')
     
-    print (eventCode + " " + eventLocation)
-    
     eventName = onlyascii(eventName)
     eventLocation = onlyascii(eventLocation)
 
@@ -117,7 +89,6 @@ for event in totalEvents:
     	eventCountry = eventCountry[:40]
     if eventWeek is None:
     	eventWeek = 8
-    
     
     query = "INSERT INTO eventsAll (eventCode, eventName, eventWeek, eventLocation, eventStartDate, eventEndDate, BAEventID) VALUES " + \
             "('" + str(eventCode) + \
