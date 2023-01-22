@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS dev1.matchScouting (
         team VARCHAR(10) NOT NULL,
         teamMatchNum INT NULL,
         scoutingRoleID INT NULL,
+        preStartPos TINYINT NULL,
         /* add Level 1 columns here */
         /* add Level 2 columns here. Note that these columns must match those of the level2 DB table */
         PRIMARY KEY (id),
