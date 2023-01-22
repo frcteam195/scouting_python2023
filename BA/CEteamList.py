@@ -63,4 +63,7 @@ for team in sorted(eventTeams, key=sortbyteam):
 	cursor.execute(query)
 	conn.commit()
 
+cursor.close()
+conn.close()
+
 

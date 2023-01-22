@@ -45,7 +45,6 @@ wipeTTL()
 def onlyascii(s):
     return "".join(i for i in s if ord(i) < 128 and ord(i) != 39)
 
-
 totalTeams = tba.teams(year=currentYear)
 teamList = []
 
@@ -58,7 +57,7 @@ for team in totalTeams:
     tempCountry = ''
     
     teamNum = team.get('team_number')
-    location = str(team.city) + ' ' + str(team.state_prov) + ' ' + str(team.country)    
+    location = str(team.city) + ', ' + str(team.state_prov) + ', ' + str(team.country)    
     
     tempNick = onlyascii(team.nickname)
     tempLocation = onlyascii(location)
