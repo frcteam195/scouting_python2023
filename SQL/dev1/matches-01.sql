@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS dev1.matches (
         id INT AUTO_INCREMENT NOT NULL,
-        BAeventID VARCHAR(20),
+        eventID INT NOT NULL,
         matchNum INT NOT NULL,
         red1 VARCHAR(10) NOT NULL,
         red2 VARCHAR(10) NOT NULL,
@@ -23,5 +23,5 @@ CREATE TABLE IF NOT EXISTS dev1.matches (
         matchTime INT NULL,
         actualTime INT NULL,
         PRIMARY KEY (id),
-        FOREIGN KEY (BAeventID) REFERENCES events (BAeventID) ON DELETE CASCADE
+        FOREIGN KEY (eventID) REFERENCES events (id)
 ) Engine = InnoDB;

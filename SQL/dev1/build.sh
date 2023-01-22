@@ -1,3 +1,5 @@
+rm -f all.sql
+
 cat teamsAll-01.sql > all.sql
 cat eventsAll-01.sql >> all.sql
 cat events-01.sql >> all.sql
@@ -14,6 +16,8 @@ cat colorTypes-01.sql >> all.sql
 cat BAmatchData-01.sql >> all.sql
 cat CEanalysis-01.sql >> all.sql
 cat CEanalysisGraphs-01.sql >> all.sql
+cat analysis-01.sql >> all.sql
+cat analysisGraphs-01.sql >> all.sql
 cat driveTypes-01.sql >> all.sql
 cat watch1-01.sql >> all.sql
 cat pickList1-01.sql >> all.sql

@@ -1,0 +1,100 @@
+# weighted random distribution
+import random
+
+# define the list with weighted values
+weighted_list = [("item1", 0.3), ("item2", 0.1), ("item3", 0.6)]
+
+# create a list of the items with the appropriate number of copies based on their weights
+items = []
+for item, weight in weighted_list:
+    items.extend([item] * int(weight * 100))
+
+# pick a random value from the list
+print(random.choice(items))
+
+# *****************************************************************
+
+# populating SQL table with random values
+import mysql.connector
+import random
+import csv
+
+# Connect to the MySQL server
+cnx = mysql.connector.connect(user='username', password='password', host='hostname', database='dbname')
+cursor = cnx.cursor()
+
+# Get the table schema
+cursor.execute("DESCRIBE table_name")
+table_schema = cursor.fetchall()
+
+# Create a list to store the randomized data
+data = []
+
+# Loop through the schema and generate random data for each column
+for column in table_schema:
+    column_name = column[0]
+    data_type = column[1]
+    if "int" in data_type:
+        data.append(str(random.randint(0, 100)))
+    elif "varchar" in data_type:
+        data.append(str(random.random()).replace("0.",""))
+    elif "date" in data_type:
+        data.append(str(random.randint(1,12))+"/"+str(random.randint(1,28))+"/"+str(random.randint(1910,2022)))
+
+# Write the randomized data to a CSV file
+with open('data.csv', 'w', newline='') as csvfile:
+    writer = csv.writer(csvfile)
+    for i in range(100):
+        writer.writerow(data)
+
+# Close the MySQL connection
+cnx.close()
+
+
+# *****************************************************************
+
+# trigger to copy data from one table to another on status change
+CREATE TRIGGER transfer_data
+AFTER UPDATE ON table1
+FOR EACH ROW
+BEGIN
+    IF NEW.status = 1 THEN
+        INSERT INTO table2 (column1, column2, column3)
+        VALUES (NEW.column1, NEW.column2, NEW.column3);
+    END IF;
+END;
+
+
+# *****************************************************************
+
+# script to delete rows where eventID = 3 and then reset the index to the remainig # of rows
+import mysql.connector
+
+# Connect to the database
+cnx = mysql.connector.connect(user='your_username', 
+                              password='your_password',
+                              host='your_host',
+                              database='your_database')
+
+# Create a cursor object
+cursor = cnx.cursor()
+
+# Delete rows where eventID is 3
+query = "DELETE FROM your_table WHERE eventID = 3"
+cursor.execute(query)
+
+# Count the remaining number of rows in the table
+query = "SELECT COUNT(*) FROM your_table"
+cursor.execute(query)
+remaining_rows = cursor.fetchone()[0]
+
+# Re-index the table
+query = f"ALTER TABLE your_table AUTO_INCREMENT = {remaining_rows + 1}"
+cursor.execute(query)
+
+# Commit changes and close cursor and connection
+cnx.commit()
+cursor.close()
+cnx.close()
+
+

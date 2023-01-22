@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS dev1.BAmatchData (
 	matchNum INT NOT NULL,
-	BAeventID VARCHAR(20),
+	eventID INT,
 	matchTime VARCHAR(20) NULL,
 	actualTime VARCHAR(20) NULL,
 	red1 INT NULL,
@@ -13,5 +13,5 @@ CREATE TABLE IF NOT EXISTS dev1.BAmatchData (
 	blueScore INT NULL,
 	/* add additional entries as described in the BA API once it is released for Charged Up */
 	PRIMARY KEY (matchNum),
-    FOREIGN KEY (BAeventID) REFERENCES events (BAeventID) ON DELETE CASCADE
+    FOREIGN KEY (eventID) REFERENCES events (id)
 ) Engine = InnoDB;

@@ -1,12 +1,12 @@
 CREATE TABLE IF NOT EXISTS dev1.BAschedule (
-    MatchNum INT NULL,
-    Red1 VARCHAR(10) NULL,
-    Red2 VARCHAR(10) NULL,
-    Red3 VARCHAR(10) NULL,
-    Blue1 VARCHAR(10) NULL,
-    Blue2 VARCHAR(10) NULL,
-    Blue3 VARCHAR(10) NULL,
-    BAeventID VARCHAR(20) NULL,
-    PRIMARY KEY (MatchNum),
-    FOREIGN KEY (BAeventID) REFERENCES events (BAeventID) 
+    matchNum INT NOT NULL,
+    red1 VARCHAR(10) NOT NULL,
+    red2 VARCHAR(10) NOT NULL,
+    red3 VARCHAR(10) NOT NULL,
+    blue1 VARCHAR(10) NOT NULL,
+    blue2 VARCHAR(10) NOT NULL,
+    blue3 VARCHAR(10) NOT NULL,
+    eventID INT NULL,
+    PRIMARY KEY (matchNum),
+    FOREIGN KEY (eventID) REFERENCES events (id) 
 ) Engine = InnoDB;
