@@ -35,7 +35,8 @@ print(host + " " + user + " " + passwd + " " + database)
 
 # Define login information for TBA
 tba = tbapy.TBA('Tfr7kbOvWrw0kpnVp5OjeY780ANkzVMyQBZ23xiITUkFo9hWqzOuZVlL3Uy6mLrz')
-currentYear = datetime.datetime.today().year
+#currentYear = datetime.datetime.today().year
+currentYear = 2022
 
 conn = mariaDB.connect(user=user, passwd=passwd, host=host, database=database)
 cursor = conn.cursor()

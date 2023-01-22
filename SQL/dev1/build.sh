@@ -23,3 +23,4 @@ cat watch1-01.sql >> all.sql
 cat pickList1-01.sql >> all.sql
 cat pit-01.sql >> all.sql
 cat matchScouting-01.sql >> all.sql
+cat BA_CEteams-01.sql >> all.sql
