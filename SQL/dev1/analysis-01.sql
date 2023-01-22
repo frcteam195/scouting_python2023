@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS dev1.CEanalysis (
+CREATE TABLE IF NOT EXISTS dev1.analysis (
 	team VARCHAR(10) NULL,
 	analysisTypeID INT NULL,
 	eventID INT NULL,

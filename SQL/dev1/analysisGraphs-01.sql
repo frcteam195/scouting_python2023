@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS dev1.CEanalysisGraphs (
+CREATE TABLE IF NOT EXISTS dev1.analysisGraphs (
 	id INT NOT NULL,
 	team VARCHAR(10) NOT NULL,
 	eventID INT NOT NULL,
