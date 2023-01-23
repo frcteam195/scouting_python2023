@@ -1,4 +1,3 @@
-#import mariadb as mariaDB
 import mysql.connector
 import tbapy
 import sys

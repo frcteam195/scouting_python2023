@@ -1,4 +1,4 @@
-import mariadb as mariaDB
+import mysql.connector
 import sys
 import argparse
 import configparser
@@ -22,26 +22,23 @@ passwd = config[input_host+"-"+input_db]['passwd']
 database = config[input_host+"-"+input_db]['database']
 #print(host + " " + user + " " + passwd + " " + database)
 
-conn = mariaDB.connect(user=user, passwd=passwd, host=host, database=database)
+conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=database)
 cursor = conn.cursor()
 
-cursor.execute("SELECT events.id FROM events WHERE events.currentEvent = 1;")
-event = str(cursor.fetchone()[0])
-print(event)
+cursor.execute("SELECT id FROM events WHERE currentEvent = 1")
+currentEventID = str(cursor.fetchone()[0])
+print("Current event ID = " + currentEventID)
 
-# cursor.execute("DELETE FROM CurrentEventTeams;")
-# cursor.execute("ALTER TABLE CurrentEventTeams AUTO_INCREMENT = 1;")
-# conn.commit()
+cursor.execute("DELETE FROM teams where eventID = " + currentEventID)
+conn.commit()
 
-cursor.execute("SELECT BA_CEteams.team, BA_CEteams.teamName, BA_CEteams.teamLocation FROM BA_CEteams")
-
+cursor.execute("SELECT team, teamName, teamLocation FROM BAteams")
 rows = cursor.fetchall()
-
 for row in rows:
     team = row[0]
     name = row[1]
     location = row[2]
-    query = f"INSERT INTO teams (team, eventID, teamName, teamLocation) VALUES ('{team}', '{event}', '{name}', '{location}')"
+    query = f"INSERT INTO teams (team, eventID, teamName, teamLocation) VALUES ('{team}', '{currentEventID}', '{name}', '{location}')"
     print(query)
     cursor.execute(query)
     conn.commit()

@@ -6,7 +6,7 @@
 #   constraint on the events table to the eventsAll table
 
 # import statements
-import mariadb as mariaDB
+import mysql.connector
 import tbapy
 import datetime
 import re
@@ -38,7 +38,7 @@ tba = tbapy.TBA('Tfr7kbOvWrw0kpnVp5OjeY780ANkzVMyQBZ23xiITUkFo9hWqzOuZVlL3Uy6mLr
 #currentYear = datetime.datetime.today().year
 currentYear = 2022
 
-conn = mariaDB.connect(user=user, passwd=passwd, host=host, database=database)
+conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=database)
 cursor = conn.cursor()
 
 def onlyascii(s):
@@ -71,16 +71,16 @@ for event in totalEvents:
     if len(eventName) > 50:
         eventName = eventName[:40]
     if eventName is None:
-    	eventName = "no name"
+        eventName = "no name"
     eventName = re.sub("[{}]","", eventName)
     eventName = re.sub("[()]","", eventName)
     eventLocation = eventLocation.replace("'","")
     if len(eventCity) > 50:
-    	eventCity = eventCity[:40]
+        eventCity = eventCity[:40]
     if len(eventCountry) > 50:
-    	eventCountry = eventCountry[:40]
+        eventCountry = eventCountry[:40]
     if eventWeek is None:
-    	eventWeek = 8
+        eventWeek = 8
     
     query = "INSERT INTO eventsAll (eventCode, eventName, eventWeek, eventLocation, eventStartDate, eventEndDate, BAEventID) VALUES " + \
             "('" + str(eventCode) + \
@@ -94,3 +94,6 @@ for event in totalEvents:
     
     cursor.execute(query)
     conn.commit()
+
+cursor.close()
+conn.close()
