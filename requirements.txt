@@ -1,7 +1,3 @@
-google-api-python-client
-google-auth-httplib2
-google-auth-oauthlib
 numpy
-mariadb==1.0.11
 tbapy
-xlsxwriter
+mysql-connector-python

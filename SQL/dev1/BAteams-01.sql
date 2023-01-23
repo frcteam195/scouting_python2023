@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS dev1.BA_CEteams (
+CREATE TABLE IF NOT EXISTS dev1.BAteams (
         team VARCHAR(10),
         teamName VARCHAR(50),
         teamLocation VARCHAR(50),

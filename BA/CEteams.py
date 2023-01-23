@@ -1,6 +1,5 @@
-import mariadb as mariaDB
+import mysql.connector
 import tbapy
-import xlsxwriter
 import sys
 import getopt
 import sys
@@ -26,13 +25,10 @@ passwd = config[input_host+"-"+input_db]['passwd']
 database = config[input_host+"-"+input_db]['database']
 #print(host + " " + user + " " + passwd + " " + database)
 
-conn = mariaDB.connect(user=user, passwd=passwd, host=host, database=database)
+conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=database)
 cursor = conn.cursor()
 
 tba = tbapy.TBA('Tfr7kbOvWrw0kpnVp5OjeY780ANkzVMyQBZ23xiITUkFo9hWqzOuZVlL3Uy6mLrz')
-
-#x = 195
-#team = tba.team(x)
 
 def sortbyteam(d):
     return d.get('team_number', None)
@@ -42,21 +38,21 @@ cursor.execute("SELECT events.BAeventID FROM events WHERE events.currentEvent = 
 event = cursor.fetchone()[0]
 print ("Grabbing teams for the " + event + " event")
 
-cursor.execute("DELETE FROM BA_CEteams;")
-cursor.execute("ALTER TABLE BA_CEteams AUTO_INCREMENT = 1;")
+cursor.execute("DELETE FROM BAteams;")
+cursor.execute("ALTER TABLE BAteams AUTO_INCREMENT = 1;")
 conn.commit()
 
 eventTeams = tba.event_teams(event)
 for team in sorted(eventTeams, key=sortbyteam):
 	tempNick = ''
-	location = str(team.city) + ' ' + str(team.state_prov) + ' ' + str(team.country)
+	location = str(team.city) + ', ' + str(team.state_prov) + ', ' + str(team.country)
 	teams = [team.team_number, team.nickname, location]
 	teamList.append(teams)
 	for char in team.nickname:
 		if char.isalnum() or char == ' ':
 			tempNick += char
 	values = "(" + str(team.team_number) + "," + team.nickname + "," + location + ")"
-	query = "INSERT INTO BA_CEteams (team, teamName, teamLocation) VALUES " + "('" + str(team.team_number) + \
+	query = "INSERT INTO BAteams (team, teamName, teamLocation) VALUES " + "('" + str(team.team_number) + \
 				"','" + tempNick + "','" + str(location) + "');"
 	print(query)
 
