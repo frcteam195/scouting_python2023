@@ -1,4 +1,5 @@
-import mariadb as mariaDB
+#import mariadb as mariaDB
+import mysql.connector
 import tbapy
 import sys
 import getopt
@@ -24,7 +25,8 @@ passwd = config[input_host+"-"+input_db]['passwd']
 database = config[input_host+"-"+input_db]['database']
 #print(host + " " + user + " " + passwd + " " + database)
 
-conn = mariaDB.connect(user=user, passwd=passwd, host=host, database=database)
+#conn = mariaDB.connect(user=user, passwd=passwd, host=host, database=database)
+conn = mysql.connector(user=user, passwd=passwd, host=host, database=database)
 cursor = conn.cursor()
 
 tba = tbapy.TBA('Tfr7kbOvWrw0kpnVp5OjeY780ANkzVMyQBZ23xiITUkFo9hWqzOuZVlL3Uy6mLrz')
@@ -80,6 +82,10 @@ for match in matchNumberList:
             "('" + str(match) + "', '" + str(red1) + "', '" + str(red2) + "', '" + str(red3) + "', '" + \
             str(blue1) + "', '" + str(blue2) + "', '" + str(blue3) + "', '" + str(event) + "');"
     print(query)
+    
     cursor.execute(query)
     conn.commit()
+
+cursor.close()
+conn.close()
 
