@@ -35,11 +35,11 @@ cursor.execute(query)
 rsMatches = cursor.fetchall()
 # print(rsMatches)
 
-# Find matches from the Matches table and add new records to the MatchScouting table if they do not already exist
+# Find matches from the matches table and add new records to the matchScouting table if they do not already exist
 for row in rsMatches:
     i = 1
     while i <= 6:
-        rsMatchScoutingRecord = {'MatchID': row[0], 'EventID': row[1], 'Team': row[i + 2], 'AllianceStationID': str(i)}
+        rsMatchScoutingRecord = {'matchID': row[0], 'eventID': row[1], 'team': row[i + 2], 'AllianceStationID': str(i)}
         print(rsMatchScoutingRecord)
         items = rsMatchScoutingRecord.items()
         columns = str(tuple([x[0] for x in items])).replace("'", "")
