@@ -84,7 +84,7 @@ for team in totalTeams:
             "','" + str(tempStateProv) + \
             "','" + str(tempCountry) + "');"
     print(query)
-    
+    quit()
     cursor.execute(query)
     conn.commit()
 
