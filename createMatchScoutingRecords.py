@@ -35,47 +35,55 @@ cursor.execute(query)
 rsMatches = cursor.fetchall()
 # print(rsMatches)
 
-# Find matches from the matches table and add new records to the matchScouting table
+# Find matches from the matches table and add new records to the matchScouting table if they do not exist
 for col in rsMatches:
+    # there will be six matchScoutingRecords / match. Important that the schema in the matches and matchScouting tables
+    #   match what this script expects as we are just calling columns #s from each row.
     i = 1
     while i <= 6:
-        rsMatchScoutingRecordExistsTest = {'matchID': col[0], 'eventID': col[1], 'matchNum': col[2], 'allianceStationID': str(i)}
+        # we first need to know if a matchScoutingRecord exists for the given match so we do not add a duplicate. This is important
+        #   if we need to first build the matches and matchScoutingRecords with an initial limited schedule, say if TBA API is down
+        #   or unreachable.
+        # we will first check if a record with the same matchID, eventID, matchNum, and allianceStationID exists. Each of those items
+        #   is not unique in the matchScouting table, but the combination should be. We are not using team # as if the schedule changed
+        #   this could give a false reading. The other 4 items should be solid if the matchScoutingRecord already exists.
+        
+        # define some variables for easier code below ...
+        matchID = col[0]
+        eventID = col[1]
+        matchNum = col[2]
+        allianceStationID = i
+        team = col[i+2]
+        
+        # grab the record to so we can see if it already exists
+        rsMatchScoutingRecordExistsTest = {'matchID': matchID, 'eventID': eventID, 'matchNum': matchNum, 'allianceStationID': str(allianceStationID)}
         items = rsMatchScoutingRecordExistsTest.items()
-        print(items)
-        columns = str(tuple([x[0] for x in items])).replace("'", "")
-        print(columns)
         values = str(tuple([x[1] for x in items]))
-        print(values)
         query = "SELECT matchID, eventID, matchNum, allianceStationID FROM matchScouting WHERE " + \
-                "matchID = " + str(col[0]) + " AND eventID = " + str(col[1]) + \
-                " AND matchNum = " + str(col[2]) + " AND allianceStationID = " + str(i)
-        print(query)
+                "matchID = " + str(matchID) + " AND eventID = " + str(eventID) + \
+                " AND matchNum = " + str(matchNum) + " AND allianceStationID = " + str(allianceStationID)
         cursor.execute(query)
         exists = cursor.fetchall()
-        print(f"exists = {exists}")
-        if len(exists) == 0:
-            print ("length zero")
+        # if the record exists lets do nothing
+        if len(exists) != 0:
+            print (f"matchID = {matchID}, eventID = {eventID}, matchNum = {matchNum}, team = {team},\t allianceStationID ={ allianceStationID} EXISTS, doing nothing")
+        # if the record does not exist lets grab it again, with team this time, and add it to the matchScouting table
         else:
-            print ("length not zero")
-        quit()
-
-       #matchID = 1 AND eventID = 1 AND matchNum = 1 AND team = '3464' AND allianceStationID = '1';
-        
-        print(f"Adding match record: {rsMatchScoutingRecord}")
-        rsMatchScoutingRecord = {'matchID': col[0], 'eventID': col[1], 'matchNum': col[2], 'team': col[i + 2], 'allianceStationID': str(i)}
-        items = rsMatchScoutingRecord.items()
-        columns = str(tuple([x[0] for x in items])).replace("'", "")
-        values = str(tuple([x[1] for x in items]))
-        # print(columns)
-        # print(values)
-        query = "INSERT INTO matchScouting " + columns + " VALUES " + values
-        print(query)
-        quit()
-        cursor.execute(query)
-        conn.commit()
+            print (f"matchID = {matchID}, eventID = {eventID}, matchNum = {matchNum}, team = {team},\t allianceStationID ={ allianceStationID} MISSING, adding now")
+            rsMatchScoutingRecord = {'matchID': col[0], 'eventID': col[1], 'matchNum': col[2], 'team': col[i + 2], 'allianceStationID': str(i)}
+            items = rsMatchScoutingRecord.items()
+            columns = str(tuple([x[0] for x in items])).replace("'", "")
+            values = str(tuple([x[1] for x in items]))
+            query = "INSERT INTO matchScouting " + columns + " VALUES " + values
+            cursor.execute(query)
+            conn.commit()
         i += 1
 
+
 # Fix team #s for the six alliance stations. This is good in case a team number changed or was entered incorrectly
+print()
+print ("looping through matchScouting records and comparing teams in each record to the matches table")
+print ("    fixing team # if different to fix any typos if we had to enter the schedule by hand")
 updateQuery = "UPDATE matchScouting INNER JOIN matches ON (matchScouting.matchID = matches.id) " \
               "INNER JOIN events ON (events.id = matches.eventID) " \
               "SET matchScouting.team = matches.red1 " \
@@ -127,6 +135,18 @@ cursor.execute("SELECT DISTINCT matchScouting.team "
 rsTeams = cursor.fetchall()
 # print(rsTeams)
 
+print()
+print ("looping through matchScouting records and creating teamMatchNum values")
+print ("NOTE: this only works if the added matches to the schedule are in order.")
+print ("    if an early match is entered at the end of the matches table then the teamMatchNum will be out of order")
+# The above note can be fixed by writing a script to (1) dump the current event records from the matchScouting table
+#   to a csv file, (2) deleting them from the matchScouting table, (3) resetting the auto increment index
+#   with "ALTER TABLE matchScouting AUTO_INCREMENT = xxx;", (4) sorting the matchScouting records in pandas
+#   and saving to a new csv file, and (5) re-importing the csv file with the matchScouting records in the 
+#   correct order.
+# At this time, this is an unlikely scenerio as matches would lilely be added to the bottom of the schedule
+#   and not the top and this script takes care of typos in team numbers already so punting on a more 
+#   elagent solution for this likely to never happen scenerio
 for team in rsTeams:
     # print(team[0])
     cursor.execute("SELECT matchScouting.id FROM matchScouting INNER JOIN events "
@@ -144,3 +164,9 @@ for team in rsTeams:
         # print(query)
         cursor.execute(query)
         conn.commit()
+
+cursor.close()
+conn.close()
+
+print()
+print ("finsihed!")
