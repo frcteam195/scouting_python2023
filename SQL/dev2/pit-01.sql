@@ -1,0 +1,26 @@
+CREATE TABLE IF NOT EXISTS dev2.pit (
+        team VARCHAR(10) NOT NULL,
+        eventID INT NOT NULL,
+        driveTypeID INT NULL,
+        /* add pit columns here based on data modeling document */
+        robotLength TINYINT NULL,
+        width TINYINT NULL,
+        height TINYINT NULL,
+        driveBase TINYINT NULL,
+        motorType TINYINT NULL,
+        manupulator TINYINT NULL,
+        intakeType TINYINT NULL,
+        buddyClimb TINYINT NULL,
+        buildType TINYINT NULL,
+        centerGravity TINYINT NULL,
+        robotdurability TINYINT NULL,
+        buildQuality TINYINT NULL,
+        buildComments TINYTEXT NULL,
+        electricalQuality TINYINT NULL,
+        electricalComments TINYTEXT NULL,
+        generalComments TINYTEXT NULL,
+        PRIMARY KEY(team),
+        FOREIGN KEY (team) REFERENCES teams (team),
+        FOREIGN KEY (eventID) REFERENCES events (eventID),
+        FOREIGN KEY (driveTypeID) REFERENCES driveTypes (driveTypeID)
+) Engine = InnoDB;
