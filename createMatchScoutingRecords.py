@@ -83,54 +83,35 @@ for table in tables:
 
 
 # Fix team #s for the six alliance stations. This is good in case a team number changed or was entered incorrectly
+print()
+print("Looping through matchScouting and matchScoutingL2, comparing teams to the matches table and")
+print("fixing any team numbers that are incorrect. Helpful if schedule was hand built initially")
+print()
 
 tables = ['matchScouting', 'matchScoutingL2']
+
+dict = {1: {'allianceStationID': 1, 'allianceStation': 'red1'},
+         2: {'allianceStationID': 2, 'allianceStation': 'red2'},
+         3: {'allianceStationID': 3, 'allianceStation': 'red3'},
+         4: {'allianceStationID': 4, 'allianceStation': 'blue1'},
+         5: {'allianceStationID': 5, 'allianceStation': 'blue2'},
+         6: {'allianceStationID': 6, 'allianceStation': 'blue3'}}
+
 for table in tables:
-    print()
-    print(f"looping through {table} records and comparing teams in each record to the matches table")
-    print("    fixing team # if different to fix any typos if we had to enter the schedule by hand") 
-    # alliance station #1
-    updateQuery = "UPDATE " + table + " INNER JOIN matches ON (" + table + ".matchID = matches.matchID) " \
-                "INNER JOIN events ON (events.eventID = matches.eventID) " \
-                "SET " + table + ".team = matches.red1 " \
-                "WHERE events.currentEvent = 1 AND " + table + ".allianceStationID = 1"
-    cursor.execute(updateQuery)
-    conn.commit()
-    # alliance station #2
-    updateQuery = "UPDATE " + table + " INNER JOIN matches ON (" + table + ".matchID = matches.matchID) " \
-                "INNER JOIN events ON (events.eventID = matches.eventID) " \
-                "SET " + table + ".team = matches.red2 " \
-                "WHERE events.currentEvent = 1 AND " + table + ".allianceStationID = 2"
-    cursor.execute(updateQuery)
-    conn.commit()
-    # alliance station #3
-    updateQuery = "UPDATE " + table + " INNER JOIN matches ON (" + table + ".matchID = matches.matchID) " \
-                "INNER JOIN events ON (events.eventID = matches.eventID) " \
-                "SET " + table + ".team = matches.red3 " \
-                "WHERE events.currentEvent = 1 AND " + table + ".allianceStationID = 3"
-    cursor.execute(updateQuery)
-    conn.commit()
-    # alliance station #4
-    updateQuery = "UPDATE " + table + " INNER JOIN matches ON (" + table + ".matchID = matches.matchID) " \
-                "INNER JOIN events ON (events.eventID = matches.eventID) " \
-                "SET " + table + ".team = matches.blue1 " \
-                "WHERE events.currentEvent = 1 AND " + table + ".allianceStationID = 4"
-    cursor.execute(updateQuery)
-    conn.commit()
-    # alliance station #5
-    updateQuery = "UPDATE " + table + " INNER JOIN matches ON (" + table + ".matchID = matches.matchID) " \
-                "INNER JOIN events ON (events.eventID = matches.eventID) " \
-                "SET " + table + ".team = matches.blue2 " \
-                "WHERE events.currentEvent = 1 AND " + table + ".allianceStationID = 5"
-    cursor.execute(updateQuery)
-    conn.commit()
-    # alliance station #6
-    updateQuery = "UPDATE " + table + " INNER JOIN matches ON (" + table + ".matchID = matches.matchID) " \
-                "INNER JOIN events ON (events.eventID = matches.eventID) " \
-                "SET " + table + ".team = matches.blue3 " \
-                "WHERE events.currentEvent = 1 AND " + table + ".allianceStationID = 6"
-    cursor.execute(updateQuery)
-    conn.commit()
+    
+    j = 1
+    while j <= 6:
+        allianceStationID = dict[j]['allianceStationID']
+        allianceStation = dict[j]['allianceStation']
+        # print(f"{allianceStationID} {allianceStation}")
+        print(f"{table}:  fixing team # typos for allianceStation {allianceStation}")
+        updateQuery = "UPDATE " + table + " INNER JOIN matches ON (" + table + ".matchID = matches.matchID) " + \
+                "INNER JOIN events ON (events.eventID = matches.eventID) " + \
+                "SET " + table + ".team = matches." +  allianceStation + " " + \
+                "WHERE events.currentEvent = 1 AND " + table + ".allianceStationID = " + str(allianceStationID) + ";"
+        cursor.execute(updateQuery)
+        conn.commit()
+        j += 1
 
 
 # add team match numbers by looping back through each teams matches and counting
@@ -140,6 +121,7 @@ for table in tables:
     print(f"looping through {table} records and creating teamMatchNum values")
     print("NOTE: this only works if the added matches to the schedule are in order.")
     print("    if an early match is entered at the end of the matches table then the teamMatchNum will be out of order")
+    print("please be patient, this takes a few seconds ...")
     # The above note can be fixed by writing a script to (1) dump the current event records from the matchScouting(L2) table
     #   to a csv file, (2) deleting them from the matchScouting(L2) table, (3) resetting the auto increment index
     #   with "ALTER TABLE matchScouting(L2) AUTO_INCREMENT = xxx;", (4) sorting the matchScouting(L2) records in pandas
@@ -173,4 +155,4 @@ cursor.close()
 conn.close()
 
 print()
-print ("finsihed!")
+print ("That's all, folks!!")
