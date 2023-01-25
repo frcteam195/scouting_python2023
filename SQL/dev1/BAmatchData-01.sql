@@ -13,5 +13,5 @@ CREATE TABLE IF NOT EXISTS dev1.BAmatchData (
 	blueScore INT NULL,
 	/* add additional entries as described in the BA API once it is released for Charged Up */
 	PRIMARY KEY (matchNum),
-    FOREIGN KEY (eventID) REFERENCES events (id)
+    FOREIGN KEY (eventID) REFERENCES events (eventID)
 ) Engine = InnoDB;

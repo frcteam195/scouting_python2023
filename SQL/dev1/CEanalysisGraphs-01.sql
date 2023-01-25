@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS dev1.CEanalysisGraphs (
-	id INT NOT NULL,
+	CEanalysisGraphsID INT NOT NULL,
 	team VARCHAR(10) NOT NULL,
 	eventID INT NOT NULL,
 	/* list all the summary information for graphs by team
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS dev1.CEanalysisGraphs (
 	scoreMean FLOAT NULL,
 	scoreMedian FLOAT NULL,
 	/* add more once we determine analysisTypes */
-    PRIMARY KEY (id),
-    FOREIGN KEY (eventID) REFERENCES events (id),
+    PRIMARY KEY (CEanalysisGraphsID),
+    FOREIGN KEY (eventID) REFERENCES events (eventID),
     FOREIGN KEY (team) REFERENCES teams (team)
 ) Engine = InnoDB;

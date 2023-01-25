@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS dev1.analysisGraphs (
-	id INT NOT NULL,
+	analysisGraphID INT NOT NULL,
 	team VARCHAR(10) NOT NULL,
 	eventID INT NOT NULL,
 	/* list all the summary information for graphs by team
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS dev1.analysisGraphs (
 	scoreMean FLOAT NULL,
 	scoreMedian FLOAT NULL,
 	/* add more once we determine analysisTypes */
-    PRIMARY KEY (id),
-    FOREIGN KEY (eventID) REFERENCES events (id),
+    PRIMARY KEY (analysisGraphID),
+    FOREIGN KEY (eventID) REFERENCES events (eventID),
     FOREIGN KEY (team) REFERENCES teams (team)
 ) Engine = InnoDB;

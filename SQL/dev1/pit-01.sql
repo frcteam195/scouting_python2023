@@ -21,6 +21,6 @@ CREATE TABLE IF NOT EXISTS dev1.pit (
         generalComments TINYTEXT NULL,
         PRIMARY KEY(team),
         FOREIGN KEY (team) REFERENCES teams (team),
-        FOREIGN KEY (eventID) REFERENCES events (id),
-        FOREIGN KEY (driveTypeID) REFERENCES driveTypes (id)
+        FOREIGN KEY (eventID) REFERENCES events (eventID),
+        FOREIGN KEY (driveTypeID) REFERENCES driveTypes (driveTypeID)
 ) Engine = InnoDB;

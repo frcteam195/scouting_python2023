@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS dev1.matches (
-        id INT AUTO_INCREMENT NOT NULL,
+        matchID INT AUTO_INCREMENT NOT NULL,
         eventID INT NOT NULL,
         matchNum INT NOT NULL,
         red1 VARCHAR(10) NOT NULL,
@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS dev1.matches (
         blue1 VARCHAR(10) NOT NULL,
         blue2 VARCHAR(10) NOT NULL,
         blue3 VARCHAR(10) NOT NULL,
+        /* add alliance data from TBA */
         redAutoPts INT NULL,
         blueAutoPts INT NULL,
         redTelePts INT NULL,
@@ -22,6 +23,6 @@ CREATE TABLE IF NOT EXISTS dev1.matches (
         blueChrgZoneRP TINYINT NULL,
         matchTime INT NULL,
         actualTime INT NULL,
-        PRIMARY KEY (id),
-        FOREIGN KEY (eventID) REFERENCES events (id)
+        PRIMARY KEY (matchID),
+        FOREIGN KEY (eventID) REFERENCES events (eventID)
 ) Engine = InnoDB;

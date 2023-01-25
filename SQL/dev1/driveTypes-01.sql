@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS dev1.driveTypes (
-        id INT NOT NULL,
+        driveTypeID INT NOT NULL,
         driveType VARCHAR(20),
-        PRIMARY KEY (id)
+        PRIMARY KEY (driveTypeID)
 ) Engine = InnoDB;

@@ -4,5 +4,5 @@ CREATE TABLE IF NOT EXISTS dev1.watch1 (
         eventID INT,
         PRIMARY KEY (team, eventID, sortOrder),
         FOREIGN KEY (team) REFERENCES teams (team),
-        FOREIGN KEY (eventID) REFERENCES events (id)   
+        FOREIGN KEY (eventID) REFERENCES events (eventID)   
 ) Engine = InnoDB;

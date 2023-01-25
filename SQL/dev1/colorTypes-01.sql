@@ -1,9 +1,9 @@
 CREATE TABLE IF NOT EXISTS dev1.colorTypes (
-	id INT NOT NULL,
+	colorTypesID INT NOT NULL,
 	colorType VARCHAR(50) NULL,
 	hex VARCHAR(20) NULL,
 	rgb VARCHAR(20) NULL,
 	cmyk VARCHAR(20) NULL,
 	summary VARCHAR(50) NULL,
-	PRIMARY KEY (id)
+	PRIMARY KEY (colorTypesID)
 ) Engine = InnoDB;
