@@ -26,7 +26,7 @@ conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=dat
 cursor = conn.cursor()
 
 # Get data form events table about the current event
-query = "SELECT id, BAeventID FROM events WHERE currentEvent = 1"
+query = "SELECT eventID, BAeventID FROM events WHERE currentEvent = 1"
 cursor.execute(query)
 eventData = cursor.fetchall()
 print(f"eventID, BAeventID = {eventData}")

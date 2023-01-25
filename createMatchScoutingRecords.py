@@ -27,9 +27,9 @@ cursor = conn.cursor()
 tables = ['matchScouting', 'matchScoutingL2']
 for table in tables:
     query = "SELECT matches.* FROM matches LEFT JOIN " + table + \
-            " ON (matches.id = " + table + ".eventID) " \
-            "AND matches.id = " + table + ".id " \
-            "JOIN events ON (events.id = matches.eventID) " \
+            " ON (matches.matchID = " + table + ".eventID) " + \
+            "AND matches.matchID = " + table + "." + table + "ID " + \
+            "JOIN events ON (events.eventID = matches.eventID) " + \
             "WHERE (((events.currentEvent) = 1) AND ((" + table + ".matchID) is Null))"
     # print(query)
     cursor.execute(query)
@@ -90,43 +90,43 @@ for table in tables:
     print(f"looping through {table} records and comparing teams in each record to the matches table")
     print("    fixing team # if different to fix any typos if we had to enter the schedule by hand") 
     # alliance station #1
-    updateQuery = "UPDATE " + table + " INNER JOIN matches ON (" + table + ".matchID = matches.id) " \
-                "INNER JOIN events ON (events.id = matches.eventID) " \
+    updateQuery = "UPDATE " + table + " INNER JOIN matches ON (" + table + ".matchID = matches.matchID) " \
+                "INNER JOIN events ON (events.eventID = matches.eventID) " \
                 "SET " + table + ".team = matches.red1 " \
                 "WHERE events.currentEvent = 1 AND " + table + ".allianceStationID = 1"
     cursor.execute(updateQuery)
     conn.commit()
     # alliance station #2
-    updateQuery = "UPDATE " + table + " INNER JOIN matches ON (" + table + ".matchID = matches.id) " \
-                "INNER JOIN events ON (events.id = matches.eventID) " \
+    updateQuery = "UPDATE " + table + " INNER JOIN matches ON (" + table + ".matchID = matches.matchID) " \
+                "INNER JOIN events ON (events.eventID = matches.eventID) " \
                 "SET " + table + ".team = matches.red2 " \
                 "WHERE events.currentEvent = 1 AND " + table + ".allianceStationID = 2"
     cursor.execute(updateQuery)
     conn.commit()
     # alliance station #3
-    updateQuery = "UPDATE " + table + " INNER JOIN matches ON (" + table + ".matchID = matches.id) " \
-                "INNER JOIN events ON (events.id = matches.eventID) " \
+    updateQuery = "UPDATE " + table + " INNER JOIN matches ON (" + table + ".matchID = matches.matchID) " \
+                "INNER JOIN events ON (events.eventID = matches.eventID) " \
                 "SET " + table + ".team = matches.red3 " \
                 "WHERE events.currentEvent = 1 AND " + table + ".allianceStationID = 3"
     cursor.execute(updateQuery)
     conn.commit()
     # alliance station #4
-    updateQuery = "UPDATE " + table + " INNER JOIN matches ON (" + table + ".matchID = matches.id) " \
-                "INNER JOIN events ON (events.id = matches.eventID) " \
+    updateQuery = "UPDATE " + table + " INNER JOIN matches ON (" + table + ".matchID = matches.matchID) " \
+                "INNER JOIN events ON (events.eventID = matches.eventID) " \
                 "SET " + table + ".team = matches.blue1 " \
                 "WHERE events.currentEvent = 1 AND " + table + ".allianceStationID = 4"
     cursor.execute(updateQuery)
     conn.commit()
     # alliance station #5
-    updateQuery = "UPDATE " + table + " INNER JOIN matches ON (" + table + ".matchID = matches.id) " \
-                "INNER JOIN events ON (events.id = matches.eventID) " \
+    updateQuery = "UPDATE " + table + " INNER JOIN matches ON (" + table + ".matchID = matches.matchID) " \
+                "INNER JOIN events ON (events.eventID = matches.eventID) " \
                 "SET " + table + ".team = matches.blue2 " \
                 "WHERE events.currentEvent = 1 AND " + table + ".allianceStationID = 5"
     cursor.execute(updateQuery)
     conn.commit()
     # alliance station #6
-    updateQuery = "UPDATE " + table + " INNER JOIN matches ON (" + table + ".matchID = matches.id) " \
-                "INNER JOIN events ON (events.id = matches.eventID) " \
+    updateQuery = "UPDATE " + table + " INNER JOIN matches ON (" + table + ".matchID = matches.matchID) " \
+                "INNER JOIN events ON (events.eventID = matches.eventID) " \
                 "SET " + table + ".team = matches.blue3 " \
                 "WHERE events.currentEvent = 1 AND " + table + ".allianceStationID = 6"
     cursor.execute(updateQuery)
@@ -149,23 +149,23 @@ for table in tables:
     #   and not the top and this script takes care of typos in team numbers already so punting on a more 
     #   elagent solution for this likely to never happen scenerio
     query = "SELECT DISTINCT " + table + ".team " + \
-            "FROM " + table + " INNER JOIN events ON " + table + ".eventID = events.id " + \
+            "FROM " + table + " INNER JOIN events ON " + table + ".eventID = events.eventID " + \
             "AND ((events.currentEvent) = 1) " + \
             "ORDER BY " + table + ".team; "
     cursor.execute(query)
     rsTeams = cursor.fetchall()
 
     for team in rsTeams:
-        query = "SELECT " + table + ".id FROM " + table + " INNER JOIN events " + \
-            "ON " + table + ".eventID = events.id AND ((events.currentEvent) = 1) " + \
-            "WHERE " + table + ".team = " + team[0] + " ORDER BY " + table + ".id;"
+        query = "SELECT " + table + "." + table + "ID FROM " + table + " INNER JOIN events " + \
+            "ON " + table + ".eventID = events.eventID AND ((events.currentEvent) = 1) " + \
+            "WHERE " + table + ".team = " + team[0] + " ORDER BY " + table + "." + table + "ID;"
         cursor.execute(query)
         rsTeamMatchScouting = cursor.fetchall()
         matchNum = 0
         for match in rsTeamMatchScouting:
             matchNum += 1
             query = "UPDATE " + table + " SET " + table + ".teamMatchNum = " + str(matchNum) + \
-                    " WHERE " + table + ".id = " + str(match[0]) + ";"
+                    " WHERE " + table + "." + "ID = " + str(match[0]) + ";"
             cursor.execute(query)
             conn.commit()
 

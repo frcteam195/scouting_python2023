@@ -25,7 +25,7 @@ database = config[input_host+"-"+input_db]['database']
 conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=database)
 cursor = conn.cursor()
 
-cursor.execute("SELECT id FROM events WHERE currentEvent = 1")
+cursor.execute("SELECT eventID FROM events WHERE currentEvent = 1")
 currentEventID = str(cursor.fetchone()[0])
 print("Current event ID = " + currentEventID)
 
