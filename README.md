@@ -1,6 +1,4 @@
 # scouting_python2023
-Hi Mark
--Matt 
 
 ## **REMINDERS**
 - ***always*** pull from the upstream main repository before editing code

@@ -8,7 +8,6 @@ cat BAschedule-01.sql >> all.sql
 cat scouters-01.sql >> all.sql
 cat matches-01.sql >> all.sql
 cat allianceStations-01.sql >> all.sql
-cat level2-01.sql >> all.sql
 cat analysisTypes-01.sql >> all.sql
 cat BAoprs-01.sql >> all.sql
 cat BArank-01.sql >> all.sql
@@ -23,4 +22,5 @@ cat watch1-01.sql >> all.sql
 cat pickList1-01.sql >> all.sql
 cat pit-01.sql >> all.sql
 cat matchScouting-01.sql >> all.sql
+cat matchScoutingL2-01.sql >> all.sql
 cat BAteams-01.sql >> all.sql

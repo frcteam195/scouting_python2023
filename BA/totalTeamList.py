@@ -36,10 +36,10 @@ tba = tbapy.TBA('Tfr7kbOvWrw0kpnVp5OjeY780ANkzVMyQBZ23xiITUkFo9hWqzOuZVlL3Uy6mLr
 currentYear = 2022
 
 def wipeTTL():
-        cursor.execute("DELETE FROM teamsAll;")
-        cursor.execute("ALTER TABLE teamsAll AUTO_INCREMENT = 1;")
-        conn.commit()
-
+    print("wiping the teamsAll table so it may be rebuilt")
+    cursor.execute("DELETE FROM teamsAll;")
+    cursor.execute("ALTER TABLE teamsAll AUTO_INCREMENT = 1;")
+    conn.commit()
 wipeTTL()
 
 def onlyascii(s):
@@ -57,6 +57,7 @@ for team in totalTeams:
     tempCountry = ''
     
     teamNum = team.get('team_number')
+    print(f"adding Team = {teamNum}")
     location = str(team.city) + ', ' + str(team.state_prov) + ', ' + str(team.country)    
     
     tempNick = onlyascii(team.nickname)
@@ -83,8 +84,6 @@ for team in totalTeams:
             "','" + str(tempCity) + \
             "','" + str(tempStateProv) + \
             "','" + str(tempCountry) + "');"
-    print(query)
-    quit()
     cursor.execute(query)
     conn.commit()
 

@@ -165,7 +165,7 @@ for table in tables:
         for match in rsTeamMatchScouting:
             matchNum += 1
             query = "UPDATE " + table + " SET " + table + ".teamMatchNum = " + str(matchNum) + \
-                    " WHERE " + table + "." + "ID = " + str(match[0]) + ";"
+                    " WHERE " + table + "." + table + "ID = " + str(match[0]) + ";"
             cursor.execute(query)
             conn.commit()
 

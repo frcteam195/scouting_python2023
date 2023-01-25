@@ -1,8 +1,14 @@
-cd ..
+#! /bin/bash
+cwd=$(pwd)
+echo $cwd
+
 echo 'Running BA/eventsAll.py'
-python3 ../BA/eventsAll.py -db dev1 -host aws
-sleep 5
+python3 $cwd/../BA/eventsAll.py -db dev1 -host aws
+echo ''
+sleep 2
 
 echo 'Running BA/totalTeamList.py'
-python3 ../BA/totalTeamList.py -db dev1 -host aws
-sleep 5
+python3 $cwd/../BA/totalTeamList.py -db dev1 -host aws
+echo ''
+sleep 2
+
