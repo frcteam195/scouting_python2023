@@ -27,33 +27,52 @@ database = config[input_host+"-"+input_db]['database']
 conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=database)
 cursor = conn.cursor()
 
-def wipeFakeData():
-        cursor.execute("DELETE FROM matchScoutingTest;")
-        cursor.execute("ALTER TABLE matchScoutingTest AUTO_INCREMENT = 1;")
-        conn.commit()
-wipeFakeData()
+# def wipeFakeData():
+#         cursor.execute("DELETE FROM matchScoutingTest;")
+#         cursor.execute("ALTER TABLE matchScoutingTest AUTO_INCREMENT = 1;")
+#         conn.commit()
+# wipeFakeData()
 
-for i in range(6):
-        ramp = 0
-        if(i % 3 == 0):
-                ramp = 3
-        query = "INSERT INTO matchScoutingTest (eventId, matchID, matchNum, team, allianceStationID, preStartPos, preLoad, preNoShow, autoMB, autoRamp, autoPen) VALUES" + \
-                "('" + str(1) + \
-                "','" + str(1) + \
-                "','" + str(1) + \
-                "','" + str(195) + \
-                "','" + str(i+1) + \
-                "','" + str(random.randint(0,3)) + \
-                "','" + str(random.randint(0,1)) + \
-                "','" + str(0) + \
-                "','" + str(random.randint(0,2)) + \
-                "','" + str(ramp) + \
-                "','" + str(0) + \
-                "');"
-        print(query)
-        #quit()
-        cursor.execute(query)
-        conn.commit()
+# cursor.execute("SELECT DISTINCT matchScoutingTest.scoutingStatus "
+#                "FROM matchScoutingTest INNER JOIN events ON matchScoutingTest.eventID = events.id "
+#                "AND ((events.currentEvent) = 1) "
+#                "ORDER BY matchScoutingTest.scoutingStatus; ")
+def randomnumber(lower,upper):
+        return random.randint(lower,upper)
+
+dictionary = {
+        'scoutingStatus':{'type': int, 'default': 0,      'min': 1, 'max': 2},
+        'ramp':          {'type': int, 'default': 'NULL', 'min': 0, 'max': 5},
+        'autoPen':       {'type': int, 'default': 0,      'min': 0, 'max': 2},
+        'rampStartTime': {'type': int, 'default': 'NULL', 'min': 0, 'max': 150} 
+
+}
+name = 'ramp'
+print(randomnumber(dictionary[name]['min'],
+                   dictionary[name]['max']))
+quit()
+query = "SELECT * FROM matchScoutingTest WHERE scoutingStatus = 0;"
+print(query)
+quit()
+cursor.execute(query)
+rsScoutingID = cursor.fetchall()
+
+# for i in range(6):
+#         ramp = 0
+#         if(i % 3 == 0):
+#                 ramp = 3
+#         query = "INSERT INTO matchScoutingTest (preStartPos, preLoad, preNoShow, autoMB, autoRamp, autoPen) VALUES" + \
+#                 "('"  + str(random.randint(0,3)) + \
+#                 "','" + str(random.randint(0,1)) + \
+#                 "','" + str(0) + \
+#                 "','" + str(random.randint(0,2)) + \
+#                 "','" + str(ramp) + \
+#                 "','" + str(0) + \
+#                 "');"
+#         print(query)
+#         #quit()
+#         cursor.execute(query)
+#         conn.commit()
 
 cursor.close()
 conn.close()
