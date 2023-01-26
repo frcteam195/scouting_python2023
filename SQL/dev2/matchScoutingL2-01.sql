@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS dev2.matchScoutingL2 (
         effort TINYINT NULL,
         scoringEff TINYINT NULL,
         intakeEff TINYINT NULL,
-        commnetOff TINYTEXT NULL,
+        commentOff TINYTEXT NULL,
         commentDef TINYTEXT NULL,
         goodOffBot TINYINT NULL,
         goodDefBot TINYINT NULL,
