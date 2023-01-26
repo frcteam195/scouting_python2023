@@ -30,16 +30,16 @@ cursor = conn.cursor()
 
 tba = tbapy.TBA('Tfr7kbOvWrw0kpnVp5OjeY780ANkzVMyQBZ23xiITUkFo9hWqzOuZVlL3Uy6mLrz')
 
+# get the BAeventID and timezone for the current event
 cursor.execute("SELECT events.BAeventID FROM events WHERE events.currentEvent = 1;")
 currentEvent = cursor.fetchone()[0]
-
-# cursor.execute("DELETE FROM BAmatchData;")
-# cursor.execute("ALTER TABLE BAmatchData AUTO_INCREMENT = 1;")
-# conn.commit()
+cursor.execute("SELECT events.timeZone FROM events WHERE events.currentEvent = 1;")
+timeZone = cursor.fetchone()[0]
 
 qNum = 0
 eventInfo = tba.event_matches(currentEvent)
-tz = pytz.timezone("America/Chicago")
+tz = pytz.timezone(str(timeZone))
+print(type(tz))
 
 for match in eventInfo:
     # print(match)
