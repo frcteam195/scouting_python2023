@@ -18,7 +18,7 @@ args = parser.parse_args()
 input_db = args.database
 input_host = args.host
 
-CEA_table = "CEanalysisTmp"
+CEA_tmpTable = "CEanalysisTmp"
 BAO_table = "BAoprs"
 BAR_table = "BAranks"
 MS_table = "BAmatchScouting"
@@ -38,50 +38,41 @@ database = config[input_host+"-"+input_db]['database']
 # Define a Class called analysis
 class analysis():
     # Inside the class there are several functions defined:
-    #   _run_query = runs a query based on string passed to the functon
-    #   _setColumns = retrieves the column headings from the database table so we don't need to hardcode them
-    #   _wipeCEA = wipes away the CEanalysisTmp table
-    #   _getTeams = gets the team list and sets the results to the rsRobots
-    #   _getTeamData =  retrieves data records for a given team, for all their matches, and sets the results to rsRobotMatches
+    #   _scoutingDBconnector = sets up the database connection and creates the cursor for running SQL queries
+    #       _run_query = runs a generic query based on string passed to the functon. Used by several other functions
+    #   _createCEanalysisTmp = drops (if exists) and builds tmp file for Current Event Analysis data
+    #   _setColumns = retrieves the column headings from the database table so we don't need to hardcode them  
+    #   _getTeams = gets the team list and sets the results to rsRobots
+    #   _getTeamData =  retrieves data records for a given team, for all their matches, and sets the results to rsRobotMatchData
     #   _analyzeTeams = loops over teams and then loops over all analysisTypes setting the results of each inner loop to rsCEA
-    #   _insertAnalysis = inserts the rsCEA records into the CEanalysisTmp table
-    #   Those functions will not get called automatically
-    #   so in order to get them to run we create a __init__ function which is a special function in Python
-    #   that gets run every time the class is initialized. Here we build the DB connection cursor from within
-    #   the __init__ function and then call the cursor, columns, wipeCEA, rsRobots, and analyzeTeams functions
-    #   from within the __init__ function, which means they will be run automatically when the Class is initialized
+    #       _insertAnalysis = inserts the rsCEA records into the CEanalysisTmp table, used within _analyzeTeams
+    #   _rankTeamsAll = 
+
     def __init__(self):
         now = datetime.datetime.now()
         print(now.strftime("%Y-%m-%d %H:%M:%S"))
         start_time = time.time()
 
-        self.conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=database)
-        self.cursor = self.conn.cursor()
-        
+        self._scoutingDBconnector()
         self._createCEanalysisTmp()
         self.columns = []
-        self._wipeCEanalysisTmp()
         self.rsRobots = self._getTeams()
         self._analyzeTeams()
         # self._rankTeamsAll()
-        # self._renameTable()
+        self._renameTable()
 
         print("Time: %0.2f seconds" % (time.time() - start_time))
         print()
 
+    # Connect to database and setup cursor
+    def _scoutingDBconnector(self):
+        self.conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=database)
+        self.cursor = self.conn.cursor()
+    
     # Function to run a query - the query string must be passed to the function
     def _run_query(self, query):
         self.cursor.execute(query)
-
-    # Function to determine the DB table column headers
-    def _setColumns(self, columns):
-        self.columns = columns
-
-    # Function to wipe the CEA table. We may want to make this only remove CurrentEvent records.
-    def _wipeCEanalysisTmp(self):
-        self._run_query("DELETE FROM " + CEA_table + ";")
-        self.conn.commit()
-
+        
     # Function to drop existing CEanalysisTmp table if it exists (it should not) and rebuild table
     def _createCEanalysisTmp(self):
         self._run_query("DROP TABLE IF EXISTS CEanalysisTmp")
@@ -93,10 +84,9 @@ class analysis():
         query = SQLfile.read()
         self._run_query(query)
 
-    def _renameTable(self):
-        self._run_query("DROP TABLE CEanalysis;")
-        self._run_query("ALTER TABLE " + CEA_table + " RENAME CEanalysis;")
-        self.conn.commit()
+    # Function to determine the DB table column headers
+    def _setColumns(self, columns):
+        self.columns = columns
 
     # Function to get the team list and set it to rsRobots. Uses the _run_query function defined above.
     #   The assert statement will return rsRobots if the record length > 0 and will exit with the
@@ -112,8 +102,9 @@ class analysis():
         # print(rsRobots)
         assert len(rsRobots) > 0, "No robots found"
         return rsRobots
+    
 
-    # Function to retrieve data records for a given team for all their matches and set it to rsRobotMatches
+    # Function to retrieve data records for a given team for all their matches and set it to rsRobotMatchData
     def _getTeamData(self, team):
         self._run_query("SELECT matchScouting.*, matches.matchNum "
             "FROM (events INNER JOIN matches ON events.eventID = matches.eventID) "
@@ -127,47 +118,62 @@ class analysis():
             "ORDER BY matchScouting.teamMatchNum")
 
         # Set columns to be a list of column headings in the Query results
-        # Very cool - cursor.description is used to auto-determine the column headings in the matchScouting table
-        #   so these values do not need to be hard-coded
         self._setColumns([column[0] for column in list(self.cursor.description)])
 
-        rsRobotMatches = self.cursor.fetchall()
-        # print(rsRobotMatches)
-
-        # If rsRobotMatches is not zero length return rsRobotMatches otherwise return None. This allows the
-        #   function to skip a robot analysis if that robot does not have any match records yet.
-        if rsRobotMatches:
-            return rsRobotMatches
+        # sets rsRobotMatchData to the results of the _getTeamData function and returns None if no robot data yet
+        rsRobotMatchData = self.cursor.fetchall()
+        if rsRobotMatchData:
+            return rsRobotMatchData
         else:
             return None
-
+    
+    
     #
     def _analyzeTeams(self):
         # Loop over the # of teams and run each of the analysis functions calling _insertAnalysis after each one is run
         for team in self.rsRobots:
-            rsRobotMatches = self._getTeamData(team)
+            rsRobotMatchData = self._getTeamData(team)
             teamName = str(team)
             teamName = teamName.replace("('", "")
             teamName = teamName.replace("',)", "")
-            # print(rsRobotMatches)
+            # print(rsRobotMatchData)
 
-            if rsRobotMatches:
-                rsCEA = startingPosition(analysis=self, rsRobotMatches=rsRobotMatches)
+            if rsRobotMatchData:
+                rsCEA = startingPosition(analysis=self, rsRobotMatchData=rsRobotMatchData)
                 self._insertAnalysis(rsCEA)
                 self.conn.commit()
+    
+
+     # Function to insert an rsCEA record into the DB.
+    def _insertAnalysis(self, rsCEA):
+        rsCEA_records = rsCEA.items()
+        print(rsCEA)
+        # Get the columnHeadings and values, do some formatting, and then use the _run_query function to run the
+        #   query and the conn.commit to insert into the DB.
+        columnHeadings = str(tuple([record[0] for record in rsCEA_records])).replace("'", "")
+        values = str(tuple([record[1] for record in rsCEA_records]))
+        print(values)
+
+        # Insert the records into the DB
+        self._run_query("INSERT INTO " + CEA_tmpTable + " "
+                        + columnHeadings + " VALUES "
+                        + values + ";")
+        # print(columnHeadings + values)
+        self.conn.commit()
+
+    
+    def _renameTable(self):
+        self._run_query("DROP TABLE CEanalysis;")
+        self._run_query("ALTER TABLE " + CEA_tmpTable + " RENAME CEanalysis")
+        self.conn.commit()
 
 
-    # Helper function to rank a single analysis type, called by _rankTeamsAll
+    # Function to retrieve S1V values for a given analysisType and use numpy to determine percentiles
     def _rankTeamsSingle(self, analysis_type):
-        # Get Summary 1 value for each team from CEA with analysis_type
-        # Sort in descending order by sum 1 value
-        # Determine percentile of each team
-        # Optional: see if at percentile cutoffs there is any repeated values
-        # Update summary 3 value in CEA for each team (rank based on percentile)
-        self._run_query("SELECT Team, Summary1Value "
-                        "FROM " + CEA_table + " "
-                        "WHERE AnalysisTypeID = " + str(analysis_type) + ";")
-        team_sum1 = self.cursor.fetchall() # List of tuples (team, summary1value)
+        self._run_query("SELECT team, S1V "
+                        "FROM " + CEA_tmpTable + " "
+                        "WHERE analysisTypeID = " + str(analysis_type))
+        team_sum1 = self.cursor.fetchall() # List of tuples (team, S1V)
         if len(team_sum1) > 0:
             team_sum1 = [team_tup for team_tup in team_sum1 if team_tup[1] is not None]
             # print(team_sum1)
@@ -192,12 +198,11 @@ class analysis():
                     team_color = 5
                     team_display = 90
 
-                query = "UPDATE " + CEA_table + " SET " + CEA_table + ".Summary3Format = " \
-                        + str(team_color) + ", " + CEA_table + ".Summary3Display = "\
-                        + str(team_display) + ", " + CEA_table + ".Summary3Value = " + str(team_display) \
-                        + " WHERE " + CEA_table + ".Team = '" + str(team[0]) \
-                        + "' AND " + CEA_table + ".AnalysisTypeID = " + str(analysis_type) + " ;"
-                #print(query);
+                query = "UPDATE " + CEA_tmpTable + " SET " + CEA_tmpTable + ".S3F = " \
+                        + str(team_color) + ", " + CEA_tmpTable + ".S3D = "\
+                        + str(team_display) + ", " + CEA_tmpTable + ".S3V = " + str(team_display) \
+                        + " WHERE " + CEA_tmpTable + ".team = '" + str(team[0]) \
+                        + "' AND " + CEA_tmpTable + ".analysisTypeID = " + str(analysis_type)
                 self._run_query(query)
                 self.conn.commit()
         else:
@@ -209,24 +214,6 @@ class analysis():
         for analysisType in analysisTypeList:
             # print(analysisType)
             self._rankTeamsSingle(analysisType)
-
-
-    # Function to insert an rsCEA record into the DB.
-    def _insertAnalysis(self, rsCEA):
-        rsCEA_records = rsCEA.items()
-        print(rsCEA)
-        # Get the columnHeadings and values, do some formatting, and then use the _run_query function to run the
-        #   query and the conn.commit to insert into the DB.
-        columnHeadings = str(tuple([record[0] for record in rsCEA_records])).replace("'", "")
-        values = str(tuple([record[1] for record in rsCEA_records]))
-        print(values)
-
-        # Insert the records into the DB
-        self._run_query("INSERT INTO " + CEA_table + " "
-                        + columnHeadings + " VALUES "
-                        + values + ";")
-        # print(columnHeadings + values)
-        self.conn.commit()
 
 
 # This initizlzes the analysis Class and thus runs the program.
