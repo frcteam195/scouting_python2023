@@ -1,4 +1,4 @@
-def startingPosition(analysis, rsRobotMatchData):
+def test2(analysis, rsRobotMatchData):
     # Initialize the rsCEA record set and define variables specific to this function which lie outside the for loop
     rsCEA = {}
     rsCEA['analysisTypeID'] = 1

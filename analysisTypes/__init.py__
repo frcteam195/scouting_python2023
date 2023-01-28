@@ -1,0 +1,5 @@
+__all__ = ['startingPosition', 'test2']
+# from .startingPosition import startingPosition
+# from .test2 import test2
+
+# print ("test")
