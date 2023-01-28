@@ -8,8 +8,6 @@ def startingPosition(analysis, rsRobotMatchData):
 
     # Loop through each match the robot played in.
     for matchResults in rsRobotMatchData:
-        print("hello")
-        print(matchResults)
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
         rsCEA['eventID'] = matchResults[analysis.columns.index('eventID')]
         # We are hijacking the starting position to write DNS or UR. This should go to Auto as it will not

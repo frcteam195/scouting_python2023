@@ -8,7 +8,10 @@ import argparse
 import configparser
 
 # For each analysisType we create add a new import statement. We could import all analysisTypes
-from analysisTypes.startingPosition import startingPosition  #1
+from analysisTypes.startingPosition import startingPosition
+from analysisTypes.test2 import test2
+analysisTypesDict = {"startingPosition": startingPosition, "test2": test2}
+print(analysisTypesDict)
 
 # parser to choose the database where the table will be written
 parser = argparse.ArgumentParser()
@@ -46,7 +49,8 @@ class analysis():
     #   _getTeamData =  retrieves data records for a given team, for all their matches, and sets the results to rsRobotMatchData
     #   _analyzeTeams = loops over teams and then loops over all analysisTypes setting the results of each inner loop to rsCEA
     #       _insertAnalysis = inserts the rsCEA records into the CEanalysisTmp table, used within _analyzeTeams
-    #   _rankTeamsAll = 
+    #   _rankTeamsAll = loops over all analysisTypeIDs that are slated for ranking and calls the _rankTeamsSingle function
+    #       _rankTeamsSingle = ranks teams based on S1V for a given analysisTypeID using numpy
 
     def __init__(self):
         now = datetime.datetime.now()
@@ -128,43 +132,41 @@ class analysis():
             return None
     
     
-    #
+    # runs each of the analysisTypes and outputs the results to rsCEA
     def _analyzeTeams(self):
-        # Loop over the # of teams and run each of the analysis functions calling _insertAnalysis after each one is run
         for team in self.rsRobots:
-            rsRobotMatchData = self._getTeamData(team)
-            teamName = str(team)
-            teamName = teamName.replace("('", "")
-            teamName = teamName.replace("',)", "")
-            # print(rsRobotMatchData)
+            # trying to get analysisType list automatically to reduce adding lines of code for each one
+            # query = "SELECT analysisTypeID, analysisType from analysisTypes WHERE runAnalysis = 1"
+            # self._run_query(query)
+            # results = self.cursor.fetchall()
+            # for result in results:
+            #     name, value = result
+            #     analysisTypesDict[name] = value
+            for analysisType2analyze in analysisTypesDict:
+                print(f"analyzing team {team} using {analysisType2analyze}")
+                rsRobotMatchData = self._getTeamData(team)
+                teamName = str(team)
+                teamName = teamName.replace("('", "")
+                teamName = teamName.replace("',)", "")
 
-            if rsRobotMatchData:
-                rsCEA = startingPosition(analysis=self, rsRobotMatchData=rsRobotMatchData)
-                self._insertAnalysis(rsCEA)
-                self.conn.commit()
+                if rsRobotMatchData:
+                    rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData)
+                    self._insertAnalysis(rsCEA)
+                    self.conn.commit()
     
 
      # Function to insert an rsCEA record into the DB.
     def _insertAnalysis(self, rsCEA):
         rsCEA_records = rsCEA.items()
-        print(rsCEA)
         # Get the columnHeadings and values, do some formatting, and then use the _run_query function to run the
         #   query and the conn.commit to insert into the DB.
         columnHeadings = str(tuple([record[0] for record in rsCEA_records])).replace("'", "")
         values = str(tuple([record[1] for record in rsCEA_records]))
-        print(values)
 
         # Insert the records into the DB
         self._run_query("INSERT INTO " + CEA_tmpTable + " "
                         + columnHeadings + " VALUES "
                         + values + ";")
-        # print(columnHeadings + values)
-        self.conn.commit()
-
-    
-    def _renameTable(self):
-        self._run_query("DROP TABLE CEanalysis;")
-        self._run_query("ALTER TABLE " + CEA_tmpTable + " RENAME CEanalysis")
         self.conn.commit()
 
 
@@ -176,7 +178,6 @@ class analysis():
         team_sum1 = self.cursor.fetchall() # List of tuples (team, S1V)
         if len(team_sum1) > 0:
             team_sum1 = [team_tup for team_tup in team_sum1 if team_tup[1] is not None]
-            # print(team_sum1)
             sum1 = [item[1] for item in team_sum1]
             percentiles = np.percentile(sum1, [25, 50, 75, 90])
 
@@ -212,11 +213,23 @@ class analysis():
     def _rankTeamsAll(self):
         analysisTypeList=[10, 11, 20, 21, 22, 30, 60, 61, 62]
         for analysisType in analysisTypeList:
-            # print(analysisType)
             self._rankTeamsSingle(analysisType)
+
+    def _renameTable(self):
+        self._run_query("DROP TABLE CEanalysis;")
+        self._run_query("ALTER TABLE " + CEA_tmpTable + " RENAME CEanalysis")
+        self.conn.commit()
 
 
 # This initizlzes the analysis Class and thus runs the program.
 if __name__ == '__main__':
     myAnalysis = analysis()
+
+
+# import json
+
+# # Open the file containing the dictionary
+# with open('dictionary.json', 'r') as file:
+#     # Load the JSON data from the file
+#     data = json.load(file)
     

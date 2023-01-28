@@ -1,30 +1,38 @@
-print()
-print("Looping through matchScouting and matchScoutingL2, comparing teams to the matches table and")
-print("fixing any team numbers that are incorrect. Helpful if schedule was hand built initially")
-print()
+import mysql.connector
+import argparse
+import configparser
 
-tables = ['matchScouting', 'matchScoutingL2']
+# parser to choose the database where the table will be written
+parser = argparse.ArgumentParser()
+parser.add_argument("-db", "--database", help = "Choices: dev1, dev2, testing, production", required=True)
+parser.add_argument("-host", "--host", help = "Host choices: aws, localhost", required=True)
+args = parser.parse_args()
+input_db = args.database
+input_host = args.host
 
-dict = {1: {'allianceStationID': 1, 'allianceStation': 'red1'},
-         2: {'allianceStationID': 2, 'allianceStation': 'red2'},
-         3: {'allianceStationID': 3, 'allianceStation': 'red3'},
-         4: {'allianceStationID': 4, 'allianceStation': 'blue1'},
-         5: {'allianceStationID': 5, 'allianceStation': 'blue2'},
-         6: {'allianceStationID': 6, 'allianceStation': 'blue3'}}
-# print(dict)
+# Read the configuration file
+config = configparser.ConfigParser()
+config.read('../helpers/config.ini')
 
-for table in tables:
-    
-    j = 1
-    while j <= 6:
-        allianceStationID = dict[j]['allianceStationID']
-        allianceStation = dict[j]['allianceStation']
-        # print(f"{allianceStationID} {allianceStation}")
-        print(f"{table}:  fixing team # typos for allianceStation {allianceStation}")
-        updateQuery = "UPDATE " + table + " INNER JOIN matches ON (" + table + ".matchID = matches.matchID) " + \
-                "INNER JOIN events ON (events.eventID = matches.eventID) " + \
-                "SET " + table + ".team = matches." +  allianceStation + " " + \
-                "WHERE events.currentEvent = 1 AND " + table + ".allianceStationID = " + str(allianceStationID) + ";"
-        cursor.execute(updateQuery)
-        conn.commit()
-        j += 1
+# Get the database login information from the configuration (ini) file
+host = config[input_host+"-"+input_db]['host']
+user = config[input_host+"-"+input_db]['user']
+passwd = config[input_host+"-"+input_db]['passwd']
+database = config[input_host+"-"+input_db]['database']
+#print(host + " " + user + " " + passwd + " " + database)
+
+conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=database)
+cursor = conn.cursor()
+
+query = "SELECT analysisTypeID, analysisType from analysisTypes WHERE runAnalysis = 1"
+cursor.execute(query)
+results = cursor.fetchall()
+
+for result in results:
+    function_name = result[0]
+    exec(f"from ../analysisTypes.{function_name} import {function_name}")
+
+conn.close()
+cursor.close()
+
+# Create an empty dictionary
