@@ -11,7 +11,7 @@ import configparser
 # from analysisTypes.startingPosition import startingPosition
 # from analysisTypes.test2 import test2
 from analysisTypes import *
-analysisTypesDict = {"startingPosition": analysisTypes.startingPosition, "test2": analysisTypes.test2}
+analysisTypesDict = {"startingPosition": startingPosition.startingPosition, "test2": test2.test2}
 print(analysisTypesDict)
 
 # parser to choose the database where the table will be written
