@@ -3,7 +3,7 @@ import statistics
 def autoRamp(analysis, rsRobotMatchData):
     # Initialize the rsCEA record set and define variables specific to this function which lie outside the for loop
     rsCEA = {}
-    rsCEA['analysisTypeID'] = 1
+    rsCEA['analysisTypeID'] = 4
     numberOfMatchesPlayed = 0
 
     # only using to test ranks, eliminate later
@@ -15,9 +15,9 @@ def autoRamp(analysis, rsRobotMatchData):
         rsCEA['eventID'] = matchResults[analysis.columns.index('eventID')]
         # We are hijacking the starting position to write DNS or UR. This should go to Auto as it will not
         #   likely be displayed on team picker pages.
-        autoDidNotShow = matchResults[analysis.columns.index('autoDidNotShow')]
+        preNoShow = matchResults[analysis.columns.index('preNoShow')]
         scoutingStatus = matchResults[analysis.columns.index('scoutingStatus')]
-        if autoDidNotShow == 1:
+        if preNoShow == 1:
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'DNS'
         elif scoutingStatus == 2:
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'UR'

@@ -1,2 +1,3 @@
 __all__ = ['startingPosition', 
-           'test2']
+           'autoRamp',
+           'autoScore']
