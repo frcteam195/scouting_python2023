@@ -1,2 +1,2 @@
-__all__ = ['startingPosition'
-           'autoRamp']
+__all__ = ['startingPosition', 
+           'test2']

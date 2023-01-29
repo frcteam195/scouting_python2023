@@ -6,7 +6,6 @@ import datetime
 import time
 import argparse
 import configparser
-import statistics
 
 # import all the analysis types listed in analysisTypes/__init__.py
 # add each analysisType to the analysisTypeDict dictionary 
