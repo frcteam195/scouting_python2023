@@ -1,8 +1,13 @@
+import statistics
+
 def startingPosition(analysis, rsRobotMatchData):
     # Initialize the rsCEA record set and define variables specific to this function which lie outside the for loop
     rsCEA = {}
     rsCEA['analysisTypeID'] = 1
     numberOfMatchesPlayed = 0
+
+    # only using to test ranks, eliminate later
+    startingPositionList = []
 
     # Loop through each match the robot played in.
     for matchResults in rsRobotMatchData:
@@ -18,6 +23,11 @@ def startingPosition(analysis, rsRobotMatchData):
         elif scoutingStatus == 2:
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'UR'
         else:
+
+            preStartPos = matchResults[analysis.columns.index('preStartPos')]
+            if preStartPos is None:
+                preStartPos = 0
+
             # Increment the number of matches played and write M#D, M#V and M#F
             numberOfMatchesPlayed += 1
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = matchResults[
@@ -25,5 +35,10 @@ def startingPosition(analysis, rsRobotMatchData):
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = matchResults[
                 analysis.columns.index('preStartPos')]
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = 0
+
+            startingPositionList.append(preStartPos)
+
+    if numberOfMatchesPlayed > 0:
+        rsCEA['S1V'] = round(statistics.mean(startingPositionList), 1)
 
     return rsCEA

@@ -6,6 +6,7 @@ import datetime
 import time
 import argparse
 import configparser
+import statistics
 
 # import all the analysis types listed in analysisTypes/__init__.py
 # add each analysisType to the analysisTypeDict dictionary 
@@ -141,8 +142,9 @@ class analysis():
                 # print(f"analyzing team {team} using {analysisType2analyze}")
                 rsRobotMatchData = self._getTeamData(team)
                 teamName = str(team)
-                teamName = teamName.replace("('", "")
-                teamName = teamName.replace("',)", "")
+                teamName = teamName.translate(str.maketrans("", "", " ,()'"))
+                # teamName = teamName.replace("('", "")
+                # teamName = teamName.replace("',)", "")
                 if rsRobotMatchData:
                     rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData)
                     self._insertAnalysis(rsCEA)
@@ -194,24 +196,20 @@ class analysis():
                         + str(team_display) + ", " + CEA_tmpTable + ".S3V = " + str(team_display) \
                         + " WHERE " + CEA_tmpTable + ".team = '" + str(team[0]) \
                         + "' AND " + CEA_tmpTable + ".analysisTypeID = " + str(analysis_type)
+                print(query)
                 self._run_query(query)
                 self.conn.commit()
         else:
-            print('Ranking data was not found in the db')
+            print(f"Ranking data was not found in the db for analysisTypeID = {analysis_type}")
 
     # run the _rankTeamsSingle for all analysis types in the analysisTypeList defined in this function
     def _rankTeamsAll(self):
         query = "SELECT analysisTypeID FROM analysisTypes WHERE runRank = 1"
         self._run_query(query)
         analysisTypeList = self.cursor.fetchall()
-        print(type(analysisTypeList))
-        print(analysisTypeList)
-        # analysisTypeList=[10, 11, 20, 21, 22, 30, 60, 61, 62]
         for analysisType in analysisTypeList:
-            print(analysisType)
-        exit()
-        # analysisTypeList=[10, 11, 20, 21, 22, 30, 60, 61, 62]
-        for analysisType in analysisTypeList:
+            analysisType = str(analysisType)
+            analysisType = analysisType.translate(str.maketrans("", "", " ,()'"))
             self._rankTeamsSingle(analysisType)
 
     def _renameTable(self):
