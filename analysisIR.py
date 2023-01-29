@@ -7,12 +7,13 @@ import time
 import argparse
 import configparser
 
-# For each analysisType we create add a new import statement. We could import all analysisTypes
-# from analysisTypes.startingPosition import startingPosition
-# from analysisTypes.test2 import test2
+# import all the analysis types listed in analysisTypes/__init__.py
+# add each analysisType to the analysisTypeDict dictionary 
 from analysisTypes import *
-analysisTypesDict = {"startingPosition": startingPosition.startingPosition, "test2": test2.test2}
-print(analysisTypesDict)
+analysisTypesDict = {
+                      "startingPosition": startingPosition.startingPosition,
+                      "test2": test2.test2
+                    }
 
 # parser to choose the database where the table will be written
 parser = argparse.ArgumentParser()
@@ -36,7 +37,6 @@ host = config[input_host+"-"+input_db]['host']
 user = config[input_host+"-"+input_db]['user']
 passwd = config[input_host+"-"+input_db]['passwd']
 database = config[input_host+"-"+input_db]['database']
-#print(host + " " + user + " " + passwd + " " + database)
 
 
 # Define a Class called analysis
@@ -52,6 +52,7 @@ class analysis():
     #       _insertAnalysis = inserts the rsCEA records into the CEanalysisTmp table, used within _analyzeTeams
     #   _rankTeamsAll = loops over all analysisTypeIDs that are slated for ranking and calls the _rankTeamsSingle function
     #       _rankTeamsSingle = ranks teams based on S1V for a given analysisTypeID using numpy
+    #   _renameTable = renames CEA_tmpTable to CEanalysis
 
     def __init__(self):
         now = datetime.datetime.now()
@@ -63,7 +64,7 @@ class analysis():
         self.columns = []
         self.rsRobots = self._getTeams()
         self._analyzeTeams()
-        # self._rankTeamsAll()
+        self._rankTeamsAll()
         self._renameTable()
 
         print("Time: %0.2f seconds" % (time.time() - start_time))
@@ -94,33 +95,32 @@ class analysis():
         self.columns = columns
 
     # Function to get the team list and set it to rsRobots. Uses the _run_query function defined above.
-    #   The assert statement will return rsRobots if the record length > 0 and will exit with the
-    #       message "No robots founds" if the record length is 0.
     def _getTeams(self):
-        self._run_query("SELECT matchScouting.team FROM (matchScouting "
-                       "INNER JOIN matches ON matchScouting.matchID = matches.matchID) "
-                       "INNER JOIN events ON matches.eventID = events.eventID "
-                       "WHERE (((events.currentEvent) = 1)) "
-                       "GROUP BY CAST(matchScouting.team AS INT), matchScouting.team "
-                       "HAVING (((matchScouting.team) Is Not Null))")
+        query = "SELECT matchScouting.team FROM (matchScouting " + \
+                "INNER JOIN matches ON matchScouting.matchID = matches.matchID) " + \
+                "INNER JOIN events ON matches.eventID = events.eventID " + \
+                "WHERE (((events.currentEvent) = 1)) " + \
+                "GROUP BY CAST(matchScouting.team AS INT), matchScouting.team " + \
+                "HAVING (((matchScouting.team) Is Not Null))"
+        self._run_query(query)
         rsRobots = self.cursor.fetchall()
         # print(rsRobots)
-        assert len(rsRobots) > 0, "No robots found"
+        assert len(rsRobots) > 0, "No robots found"   # assert exits with "no robots found" or returns team list
         return rsRobots
     
 
     # Function to retrieve data records for a given team for all their matches and set it to rsRobotMatchData
     def _getTeamData(self, team):
-        self._run_query("SELECT matchScouting.*, matches.matchNum "
-            "FROM (events INNER JOIN matches ON events.eventID = matches.eventID) "
-            "INNER JOIN matchScouting ON (matches.eventID = matchScouting.eventID) "
-            "AND (matches.matchID = matchScouting.matchID) "
-            "INNER JOIN teams ON (matchScouting.team = teams.team) "
-            "WHERE (((matchScouting.team) = " + team[0] + " "
-            "AND ((events.currentEvent) = 1))"
-            "AND ((scoutingStatus = 1) OR (scoutingStatus = 2) OR (scoutingStatus = 3)) "
-            "AND (matchScouting.teamMatchNum <= 12)) "
-            "ORDER BY matchScouting.teamMatchNum")
+        query = "SELECT matchScouting.*, matches.matchNum " + \
+                "FROM (events INNER JOIN matches ON events.eventID = matches.eventID) " + \
+                "INNER JOIN matchScouting ON (matches.eventID = matchScouting.eventID) " + \
+                "AND (matches.matchID = matchScouting.matchID) " + \
+                "INNER JOIN teams ON (matchScouting.team = teams.team) " + \
+                "WHERE (((matchScouting.team) = " + team[0] + " AND ((events.currentEvent) = 1)) " + \
+                "AND ((scoutingStatus = 1) OR (scoutingStatus = 2) OR (scoutingStatus = 3)) " + \
+                "AND (matchScouting.teamMatchNum <= 12)) " + \
+                "ORDER BY matchScouting.teamMatchNum"
+        self._run_query(query)
 
         # Set columns to be a list of column headings in the Query results
         self._setColumns([column[0] for column in list(self.cursor.description)])
@@ -136,20 +136,13 @@ class analysis():
     # runs each of the analysisTypes and outputs the results to rsCEA
     def _analyzeTeams(self):
         for team in self.rsRobots:
-            # trying to get analysisType list automatically to reduce adding lines of code for each one
-            # query = "SELECT analysisTypeID, analysisType from analysisTypes WHERE runAnalysis = 1"
-            # self._run_query(query)
-            # results = self.cursor.fetchall()
-            # for result in results:
-            #     name, value = result
-            #     analysisTypesDict[name] = value
+            # analysisTypesDict defined at top of script
             for analysisType2analyze in analysisTypesDict:
-                print(f"analyzing team {team} using {analysisType2analyze}")
+                # print(f"analyzing team {team} using {analysisType2analyze}")
                 rsRobotMatchData = self._getTeamData(team)
                 teamName = str(team)
                 teamName = teamName.replace("('", "")
                 teamName = teamName.replace("',)", "")
-
                 if rsRobotMatchData:
                     rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData)
                     self._insertAnalysis(rsCEA)
@@ -159,23 +152,19 @@ class analysis():
      # Function to insert an rsCEA record into the DB.
     def _insertAnalysis(self, rsCEA):
         rsCEA_records = rsCEA.items()
-        # Get the columnHeadings and values, do some formatting, and then use the _run_query function to run the
-        #   query and the conn.commit to insert into the DB.
         columnHeadings = str(tuple([record[0] for record in rsCEA_records])).replace("'", "")
         values = str(tuple([record[1] for record in rsCEA_records]))
 
         # Insert the records into the DB
-        self._run_query("INSERT INTO " + CEA_tmpTable + " "
-                        + columnHeadings + " VALUES "
-                        + values + ";")
+        query = "INSERT INTO " + CEA_tmpTable + " " + columnHeadings + " VALUES " + values
+        self._run_query(query)
         self.conn.commit()
 
 
     # Function to retrieve S1V values for a given analysisType and use numpy to determine percentiles
     def _rankTeamsSingle(self, analysis_type):
-        self._run_query("SELECT team, S1V "
-                        "FROM " + CEA_tmpTable + " "
-                        "WHERE analysisTypeID = " + str(analysis_type))
+        query = "SELECT team, S1V FROM " + CEA_tmpTable + " WHERE analysisTypeID = " + str(analysis_type)
+        self._run_query(query)
         team_sum1 = self.cursor.fetchall() # List of tuples (team, S1V)
         if len(team_sum1) > 0:
             team_sum1 = [team_tup for team_tup in team_sum1 if team_tup[1] is not None]
@@ -212,7 +201,16 @@ class analysis():
 
     # run the _rankTeamsSingle for all analysis types in the analysisTypeList defined in this function
     def _rankTeamsAll(self):
-        analysisTypeList=[10, 11, 20, 21, 22, 30, 60, 61, 62]
+        query = "SELECT analysisTypeID FROM analysisTypes WHERE runRank = 1"
+        self._run_query(query)
+        analysisTypeList = self.cursor.fetchall()
+        print(type(analysisTypeList))
+        print(analysisTypeList)
+        # analysisTypeList=[10, 11, 20, 21, 22, 30, 60, 61, 62]
+        for analysisType in analysisTypeList:
+            print(analysisType)
+        exit()
+        # analysisTypeList=[10, 11, 20, 21, 22, 30, 60, 61, 62]
         for analysisType in analysisTypeList:
             self._rankTeamsSingle(analysisType)
 
@@ -225,12 +223,3 @@ class analysis():
 # This initizlzes the analysis Class and thus runs the program.
 if __name__ == '__main__':
     myAnalysis = analysis()
-
-
-# import json
-
-# # Open the file containing the dictionary
-# with open('dictionary.json', 'r') as file:
-#     # Load the JSON data from the file
-#     data = json.load(file)
-    

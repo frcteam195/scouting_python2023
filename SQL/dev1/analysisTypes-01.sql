@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS dev1.analysisTypes (
         analysisTypeID INT NOT NULL,
         analysisType VARCHAR(20),
-        runAnalysis BOOLEAN DEFAULT 'FALSE' NOT NULL,
+        runRank BOOLEAN DEFAULT 'FALSE' NOT NULL,
         colorCodeTable BOOLEAN 'FALSE' NOT NULL,
         badMax INT NULL,
         poorMax INT NULL,
