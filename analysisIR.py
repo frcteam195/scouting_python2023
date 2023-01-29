@@ -13,7 +13,7 @@ import statistics
 from analysisTypes import *
 analysisTypesDict = {
                       "startingPosition": startingPosition.startingPosition,
-                      "test2": test2.test2
+                      "autoRamp": autoRamp.autoRamp
                     }
 
 # parser to choose the database where the table will be written
@@ -105,7 +105,6 @@ class analysis():
                 "HAVING (((matchScouting.team) Is Not Null))"
         self._run_query(query)
         rsRobots = self.cursor.fetchall()
-        # print(rsRobots)
         assert len(rsRobots) > 0, "No robots found"   # assert exits with "no robots found" or returns team list
         return rsRobots
     
@@ -139,12 +138,10 @@ class analysis():
         for team in self.rsRobots:
             # analysisTypesDict defined at top of script
             for analysisType2analyze in analysisTypesDict:
-                # print(f"analyzing team {team} using {analysisType2analyze}")
+                print(f"analyzing team {team} using {analysisType2analyze}")
                 rsRobotMatchData = self._getTeamData(team)
                 teamName = str(team)
                 teamName = teamName.translate(str.maketrans("", "", " ,()'"))
-                # teamName = teamName.replace("('", "")
-                # teamName = teamName.replace("',)", "")
                 if rsRobotMatchData:
                     rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData)
                     self._insertAnalysis(rsCEA)
@@ -159,6 +156,7 @@ class analysis():
 
         # Insert the records into the DB
         query = "INSERT INTO " + CEA_tmpTable + " " + columnHeadings + " VALUES " + values
+        print(query)
         self._run_query(query)
         self.conn.commit()
 
@@ -196,7 +194,6 @@ class analysis():
                         + str(team_display) + ", " + CEA_tmpTable + ".S3V = " + str(team_display) \
                         + " WHERE " + CEA_tmpTable + ".team = '" + str(team[0]) \
                         + "' AND " + CEA_tmpTable + ".analysisTypeID = " + str(analysis_type)
-                print(query)
                 self._run_query(query)
                 self.conn.commit()
         else:

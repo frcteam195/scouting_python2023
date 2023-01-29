@@ -35,7 +35,6 @@ def startingPosition(analysis, rsRobotMatchData):
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = matchResults[
                 analysis.columns.index('preStartPos')]
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = 0
-
             startingPositionList.append(preStartPos)
 
     if numberOfMatchesPlayed > 0:
