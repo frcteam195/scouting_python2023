@@ -12,7 +12,8 @@ import configparser
 from analysisTypes import *
 analysisTypesDict = {
                       "startingPosition": startingPosition.startingPosition,
-                      "autoRamp": autoRamp.autoRamp
+                      "autoRamp": autoRamp.autoRamp,
+                      "autoScore": autoScore.autoScore
                     }
 
 # parser to choose the database where the table will be written

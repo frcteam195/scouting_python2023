@@ -7,7 +7,7 @@ def autoScore(analysis, rsRobotMatchData):
     numberOfMatchesPlayed = 0
 
     # only using to test ranks, eliminate later
-    autoRampList = []
+    autoScoreList = []
 
     # Loop through each match the robot played in.
     for matchResults in rsRobotMatchData:
@@ -23,58 +23,62 @@ def autoScore(analysis, rsRobotMatchData):
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'UR'
         else:
             
-            score1 = matchResults[analysis.columns.index('autoScore1')]
-            score2 = matchResults[analysis.columns.index('autoScore2')]
-            score3 = matchResults[analysis.columns.index('autoScore3')]
-            score4 = matchResults[analysis.columns.index('autoScore4')]
-            totalscore = 0
+            # positionDict = {1: 'autoScore1', 2: 'autoScore2', 3: 'autoScore3', 4: 'autoScore4'}
+            # print(positionDict)
+            # position = positionDict['1']
+            
+            scorePos1 = matchResults[analysis.columns.index('autoScore1')]
+            scorePos2 = matchResults[analysis.columns.index('autoScore2')]
+            scorePos3 = matchResults[analysis.columns.index('autoScore3')]
+            scorePos4 = matchResults[analysis.columns.index('autoScore4')]
+            
+            totalScore = 0
 
-            mb = ""
+            autoMBdisplay = ""
             autoMB = matchResults[analysis.columns.index('autoMB')]
             if autoMB > 0:
-                mb = "*"
+                autoMBdisplay = "*"
 
-
-            if (score1 >= 1) and (score1 <= 9):
-                totalscore += 6
-            elif (score1 >= 10) and (score1 <= 18):
-                totalscore += 4
-            elif (score1 >= 19) and (score1 <= 27):
-                totalscore += 6
-
-            if (score2 >= 1) and (score2 <= 9):
-                totalscore += 6
-            elif (score2 >= 10) and (score2 <= 18):
-                totalscore += 4
-            elif (score2 >= 19) and (score2 <= 27):
-                totalscore += 6
-
-            if (score3 >= 1) and (score3 <= 9):
-                totalscore += 6
-            elif (score3 >= 10) and (score3 <= 18):
-                totalscore += 4
-            elif (score3 >= 19) and (score3 <= 27):
-                totalscore += 6
-
-            if (score4 >= 1) and (score4 <= 9):
-                totalscore += 6
-            elif (score4 >= 10) and (score4 <= 18):
-                totalscore += 4
-            elif (score4 >= 19) and (score4 <= 27):
-                totalscore += 6
+            if (scorePos1 >= 1) and (scorePos1 <= 9):
+                totalScore += 6
+            elif (scorePos1 >= 10) and (scorePos1 <= 18):
+                totalScore += 4
+            elif (scorePos1 >= 19) and (scorePos1 <= 27):
+                totalScore += 3
             
-            autoScoreDisplay = str(totalscore) + mb
-            autoScoreValue = totalscore
+            if (scorePos2 >= 1) and (scorePos2 <= 9):
+                totalScore += 6
+            elif (scorePos2 >= 10) and (scorePos2 <= 18):
+                totalScore += 4
+            elif (scorePos2 >= 19) and (scorePos2 <= 27):
+                totalScore += 3
+
+            if (scorePos3 >= 1) and (scorePos3 <= 9):
+                totalScore += 6
+            elif (scorePos3 >= 10) and (scorePos3 <= 18):
+                totalScore += 4
+            elif (scorePos3 >= 19) and (scorePos3 <= 27):
+                totalScore += 3
+
+            if (scorePos4 >= 1) and (scorePos4 <= 9):
+                totalScore += 6
+            elif (scorePos4 >= 10) and (scorePos4 <= 18):
+                totalScore += 4
+            elif (scorePos4 >= 19) and (scorePos4 <= 27):
+                totalScore += 3
             
-            if totalscore == 0:
+            autoScoreDisplay = str(totalScore) + str(autoMB)
+            autoScoreValue = totalScore
+            
+            if totalScore == 0:
                 autoScoreColor = 1
-            elif totalscore == 3:
+            elif totalScore == 3:
                 autoScoreColor = 2
-            elif (totalscore >= 4) and (totalscore <= 6):
+            elif (totalScore >= 4) and (totalScore <= 6):
                 autoScoreColor = 3
-            elif (totalscore >= 7) and (totalscore <= 12):
+            elif (totalScore >= 7) and (totalScore <= 12):
                 autoScoreColor = 4
-            elif (totalscore > 12):
+            elif (totalScore > 12):
                 autoScoreColor = 5
 
             # Increment the number of matches played and write M#D, M#V and M#F
@@ -83,9 +87,8 @@ def autoScore(analysis, rsRobotMatchData):
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = autoScoreValue
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = autoScoreColor
 
-            autoRampList.append(autoScoreValue)
+            autoScoreList.append(autoScoreValue)
 
     if numberOfMatchesPlayed > 0:
-        rsCEA['S1V'] = round(statistics.mean(autoRampList), 1)
-
+        rsCEA['S1V'] = round(statistics.mean(autoScoreList), 1)
     return rsCEA
