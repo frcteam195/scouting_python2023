@@ -9,6 +9,7 @@ CREATE TABLE IF NOT EXISTS dev1.pit (
         driveBase TINYINT NULL,
         motorType TINYINT NULL,
         manupulator TINYINT NULL,
+        imageLink VARCHAR(150) NULL,
         intakeType TINYINT NULL,
         buddyClimb TINYINT NULL,
         buildType TINYINT NULL,

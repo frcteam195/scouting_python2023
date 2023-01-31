@@ -17,12 +17,16 @@ CREATE TABLE IF NOT EXISTS dev1.matches (
         blueEndGmPts INT NULL,
         redScore INT NULL,
         blueScore INT NULL,
+        redFouls INT NULL,
+        blueFouls INT NULL,
+        redTechFouls INT NULL,
+        blueTechFouls  INT NULL,
         redLinksRP TINYINT NULL,
         blueLinksRP TINYINT NULL,
         redChrgZoneRP TINYINT NULL,
         blueChrgZoneRP TINYINT NULL,
-        matchTime INT NULL,
-        actualTime INT NULL,
+        matchTime VARCHAR(10) NULL,
+        actualTime VARCHAR(10) NULL,
         PRIMARY KEY (matchID),
         FOREIGN KEY (eventID) REFERENCES events (eventID)
 ) Engine = InnoDB;
