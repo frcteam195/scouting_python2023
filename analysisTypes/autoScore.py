@@ -1,6 +1,15 @@
 import statistics
+#import mysql.connector
 
+
+
+
+# def autoScore(analysis, rsRobotMatchData, database, host, passwd, user):
 def autoScore(analysis, rsRobotMatchData):
+
+    # print(f"input_db = {database}  input_host = {host}")
+    # conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=database)
+    # cursor = conn.cursor()
     # Initialize the rsCEA record set and define variables specific to this function which lie outside the for loop
     rsCEA = {}
     rsCEA['analysisTypeID'] = 2
@@ -8,7 +17,7 @@ def autoScore(analysis, rsRobotMatchData):
 
     # only using to test ranks, eliminate later
     autoScoreList = []
-
+    
     # Loop through each match the robot played in.
     for matchResults in rsRobotMatchData:
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
@@ -33,11 +42,11 @@ def autoScore(analysis, rsRobotMatchData):
             scorePos4 = matchResults[analysis.columns.index('autoScore4')]
             
             totalScore = 0
-
-            autoMBdisplay = ""
             autoMB = matchResults[analysis.columns.index('autoMB')]
             if autoMB > 0:
                 autoMBdisplay = "*"
+            else:
+                autoMBdisplay = ""
 
             if (scorePos1 >= 1) and (scorePos1 <= 9):
                 totalScore += 6
@@ -67,18 +76,26 @@ def autoScore(analysis, rsRobotMatchData):
             elif (scorePos4 >= 19) and (scorePos4 <= 27):
                 totalScore += 3
             
-            autoScoreDisplay = str(totalScore) + str(autoMB)
+            autoScoreDisplay = str(totalScore) + str(autoMBdisplay)
             autoScoreValue = totalScore
+
+            #query = "SELECT badMax, poorMax, aveMax, goodMax, greatMax FROM analysisTypes WHERE analysisTypeID = 2"
+            # cursor.execute(query)
+            # values = cursor.fetchall()
+            # colorValues=[i[0] for i in values]
+            # print(colorValues)
             
+            # print(type(colorValues))
+            # print(len(colorValues))
             if totalScore == 0:
                 autoScoreColor = 1
-            elif totalScore == 3:
+            elif totalScore <= 3:
                 autoScoreColor = 2
-            elif (totalScore >= 4) and (totalScore <= 6):
+            elif totalScore <= 6:
                 autoScoreColor = 3
-            elif (totalScore >= 7) and (totalScore <= 12):
+            elif totalScore <= 12:
                 autoScoreColor = 4
-            elif (totalScore > 12):
+            else:
                 autoScoreColor = 5
 
             # Increment the number of matches played and write M#D, M#V and M#F

@@ -13,7 +13,9 @@ from analysisTypes import *
 analysisTypesDict = {
                       "startingPosition": startingPosition.startingPosition,
                       "autoRamp": autoRamp.autoRamp,
-                      "autoScore": autoScore.autoScore
+                      "autoScore": autoScore.autoScore,
+                      "autoGamePieces": autoGamePieces.autoGamePieces,
+                      "teleHigh": teleHigh.teleHigh
                     }
 
 # parser to choose the database where the table will be written
@@ -143,7 +145,9 @@ class analysis():
                 teamName = str(team)
                 teamName = teamName.translate(str.maketrans("", "", " ,()'"))
                 if rsRobotMatchData:
+                    # rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData, database=database, host=host, passwd=passwd, user=user)
                     rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData)
+
                     self._insertAnalysis(rsCEA)
                     self.conn.commit()
     
