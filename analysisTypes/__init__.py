@@ -1,3 +1,5 @@
 __all__ = ['startingPosition', 
            'autoRamp',
-           'autoScore']
+           'autoScore',
+           'autoGamePieces',
+           'teleHigh']
