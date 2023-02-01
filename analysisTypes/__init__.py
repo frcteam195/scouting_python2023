@@ -2,4 +2,12 @@ __all__ = ['startingPosition',
            'autoRamp',
            'autoScore',
            'autoGamePieces',
-           'teleHigh']
+           'teleHigh',
+           'teleMid',
+           'teleLow',
+           'teleTotal',
+           'teleCones',
+           'teleCubes',
+           'teleCommunity',
+           'teleLZPickup'
+           ]

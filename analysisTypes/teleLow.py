@@ -1,13 +1,13 @@
 import statistics
 
-def teleHigh(analysis, rsRobotMatchData):
+def teleLow(analysis, rsRobotMatchData):
     # Initialize the rsCEA record set and define variables specific to this function which lie outside the for loop
     rsCEA = {}
-    rsCEA['analysisTypeID'] = 5
+    rsCEA['analysisTypeID'] = 7
     numberOfMatchesPlayed = 0
 
     # only using to test ranks, eliminate later
-    teleHighList = []
+    teleLowList = []
     
     # Loop through each match the robot played in.
     for matchResults in rsRobotMatchData:
@@ -31,7 +31,7 @@ def teleHigh(analysis, rsRobotMatchData):
             cubeMid = 0
             cubeLow = 0
 
-            totalHigh = 0
+            totalLow = 0
             total = 0
 
             coneHigh = matchResults[analysis.columns.index('teleConeHigh')]
@@ -56,33 +56,32 @@ def teleHigh(analysis, rsRobotMatchData):
             if cubeLow is None:
                 cubeLow = 0
 
-            totalHigh = coneHigh + cubeHigh
+            totalLow = coneLow + cubeLow
             total = coneHigh + coneMid + coneLow + cubeHigh + cubeMid + cubeLow
 
-            # teleHighDisplay = str(totalHigh) + "|" + str(total)
-            teleHighDisplay = (f"{str(totalHigh)}|{str(total)}")
-            teleHighValue = totalHigh
+            teleLowDisplay = (f"{str(totalLow)}|{str(total)}")
+            teleLowValue = totalLow
 
             if total == 0:
-                teleHighColor = 1
+                teleLowColor = 1
             elif total <= 3:
-                teleHighColor = 2
+                teleLowColor = 2
             elif total <= 6:
-                teleHighColor = 3
+                teleLowColor = 3
             elif total <= 9:
-                teleHighColor = 4
+                teleLowColor = 4
             else:
-                teleHighColor = 5
+                teleLowColor = 5
 
 
             # Increment the number of matches played and write M#D, M#V and M#F
             numberOfMatchesPlayed += 1
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = teleHighDisplay
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = teleHighValue
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = teleHighColor
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = teleLowDisplay
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = teleLowValue
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = teleLowColor
 
-            teleHighList.append(teleHighValue)
+            teleLowList.append(teleLowValue)
 
     if numberOfMatchesPlayed > 0:
-        rsCEA['S1V'] = round(statistics.mean(teleHighList), 1)
+        rsCEA['S1V'] = round(statistics.mean(teleLowList), 1)
     return rsCEA

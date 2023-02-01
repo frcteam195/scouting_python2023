@@ -12,10 +12,17 @@ import configparser
 from analysisTypes import *
 analysisTypesDict = {
                       "startingPosition": startingPosition.startingPosition,
-                      "autoRamp": autoRamp.autoRamp,
                       "autoScore": autoScore.autoScore,
                       "autoGamePieces": autoGamePieces.autoGamePieces,
-                      "teleHigh": teleHigh.teleHigh
+                      "autoRamp": autoRamp.autoRamp,
+                      "teleHigh": teleHigh.teleHigh,
+                      "teleMid": teleMid.teleMid,
+                      "teleLow": teleLow.teleLow,
+                      "teleTotal": teleTotal.teleTotal,
+                      "teleCones": teleCones.teleCones,
+                      "teleCubes": teleCubes.teleCubes,
+                      "teleCommunity": teleCommunity.teleCommunity,
+                      "teleLZPickup": teleLZPickup.teleLZPickup
                     }
 
 # parser to choose the database where the table will be written
