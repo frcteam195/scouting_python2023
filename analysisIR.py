@@ -22,7 +22,18 @@ analysisTypesDict = {
                       "teleCones": teleCones.teleCones,
                       "teleCubes": teleCubes.teleCubes,
                       "teleCommunity": teleCommunity.teleCommunity,
-                      "teleLZPickup": teleLZPickup.teleLZPickup
+                      "teleLZPickup": teleLZPickup.teleLZPickup,
+                      #13 
+                      #14
+                      "ramp": ramp.ramp,
+                      "rampPos": rampPos.rampPos,
+                      "postSubBroke": postSubBroke.postSubBroke,
+                      "postBrokeDown": postBrokeDown.postBrokeDown,
+                      "postReorientCone": postReorientCone.postReorientCone,
+                      "postShelfPickup": postShelfPickup.postShelfPickup,
+                      "postGroundPickup": postGroundPickup.postGroundPickup,
+                      "postGoodPartner": postGoodPartner.postGoodPartner
+
                     }
 
 # parser to choose the database where the table will be written
