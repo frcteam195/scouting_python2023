@@ -9,5 +9,15 @@ __all__ = ['startingPosition',
            'teleCones',
            'teleCubes',
            'teleCommunity',
-           'teleLZPickup'
+           'teleLZPickup',
+
+
+           'ramp',
+           'rampPos',
+           'postSubBroke',
+           'postBrokeDown',
+           'postReorientCone',
+           'postShelfPickup',
+           'postGroundPickup',
+           'postGoodPartner'     
            ]
