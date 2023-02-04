@@ -129,7 +129,7 @@ class analysis():
         return rsRobots
     
 
-    # Function to retrieve data records for a given team for all their matches and set it to rsRobotMatchData
+    # Function to retrieve L1 data records for a given team for all their matches and set it to rsRobotMatchData
     def _getTeamData(self, team):
         query = "SELECT matchScouting.*, matches.matchNum " + \
                 "FROM (events INNER JOIN matches ON events.eventID = matches.eventID) " + \
@@ -152,6 +152,28 @@ class analysis():
         else:
             return None
     
+    # Function to retrieve L2 data records for a given team for all their matches and set it to rsRobotMatchData
+    def _getL2TeamData(self, team):
+        query = "SELECT matchScoutingL2.*, matches.matchNum " + \
+                "FROM (events INNER JOIN matches ON events.eventID = matches.eventID) " + \
+                "INNER JOIN matchScoutingL2 ON (matches.eventID = matchScoutingL2.eventID) " + \
+                "AND (matches.matchID = matchScoutingL2.matchID) " + \
+                "INNER JOIN teams ON (matchScoutingL2.team = teams.team) " + \
+                "WHERE (((matchScoutingL2.team) = " + team[0] + " AND ((events.currentEvent) = 1)) " + \
+                "AND ((scoutingStatus = 1) OR (scoutingStatus = 2) OR (scoutingStatus = 3)) " + \
+                "AND (matchScoutingL2.teamMatchNum <= 12)) " + \
+                "ORDER BY matchScoutingL2.teamMatchNum"
+        self._run_query(query)
+
+        # Set columns to be a list of column headings in the Query results
+        self._setColumns([column[0] for column in list(self.cursor.description)])
+
+        # sets rsRobotMatchData to the results of the _getTeamData function and returns None if no robot data yet
+        rsRobotMatchData = self.cursor.fetchall()
+        if rsRobotMatchData:
+            return rsRobotMatchData
+        else:
+            return None
     
     # runs each of the analysisTypes and outputs the results to rsCEA
     def _analyzeTeams(self):
