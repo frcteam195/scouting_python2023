@@ -163,15 +163,16 @@ class analysis():
                 "AND ((scoutingStatus = 1) OR (scoutingStatus = 2) OR (scoutingStatus = 3)) " + \
                 "AND (matchScoutingL2.teamMatchNum <= 12)) " + \
                 "ORDER BY matchScoutingL2.teamMatchNum"
+        print(query)
         self._run_query(query)
 
         # Set columns to be a list of column headings in the Query results
         self._setColumns([column[0] for column in list(self.cursor.description)])
 
         # sets rsRobotMatchData to the results of the _getTeamData function and returns None if no robot data yet
-        rsRobotMatchData = self.cursor.fetchall()
-        if rsRobotMatchData:
-            return rsRobotMatchData
+        rsRobotL2MatchData = self.cursor.fetchall()
+        if rsRobotL2MatchData:
+            return rsRobotL2MatchData
         else:
             return None
     
@@ -182,6 +183,10 @@ class analysis():
             for analysisType2analyze in analysisTypesDict:
                 print(f"analyzing team {team} using {analysisType2analyze}")
                 rsRobotMatchData = self._getTeamData(team)
+                rsRobotL2MatchData = self._getL2TeamData(team)
+                print(rsRobotL2MatchData)
+                print(rsRobotMatchData)
+                quit()
                 teamName = str(team)
                 teamName = teamName.translate(str.maketrans("", "", " ,()'"))
                 if rsRobotMatchData:
