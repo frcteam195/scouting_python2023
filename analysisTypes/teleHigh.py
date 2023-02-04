@@ -1,6 +1,6 @@
 import statistics
 
-def teleHigh(analysis, rsRobotMatchData):
+def teleHigh(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     # Initialize the rsCEA record set and define variables specific to this function which lie outside the for loop
     rsCEA = {}
     rsCEA['analysisTypeID'] = 5

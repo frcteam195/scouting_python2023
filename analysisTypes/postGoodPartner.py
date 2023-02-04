@@ -1,6 +1,6 @@
 import statistics
 #import mysql.connector
-def postGoodPartner(analysis, rsRobotMatchData):
+def postGoodPartner(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
     rsCEA = {}
     rsCEA['analysisTypeID'] = 22

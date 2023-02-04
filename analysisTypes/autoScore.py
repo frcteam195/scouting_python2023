@@ -5,7 +5,7 @@ import statistics
 
 
 # def autoScore(analysis, rsRobotMatchData, database, host, passwd, user):
-def autoScore(analysis, rsRobotMatchData):
+def autoScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
     # print(f"input_db = {database}  input_host = {host}")
     # conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=database)

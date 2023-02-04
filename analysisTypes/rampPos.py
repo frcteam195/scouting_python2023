@@ -1,6 +1,6 @@
 import statistics
 #import mysql.connector
-def rampPos(analysis, rsRobotMatchData):
+def rampPos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
     rsCEA = {}
     rsCEA['analysisTypeID'] = 16
