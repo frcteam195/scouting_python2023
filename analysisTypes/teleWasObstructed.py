@@ -1,13 +1,13 @@
 import statistics
 
-def teleObstructed(analysis, rsRobotMatchData):
+def teleWasObstructed(analysis, rsRobotMatchData):
     # Initialize the rsCEA record set and define variables specific to this function which lie outside the for loop
     rsCEA = {}
-    rsCEA['analysisTypeID'] = 13
+    rsCEA['analysisTypeID'] = 14
     numberOfMatchesPlayed = 0
 
     # only using to test ranks, eliminate later
-    teleObstructedList = []
+    teleWasObstructedList = []
     
     # Loop through each match the robot played in.
     for matchResults in rsRobotMatchData:
@@ -23,33 +23,33 @@ def teleObstructed(analysis, rsRobotMatchData):
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'UR'
         else:
             
-            Obstructed = matchResults[analysis.columns.index('teleObstructed')]
+            Obstructed = matchResults[analysis.columns.index('teleWasObstructed')]
 
             if Obstructed is None:
                 Obstructed = 0
             
             if Obstructed == 0:
-                teleObstructedColor = 1
+                teleWasObstructedColor = 1
             elif Obstructed <= 5:
-                teleObstructedColor = 2
+                teleWasObstructedColor = 2
             elif Obstructed <= 10:
-                teleObstructedColor = 3
+                teleWasObstructedColor = 3
             elif Obstructed <= 15:
-                teleObstructedColor = 4
+                teleWasObstructedColor = 4
             elif Obstructed > 15:
-                teleObstructedColor = 5    
+                teleWasObstructedColor = 5    
             
-            teleObstructedDisplay = str(Obstructed)
-            teleObstructedValue = Obstructed
+            teleWasObstructedDisplay = str(Obstructed)
+            teleWasObstructedValue = Obstructed
 
             # Increment the number of matches played and write M#D, M#V and M#F
             numberOfMatchesPlayed += 1
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = teleObstructedDisplay
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = teleObstructedValue
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = teleObstructedColor
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = teleWasObstructedDisplay
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = teleWasObstructedValue
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = teleWasObstructedColor
 
-            teleObstructedList.append(teleObstructedValue)
+            teleWasObstructedList.append(teleWasObstructedValue)
 
     if numberOfMatchesPlayed > 0:
-        rsCEA['S1V'] = round(statistics.mean(teleObstructedList), 1)
+        rsCEA['S1V'] = round(statistics.mean(teleWasObstructedList), 1)
     return rsCEA
