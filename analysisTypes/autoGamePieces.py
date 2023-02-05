@@ -1,6 +1,6 @@
 import statistics
 
-def autoGamePieces(analysis, rsRobotMatchData):
+def autoGamePieces(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     # Initialize the rsCEA record set and define variables specific to this function which lie outside the for loop
     rsCEA = {}
     rsCEA['analysisTypeID'] = 3

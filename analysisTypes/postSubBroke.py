@@ -1,6 +1,6 @@
 import statistics
 #import mysql.connector
-def postSubBroke(analysis, rsRobotMatchData):
+def postSubBroke(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
     rsCEA = {}
     rsCEA['analysisTypeID'] = 17

@@ -141,6 +141,7 @@ class analysis():
                 "AND (matchScouting.teamMatchNum <= 12)) " + \
                 "ORDER BY matchScouting.teamMatchNum"
         self._run_query(query)
+        print(query)
 
         # Set columns to be a list of column headings in the Query results
         self._setColumns([column[0] for column in list(self.cursor.description)])
@@ -191,7 +192,7 @@ class analysis():
                 teamName = teamName.translate(str.maketrans("", "", " ,()'"))
                 if rsRobotMatchData:
                     # rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData, database=database, host=host, passwd=passwd, user=user)
-                    rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData)
+                    rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData, rsRobotL2MatchData=rsRobotL2MatchData, rsRobotPitData=rsRobotPitData)
 
                     self._insertAnalysis(rsCEA)
                     self.conn.commit()

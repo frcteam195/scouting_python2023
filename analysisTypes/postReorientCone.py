@@ -1,6 +1,6 @@
 import statistics
 #import mysql.connector
-def postReorientCone(analysis, rsRobotMatchData):
+def postReorientCone(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
     rsCEA = {}
     rsCEA['analysisTypeID'] = 19

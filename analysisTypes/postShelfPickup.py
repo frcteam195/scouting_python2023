@@ -1,6 +1,6 @@
 import statistics
 #import mysql.connector
-def postShelfPickup(analysis, rsRobotMatchData):
+def postShelfPickup(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
     rsCEA = {}
     rsCEA['analysisTypeID'] = 20
