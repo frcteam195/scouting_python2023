@@ -1,6 +1,6 @@
 import statistics
 
-def startingPosition(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
+def startingPosition(analysis, rsRobotMatchData):
     # Initialize the rsCEA record set and define variables specific to this function which lie outside the for loop
     rsCEA = {}
     rsCEA['analysisTypeID'] = 1
@@ -8,6 +8,8 @@ def startingPosition(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitD
 
     # only using to test ranks, eliminate later
     startingPositionList = []
+
+    print(rsRobotMatchData)
 
     # Loop through each match the robot played in.
     for matchResults in rsRobotMatchData:
