@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS dev1.analysisTypes (
         greatMax INT NULL,
         teamPicker INT NULL,
         matchReport INT NULL,
-        sortOrder INT UNIQUE NULL,
+        sortOrder INT NULL,
         robotSnapshot INT NULL,
         developer VARCHAR(20) NULL,
         summary VARCHAR(100) NULL,
