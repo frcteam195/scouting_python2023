@@ -1,4 +1,3 @@
-from socket import RDS_RDMA_DONTWAIT
 import statistics
 
 def startingPosition(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
@@ -9,12 +8,18 @@ def startingPosition(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitD
 
     # only using to test ranks, eliminate later
     startingPositionList = []
+    
+    print(rsRobotPitData)
+    print(type(rsRobotPitData))
+    print(len(rsRobotPitData))
+    if len(rsRobotPitData) == 1:
+        print("doing nothing")
+    else: 
+        for pitResults in rsRobotPitData:
+            width = pitResults[analysis.pitColumns.index('width')]
+            print(width)
+            quit()
 
-    print(rsRobotMatchData)
-
-    #Print Width, Height, and Length
-    for pitResults in rsRobotPitData:
-        ['width'] = matchResults[analysis.pitColumns.index('width')]
     # Loop through each match the robot played in.
     for matchResults in rsRobotMatchData:
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
