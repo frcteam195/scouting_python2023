@@ -83,6 +83,8 @@ class analysis():
         self._scoutingDBconnector()
         self._createCEanalysisTmp()
         self.columns = []
+        self.L2Columns = []
+        self.pitColumns = []
         self.rsRobots = self._getTeams()
         self._analyzeTeams()
         self._rankTeamsAll()
@@ -114,6 +116,12 @@ class analysis():
     # Function to determine the DB table column headers
     def _setColumns(self, columns):
         self.columns = columns
+    
+    def _setL2Columns(self, L2Columns):
+        self.L2Columns = L2Columns
+
+    def _setPitColumns(self, pitColumns):
+        self.pitColumns = pitColumns
 
     # Function to get the team list and set it to rsRobots. Uses the _run_query function defined above.
     def _getTeams(self):
@@ -166,20 +174,21 @@ class analysis():
         self._run_query(query)
 
         # Set columns to be a list of column headings in the Query results
-        self._setColumns([column[0] for column in list(self.cursor.description)])
+        self._setL2Columns([L2Column[0] for L2Column in list(self.cursor.description)])
 
         # sets rsRobotMatchData to the results of the _getTeamData function and returns None if no robot data yet
         rsRobotL2MatchData = self.cursor.fetchall()
         if rsRobotL2MatchData:
             return rsRobotL2MatchData
-        else:
-            return None
+        else: 
+            rsRobotL2MatchData = [0]
+            return rsRobotL2MatchData
 
     # Function to retrieve pit data records for a given team
     def _getPitData(self, team):
         query = f"SELECT pit.* FROM pit JOIN events ON pit.eventID = events.eventID WHERE pit.team = {team[0]} AND events.currentEvent = 1"
         self._run_query(query)
-        self._setColumns([column[0] for column in list(self.cursor.description)])
+        self._setPitColumns([pitColumn[0] for pitColumn in list(self.cursor.description)])
         rsRobotPitData = self.cursor.fetchall()
         if rsRobotPitData:
             return rsRobotPitData
@@ -194,8 +203,8 @@ class analysis():
             for analysisType2analyze in analysisTypesDict:
                 print(f"analyzing team {team} using {analysisType2analyze}")
                 rsRobotMatchData = self._getTeamData(team)
-                # rsRobotL2MatchData = self._getL2TeamData(team)
-                # rsRobotPitData = self._getPitData(team)
+                rsRobotL2MatchData = self._getL2TeamData(team)
+                rsRobotPitData = self._getPitData(team)
                 # print(type(rsRobotMatchData))
                 # print(rsRobotL2MatchData)
                 # print(rsRobotMatchData)
@@ -204,8 +213,8 @@ class analysis():
                 teamName = teamName.translate(str.maketrans("", "", " ,()'"))
                 if rsRobotMatchData:
                     # rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData, database=database, host=host, passwd=passwd, user=user)
-                    rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData)
-                    # rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData, rsRobotL2MatchData=rsRobotL2MatchData, rsRobotPitData=rsRobotPitData)
+                    # rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData)
+                    rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData, rsRobotL2MatchData=rsRobotL2MatchData, rsRobotPitData=rsRobotPitData)
 
                     self._insertAnalysis(rsCEA)
                     self.conn.commit()

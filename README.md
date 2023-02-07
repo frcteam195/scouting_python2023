@@ -1,5 +1,5 @@
 # scouting_python2023
-test
+test2
 ## **REMINDERS**
 - ***always*** pull from the upstream main repository before editing code
 - perform a pull request when you are finished coding for a session
