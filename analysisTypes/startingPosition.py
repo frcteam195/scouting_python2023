@@ -16,6 +16,13 @@ def startingPosition(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitD
     #     for pitResults in rsRobotPitData:
     #         width = pitResults[analysis.pitColumns.index('width')]
 
+     # example for loading L2 data into analysis
+    if rsRobotL2MatchData == 0:
+        print("doing nothing")
+    else: 
+        for L2Results in rsRobotL2MatchData:
+            print(rsRobotL2MatchData)
+
     # Loop through each match the robot played in.
     for matchResults in rsRobotMatchData:
         rsCEA['team'] = matchResults[analysis.columns.index('team')]

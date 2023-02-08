@@ -32,7 +32,7 @@ analysisTypesDict = {
                     #   "postReorientCone": postReorientCone.postReorientCone,
                     #   "postShelfPickup": postShelfPickup.postShelfPickup,
                     #   "postGroundPickup": postGroundPickup.postGroundPickup,
-                       "postGoodPartner": postGoodPartner.postGoodPartner
+                    #   "postGoodPartner": postGoodPartner.postGoodPartner
                     } 
 
 # parser to choose the database where the table will be written
@@ -180,7 +180,7 @@ class analysis():
         if rsRobotL2MatchData:
             return rsRobotL2MatchData
         else: 
-            rsRobotL2MatchData = [0]
+            rsRobotL2MatchData = 0
             return rsRobotL2MatchData
 
     # Function to retrieve pit data records for a given team
