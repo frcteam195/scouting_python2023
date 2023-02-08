@@ -51,4 +51,7 @@ def postGroundPickup(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitD
 
     if numberOfMatchesPlayed > 0:
         rsCEA['S1V'] = round(statistics.mean(postGroundPickupList), 1)
+        rsCEA['S1D'] = str(round(statistics.mean(postGroundPickupList), 1))
+        rsCEA['S2V'] = round(statistics.median(postGroundPickupList), 1)
+        rsCEA['S2D'] = str(round(statistics.median(postGroundPickupList), 1))
     return rsCEA

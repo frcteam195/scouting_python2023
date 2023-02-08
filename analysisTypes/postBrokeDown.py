@@ -51,4 +51,7 @@ def postBrokeDown(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData
 
     if numberOfMatchesPlayed > 0:
         rsCEA['S1V'] = round(statistics.mean(postBrokeDownList), 1)
+        rsCEA['S1D'] = str(round(statistics.mean(postBrokeDownList), 1))
+        rsCEA['S2V'] = round(statistics.median(postBrokeDownList), 1)
+        rsCEA['S2D'] = str(round(statistics.median(postBrokeDownList), 1))
     return rsCEA

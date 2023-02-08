@@ -51,4 +51,7 @@ def postShelfPickup(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
 
     if numberOfMatchesPlayed > 0:
         rsCEA['S1V'] = round(statistics.mean(postShelfPickupList), 1)
+        rsCEA['S1D'] = str(round(statistics.mean(postShelfPickupList), 1))
+        rsCEA['S2V'] = round(statistics.median(postShelfPickupList), 1)
+        rsCEA['S2D'] = str(round(statistics.median(postShelfPickupList), 1))
     return rsCEA
