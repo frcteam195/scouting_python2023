@@ -193,7 +193,7 @@ class analysis():
         if rsRobotPitData:
             return rsRobotPitData
         else:
-            rsRobotPitData=[0]
+            rsRobotPitData = 0
             return rsRobotPitData
     
     # runs each of the analysisTypes and outputs the results to rsCEA

@@ -3,22 +3,18 @@ import statistics
 def startingPosition(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     # Initialize the rsCEA record set and define variables specific to this function which lie outside the for loop
     rsCEA = {}
-    rsCEA['analysisTypeID'] = 1
+    rsCEA['analysisTypeID'] = 1 
     numberOfMatchesPlayed = 0
 
     # only using to test ranks, eliminate later
     startingPositionList = []
-    
-    print(rsRobotPitData)
-    print(type(rsRobotPitData))
-    print(len(rsRobotPitData))
-    if len(rsRobotPitData) == 1:
-        print("doing nothing")
-    else: 
-        for pitResults in rsRobotPitData:
-            width = pitResults[analysis.pitColumns.index('width')]
-            print(width)
-            quit()
+
+    # example for loading pit data into analysis
+    # if rsRobotPitData == 0:
+    #   # print("doing nothing")
+    # else: 
+    #     for pitResults in rsRobotPitData:
+    #         width = pitResults[analysis.pitColumns.index('width')]
 
     # Loop through each match the robot played in.
     for matchResults in rsRobotMatchData:
