@@ -11,28 +11,28 @@ import configparser
 # add each analysisType to the analysisTypeDict dictionary 
 from analysisTypes import *
 analysisTypesDict = {
-                    # "startingPosition": startingPosition.startingPosition,
-                    #  "autoScore": autoScore.autoScore,
-                    #   "autoGamePieces": autoGamePieces.autoGamePieces,
-                    #   "autoRamp": autoRamp.autoRamp,
-                    #   "teleHigh": teleHigh.teleHigh,
-                    #   "teleMid": teleMid.teleMid,
-                    #   "teleLow": teleLow.teleLow,
-                    #   "teleTotal": teleTotal.teleTotal,
-                    #   "teleCones": teleCones.teleCones,
-                    #   "teleCubes": teleCubes.teleCubes,
-                    #   "teleCommunity": teleCommunity.teleCommunity,
-                    #   "teleLZPickup": teleLZPickup.teleLZPickup,
-                    #   #13 
-                    #   #14
-                    #   "ramp": ramp.ramp,
-                    #   "rampPos": rampPos.rampPos,
-                    #   "postSubBroke": postSubBroke.postSubBroke,
-                    #   "postBrokeDown": postBrokeDown.postBrokeDown,
-                    #   "postReorientCone": postReorientCone.postReorientCone,
-                    #   "postShelfPickup": postShelfPickup.postShelfPickup,
-                    #   "postGroundPickup": postGroundPickup.postGroundPickup,
-                    #   "postGoodPartner": postGoodPartner.postGoodPartner
+                        "startingPosition": startingPosition.startingPosition,
+                        "autoScore": autoScore.autoScore,
+                        "autoGamePieces": autoGamePieces.autoGamePieces,
+                        "autoRamp": autoRamp.autoRamp,
+                        "teleHigh": teleHigh.teleHigh,
+                        "teleMid": teleMid.teleMid,
+                        "teleLow": teleLow.teleLow,
+                        "teleTotal": teleTotal.teleTotal,
+                        "teleCones": teleCones.teleCones,
+                        "teleCubes": teleCubes.teleCubes,
+                        "teleCommunity": teleCommunity.teleCommunity,
+                        "teleLZPickup": teleLZPickup.teleLZPickup,
+                      #13 
+                      #14
+                        "ramp": ramp.ramp,
+                        "rampPos": rampPos.rampPos,
+                        "postSubBroke": postSubBroke.postSubBroke,
+                        "postBrokeDown": postBrokeDown.postBrokeDown,
+                        "postReorientCone": postReorientCone.postReorientCone,
+                        "postShelfPickup": postShelfPickup.postShelfPickup,
+                        "postGroundPickup": postGroundPickup.postGroundPickup,
+                        "postGoodPartner": postGoodPartner.postGoodPartner
                     } 
 
 # parser to choose the database where the table will be written
@@ -148,11 +148,7 @@ class analysis():
                 "AND (matchScouting.teamMatchNum <= 12)) " + \
                 "ORDER BY matchScouting.teamMatchNum"
         self._run_query(query)
-
-        # Set columns to be a list of column headings in the Query results
         self._setColumns([column[0] for column in list(self.cursor.description)])
-
-        # sets rsRobotMatchData to the results of the _getTeamData function and returns None if no robot data yet
         rsRobotMatchData = self.cursor.fetchall()
         if rsRobotMatchData:
             return rsRobotMatchData
@@ -171,11 +167,7 @@ class analysis():
                 "AND (matchScoutingL2.teamMatchNum <= 12)) " + \
                 "ORDER BY matchScoutingL2.teamMatchNum"
         self._run_query(query)
-
-        # Set columns to be a list of column headings in the Query results
         self._setL2Columns([L2Column[0] for L2Column in list(self.cursor.description)])
-
-        # sets rsRobotMatchData to the results of the _getTeamData function and returns None if no robot data yet
         rsRobotL2MatchData = self.cursor.fetchall()
         if rsRobotL2MatchData:
             return rsRobotL2MatchData
@@ -200,37 +192,25 @@ class analysis():
         for team in self.rsRobots:
             # analysisTypesDict defined at top of script
             for analysisType2analyze in analysisTypesDict:
-                # print(f"analyzing team {team} using {analysisType2analyze}")
+                print(f"analyzing team {team} using {analysisType2analyze}")
                 rsRobotMatchData = self._getTeamData(team)
                 rsRobotL2MatchData = self._getL2TeamData(team)
                 rsRobotPitData = self._getPitData(team)
-                # print(type(rsRobotMatchData))
-                # print(rsRobotL2MatchData)
-                # print(rsRobotMatchData)
-                # print(f"rsRobotPitData = {rsRobotPitData}")
                 teamName = str(team)
                 teamName = teamName.translate(str.maketrans("", "", " ,()'"))
                 if rsRobotMatchData:
-                    # rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData, database=database, host=host, passwd=passwd, user=user)
-                    # rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData)
                     rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData, rsRobotL2MatchData=rsRobotL2MatchData, rsRobotPitData=rsRobotPitData)
-
                     self._insertAnalysis(rsCEA)
                     self.conn.commit()
     
-
      # Function to insert an rsCEA record into the DB.
     def _insertAnalysis(self, rsCEA):
         rsCEA_records = rsCEA.items()
         columnHeadings = str(tuple([record[0] for record in rsCEA_records])).replace("'", "")
         values = str(tuple([record[1] for record in rsCEA_records]))
-
-        # Insert the records into the DB
         query = "INSERT INTO " + CEA_tmpTable + " " + columnHeadings + " VALUES " + values
-        # print(query)
         self._run_query(query)
         self.conn.commit()
-
 
     # Function to retrieve S1V values for a given analysisType and use numpy to determine percentiles
     def _rankTeamsSingle(self, analysis_type):

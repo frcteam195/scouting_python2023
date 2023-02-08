@@ -17,11 +17,11 @@ def startingPosition(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitD
     #         width = pitResults[analysis.pitColumns.index('width')]
 
      # example for loading L2 data into analysis
-    if rsRobotL2MatchData == 0:
-        print("doing nothing")
-    else: 
-        for L2Results in rsRobotL2MatchData:
-            print(rsRobotL2MatchData)
+    # if rsRobotL2MatchData == 0:
+    #     #nprint("doing nothing")
+    # else: 
+    #     for L2Results in rsRobotL2MatchData:
+    #         print(rsRobotL2MatchData)
 
     # Loop through each match the robot played in.
     for matchResults in rsRobotMatchData:
