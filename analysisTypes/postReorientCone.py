@@ -51,4 +51,7 @@ def postReorientCone(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitD
 
     if numberOfMatchesPlayed > 0:
         rsCEA['S1V'] = round(statistics.mean(postReorientConeList), 1)
+        rsCEA['S1D'] = str(round(statistics.mean(postReorientConeList), 1))
+        rsCEA['S2V'] = round(statistics.median(postReorientConeList), 1)
+        rsCEA['S2D'] = str(round(statistics.median(postReorientConeList), 1))
     return rsCEA

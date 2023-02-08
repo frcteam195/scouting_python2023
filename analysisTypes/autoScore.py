@@ -1,8 +1,4 @@
 import statistics
-#import mysql.connector
-
-
-
 
 # def autoScore(analysis, rsRobotMatchData, database, host, passwd, user):
 def autoScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
@@ -108,4 +104,7 @@ def autoScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
     if numberOfMatchesPlayed > 0:
         rsCEA['S1V'] = round(statistics.mean(autoScoreList), 1)
+        rsCEA['S1D'] = str(round(statistics.mean(autoScoreList), 1))
+        rsCEA['S2V'] = round(statistics.median(autoScoreList), 1)
+        rsCEA['S2D'] = str(round(statistics.median(autoScoreList), 1))
     return rsCEA

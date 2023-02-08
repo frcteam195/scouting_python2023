@@ -55,4 +55,7 @@ def rampPos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
     if numberOfMatchesPlayed > 0:
         rsCEA['S1V'] = round(statistics.mean(rampPosList), 1)
+        rsCEA['S1D'] = str(round(statistics.mean(rampPosList), 1))
+        rsCEA['S2V'] = round(statistics.median(rampPosList), 1)
+        rsCEA['S2D'] = str(round(statistics.median(rampPosList), 1))
     return rsCEA

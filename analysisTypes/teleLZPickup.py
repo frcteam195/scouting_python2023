@@ -55,4 +55,7 @@ def teleLZPickup(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData)
 
     if numberOfMatchesPlayed > 0:
         rsCEA['S1V'] = round(statistics.mean(teleLZPickupList), 1)
+        rsCEA['S1D'] = str(round(statistics.mean(teleLZPickupList), 1))
+        rsCEA['S2V'] = round(statistics.median(teleLZPickupList), 1)
+        rsCEA['S2D'] = str(round(statistics.median(teleLZPickupList), 1))
     return rsCEA

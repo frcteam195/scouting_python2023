@@ -51,4 +51,7 @@ def postGoodPartner(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
 
     if numberOfMatchesPlayed > 0:
         rsCEA['S1V'] = round(statistics.mean(postGoodPartnerList), 1)
+        rsCEA['S1D'] = str(round(statistics.mean(postGoodPartnerList), 1))
+        rsCEA['S2V'] = round(statistics.median(postGoodPartnerList), 1)
+        rsCEA['S2D'] = str(round(statistics.median(postGoodPartnerList), 1))
     return rsCEA

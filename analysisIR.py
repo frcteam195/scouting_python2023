@@ -11,30 +11,29 @@ import configparser
 # add each analysisType to the analysisTypeDict dictionary 
 from analysisTypes import *
 analysisTypesDict = {
-                      "startingPosition": startingPosition.startingPosition,
-                      "autoScore": autoScore.autoScore,
-                      "autoGamePieces": autoGamePieces.autoGamePieces,
-                      "autoRamp": autoRamp.autoRamp,
-                      "teleHigh": teleHigh.teleHigh,
-                      "teleMid": teleMid.teleMid,
-                      "teleLow": teleLow.teleLow,
-                      "teleTotal": teleTotal.teleTotal,
-                      "teleCones": teleCones.teleCones,
-                      "teleCubes": teleCubes.teleCubes,
-                      "teleCommunity": teleCommunity.teleCommunity,
-                      "teleLZPickup": teleLZPickup.teleLZPickup,
-                      #13 
-                      #14
-                      "ramp": ramp.ramp,
-                      "rampPos": rampPos.rampPos,
-                      "postSubBroke": postSubBroke.postSubBroke,
-                      "postBrokeDown": postBrokeDown.postBrokeDown,
-                      "postReorientCone": postReorientCone.postReorientCone,
-                      "postShelfPickup": postShelfPickup.postShelfPickup,
-                      "postGroundPickup": postGroundPickup.postGroundPickup,
-                      "postGoodPartner": postGoodPartner.postGoodPartner
-
-                    }
+                    # "startingPosition": startingPosition.startingPosition,
+                    #  "autoScore": autoScore.autoScore,
+                    #   "autoGamePieces": autoGamePieces.autoGamePieces,
+                    #   "autoRamp": autoRamp.autoRamp,
+                    #   "teleHigh": teleHigh.teleHigh,
+                    #   "teleMid": teleMid.teleMid,
+                    #   "teleLow": teleLow.teleLow,
+                    #   "teleTotal": teleTotal.teleTotal,
+                    #   "teleCones": teleCones.teleCones,
+                    #   "teleCubes": teleCubes.teleCubes,
+                    #   "teleCommunity": teleCommunity.teleCommunity,
+                    #   "teleLZPickup": teleLZPickup.teleLZPickup,
+                    #   #13 
+                    #   #14
+                    #   "ramp": ramp.ramp,
+                    #   "rampPos": rampPos.rampPos,
+                    #   "postSubBroke": postSubBroke.postSubBroke,
+                    #   "postBrokeDown": postBrokeDown.postBrokeDown,
+                    #   "postReorientCone": postReorientCone.postReorientCone,
+                    #   "postShelfPickup": postShelfPickup.postShelfPickup,
+                    #   "postGroundPickup": postGroundPickup.postGroundPickup,
+                       "postGoodPartner": postGoodPartner.postGoodPartner
+                    } 
 
 # parser to choose the database where the table will be written
 parser = argparse.ArgumentParser()
