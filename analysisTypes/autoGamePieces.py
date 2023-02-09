@@ -21,10 +21,10 @@ def autoGamePieces(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDat
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'UR'
         else:
             numGamePieces = 0
-            autoScorePos1 = matchResults[analysis.columns.index('autoScorePos1')]
-            autoScorePos2 = matchResults[analysis.columns.index('autoScorePos2')]
-            autoScorePos3 = matchResults[analysis.columns.index('autoScorePos3')]
-            autoScorePos4 = matchResults[analysis.columns.index('autoScorePos4')]
+            autoScorePos1 = matchResults[analysis.columns.index('autoScore1')]
+            autoScorePos2 = matchResults[analysis.columns.index('autoScore2')]
+            autoScorePos3 = matchResults[analysis.columns.index('autoScore3')]
+            autoScorePos4 = matchResults[analysis.columns.index('autoScore4')]
 
             if autoScorePos1 > 0:
                 numGamePieces += 1
@@ -40,6 +40,7 @@ def autoGamePieces(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDat
             autoGamePiecesList.append(autoGamePiecesValue)
             numberOfMatchesPlayed += 1
 
+            # autoScorePos1-4 are 0 if no auto game piece scored, and are 1-27 if a game piece was scored
             if numGamePieces == 0:
                 autoGamePiecesColor = 1
             elif numGamePieces == 1:
