@@ -29,14 +29,12 @@ conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=dat
 cursor = conn.cursor()
     
 
-CEAG_table = "CurrentEventAnalysisGraphs"
+CEAG_table = "CEanalysisGraphs"
 
 
 columns = []
-wipeCEAG()
-analyze()
 
-print("Time: %0.2f seconds" % (time.time() - start_time))
+#print("Time: %0.2f seconds" % (time.time() - start_time))
 print()
 
 # Function to run a query - the query string must be passed to the function
@@ -56,18 +54,26 @@ def wipeCEAG():
 
 # Function to write means and medians to the CEAGraphs table
 def analyze():
-    analysisTypeList = [7, 6, 5]
-    analysisNameList = ["teleLowMean, teleLowMedian, teleMidMean, teleMidMedian, teleHighMean, teleHighMedian"]
-    run_query("INSERT INTO " + CEAG_table + "(Team, EventID, AutonomousMean, AutonomousMedian, AutonomousFormat) "
-                        "SELECT Team, EventID, Summary1Value, Summary2Value, Summary3Format "
-                        "FROM CurrentEventAnalysis "
-                        "WHERE AnalysisTypeID = 10;")
+    analysisTypeList = [7, 6, 5, 8, 4, 3, 2, 11, 12, 15]
+    analysisNameList = ["teleLowMean, teleLowMedian, teleMidMean, teleMidMedian, teleHighMean, teleHighMedian, \
+                        teleTotalMean, teleTotalMedian, autoRampMean, autoRampMedian, autoGamePiecesMean, \
+                        autoGamePiecesMedian, autoScoreMean, autoScoreMedian, teleCommunityMean, teleCommunityMedian, \
+                        teleLZPickupMean, teleLZPickupMedian,rampMean, rampMedian"]
+    quit()
+    run_query("INSERT INTO " + CEAG_table + "(team, eventID, teleLowMean, teleLowMedian) "
+                        "SELECT team, eventID, Summary1Value, Summary2Value"
+                        "FROM analysisTypes "
+                        "WHERE AnalysisTypeID = 7;")
+    conn.commit()
+    quit()
     for i in range(len(analysisTypeList)):
         #print(i)
         run_query("UPDATE " + CEAG_table + " "
-                        "INNER JOIN CurrentEventAnalysis ON " + CEAG_table + ".Team = CurrentEventAnalysis.Team AND " + CEAG_table + ".EventID = CurrentEventAnalysis.EventID "
-                        "SET " + analysisNameList[i] + " = CurrentEventAnalysis.Summary1Value, " + analysisNameList[i + 8] + " = CurrentEventAnalysis.Summary2Value, " + analysisNameList[i + 16] + " = CurrentEventAnalysis.Summary3Format "
+                        "INNER JOIN CurrentEventAnalysis ON " + CEAG_table + ".team = CurrentEventAnalysis.team AND " + CEAG_table + ".eventID = CurrentEventAnalysis.eventID "
+                        "SET " + analysisNameList[i] + " = CurrentEventAnalysis.Summary1Value, " + analysisNameList[i + 10] + " = CurrentEventAnalysis.Summary2Value, "
                         "WHERE CurrentEventAnalysis.AnalysisTypeID = " + str(analysisTypeList[i]) + ";")
 
-    conn.commit()
-    
+
+
+analyze()
+
