@@ -7,8 +7,6 @@ import configparser
 
 
 # *********************** argument parser **********************
-
-
 parser = argparse.ArgumentParser()
 parser.add_argument("-db", "--database", help = "Choices: dev1, dev2, testing, production", required=True)
 parser.add_argument("-host", "--host", help = "Host choices: aws, localhost", required=True)
@@ -27,53 +25,63 @@ database = config[input_host+"-"+input_db]['database']
 
 conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=database)
 cursor = conn.cursor()
-    
+
+# ********** Main program **********
+now = datetime.datetime.now()
+print(now.strftime("%Y-%m-%d %H:%M:%S"))
+start_time = time.time()
 
 CEAG_table = "CEanalysisGraphs"
+query = f"DELETE FROM {CEAG_table}"
+cursor.execute(query)
+conn.commit()
 
-
-columns = []
-
-#print("Time: %0.2f seconds" % (time.time() - start_time))
+print("Time: %0.2f seconds" % (time.time() - start_time))
 print()
 
-# Function to run a query - the query string must be passed to the function
-def run_query(query):
-    cursor.execute(query)
+# 1,startingPosition
+# 2,autoScore - autoScoreMean & autoScoreMedian
+# 3,autoGamePieces - autoGamePiecesMean & autoGamePiecesMedian
+# 4,autoRamp - autoRampMean & autoRampMedian
+# 5,teleHigh - teleHighMean & teleHighMedian
+# 6,teleMid - teleMidMean & teleMidMedian
+# 7,teleLow - teleLowMean & teleLowMedian
+# 8,teleTotal - teleTotalMean & teleTotalMedian
+# 9,teleCones 
+# 10,teleCubes
+# 11,teleCommunity - teleCommunityMean & teleCommunityMedian
+# 12,teleLZPickup - teleLZPickupMean & teleLZPickupMedian
+# 15,ramp - rampMean & rampMedian
+# 16,rampPos
+# 17,postSubBroke
+# 18,postBrokeDown
+# 19,postReorientCone
+# 20,postShelfPickup
+# 21,postGroundPickup
+# 22,postGoodPartner
 
-# Function to determine the DB table column headers
-def setColumns(columns):
-    columns = columns
+# insert first record for analysisType 7 which is the first one in the CEanalysisGraphs table
+query = f"INSERT INTO {CEAG_table} (team, eventID, teleLowMean, teleLowMedian) SELECT team, eventID, S1V, S2V FROM CEanalysis WHERE analysisTypeID = 7"
+print(query)
+cursor.execute(query)
+conn.commit()
 
-# Function to wipe the CEAG table. We may want to make this only remove CurrentEvent records.
-def wipeCEAG():
-    query = f"DELETE FROM {CEAG_table}"
+# loop through additional analysisTypes besides #7 which was performed with the insert
+analysisTypeList = [6, 5]
+analysisNameList = ["teleMidMean", \
+"teleHighMean", \
+"teleMidMedian", \
+"teleHighMedian"]
+print(len(analysisNameList))
+print(len(analysisTypeList))
+length = len(analysisTypeList)
+for i in range(length):
+    print(f"i = {i}")
+    # query = (
+            # f"UPDATE {CEAG_table} INNER JOIN CEanalysis ON {CEAG_table}.team = CEanalysis.team AND {CEAG_table}.eventID = CEanalysis.eventID "
+            # f"SET {analysisNameList[i]} CEanalysis.S1V, {analysisNameList[i + 2]} CEanalysis.S2V, "
+            # f"WHERE CEanalysis.analysisTypeID = {str(analysisTypeList[i])}"
+    # )
+    query = "UPDATE " + CEAG_table + " INNER JOIN CEanalysis ON " + CEAG_table + ".team = CEanalysis.team AND " + CEAG_table + ".eventID = CEanalysis.eventID \
+             SET " + analysisNameList[i] + " = CEanalysis.S1V, " + analysisNameList[i+2] + " = CEanalysis.S2V WHERE CEanalysis.analysisTypeID = " + str(analysisTypeList[i])
     print(query)
-    run_query(query)
-    conn.commit()
-
-# Function to write means and medians to the CEAGraphs table
-def analyze():
-    analysisTypeList = [7, 6, 5, 8, 4, 3, 2, 11, 12, 15]
-    analysisNameList = ["teleLowMean, teleLowMedian, teleMidMean, teleMidMedian, teleHighMean, teleHighMedian, \
-                        teleTotalMean, teleTotalMedian, autoRampMean, autoRampMedian, autoGamePiecesMean, \
-                        autoGamePiecesMedian, autoScoreMean, autoScoreMedian, teleCommunityMean, teleCommunityMedian, \
-                        teleLZPickupMean, teleLZPickupMedian,rampMean, rampMedian"]
-    quit()
-    run_query("INSERT INTO " + CEAG_table + "(team, eventID, teleLowMean, teleLowMedian) "
-                        "SELECT team, eventID, Summary1Value, Summary2Value"
-                        "FROM analysisTypes "
-                        "WHERE AnalysisTypeID = 7;")
-    conn.commit()
-    quit()
-    for i in range(len(analysisTypeList)):
-        #print(i)
-        run_query("UPDATE " + CEAG_table + " "
-                        "INNER JOIN CurrentEventAnalysis ON " + CEAG_table + ".team = CurrentEventAnalysis.team AND " + CEAG_table + ".eventID = CurrentEventAnalysis.eventID "
-                        "SET " + analysisNameList[i] + " = CurrentEventAnalysis.Summary1Value, " + analysisNameList[i + 10] + " = CurrentEventAnalysis.Summary2Value, "
-                        "WHERE CurrentEventAnalysis.AnalysisTypeID = " + str(analysisTypeList[i]) + ";")
-
-
-
-analyze()
-
