@@ -1,7 +1,8 @@
-CREATE TABLE IF NOT EXISTS dev2.pit (
+CREATE TABLE IF NOT EXISTS dev1.pit (
         team VARCHAR(10) NOT NULL,
         eventID INT NOT NULL,
         scoutingStatus TINYINT DEFAULT 0,
+        scouterID INT NULL,
         robotLength TINYINT NULL,
         robotWidth TINYINT NULL,
         robotHeight TINYINT NULL,
