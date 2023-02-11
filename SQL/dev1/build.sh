@@ -14,7 +14,7 @@ cat colorTypes-01.sql >> all.sql
 cat BAmatchData-01.sql >> all.sql
 cat CEanalysis-01.sql >> all.sql
 cat CEanalysisGraphs-01.sql >> all.sql
-cat driveTypes-01.sql >> all.sql
+cat driveBaseTypes-01.sql >> all.sql
 cat driveMotorTypes-01.sql >> all.sql
 cat superClimbTypes-01.sql >> all.sql
 cat buildTypes-01.sql >> all.sql
