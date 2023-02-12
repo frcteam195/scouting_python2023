@@ -11,7 +11,7 @@ import configparser
 # add each analysisType to the analysisTypeDict dictionary 
 from analysisTypes import *
 analysisTypesDict = {
-                    "startingPosition": startingPosition.startingPosition,
+                    "startingPositionTest": startingPositionTest.startingPositionTest,
                     # "autoScore": autoScore.autoScore,
                     # "autoGamePieces": autoGamePieces.autoGamePieces,
                     # "autoRamp": autoRamp.autoRamp,
@@ -32,7 +32,7 @@ analysisTypesDict = {
                     # "postReorientCone": postReorientCone.postReorientCone,
                     # "postShelfPickup": postShelfPickup.postShelfPickup,
                     # "postGroundPickup": postGroundPickup.postGroundPickup,
-                    "postGoodPartner": postGoodPartner.postGoodPartner
+                    # "postGoodPartner": postGoodPartner.postGoodPartner
                     } 
 
 # parser to choose the database where the table will be written
@@ -190,8 +190,12 @@ class analysis():
     # runs each of the analysisTypes and outputs the results to rsCEA
     def _analyzeTeams(self):
         CEAinsertQuery = []
-        insertStatement = "INSERT INTO " + CEA_tmpTable + \
-            " (analysisTypeID, team, eventID, M1D, M1V, M1F, M2D, M2V, M2F, M3D, M3V, M3F, M4D, M4V, M4F, S1V) VALUES"
+        insertStatement = ("INSERT INTO " + CEA_tmpTable + " (team, analysisTypeID, eventID, " \
+                            "M1D, M1F, M1V, M2D, M2F, M2V, M3D, M3F, M3V, M4D, M4F, M4V, " \
+                            "M5D, M5F, M5V, M6D, M6F, M6V, M7D, M7F, M7V, M8D, M8F, M8V, " \
+                            "M9D, M9F, M9V, M10D, M10F, M10V, M11D, M11F, M11V, M12D, M12F, M12V, " \
+                            "S1D, S1F, S1V, S2D, S2F, S2V, S3D, S3F, S3V, S4D, S4F, S4V, " \
+                            "Min, Max, Per) VALUES")
         for team in self.rsRobots:
             # analysisTypesDict defined at top of script
             for analysisType2analyze in analysisTypesDict:
@@ -205,6 +209,7 @@ class analysis():
                     rsCEA = analysisTypesDict[analysisType2analyze] \
                         (analysis=self, rsRobotMatchData=rsRobotMatchData, rsRobotL2MatchData=rsRobotL2MatchData, rsRobotPitData=rsRobotPitData)
                     records = rsCEA.items()
+                    # print(rsCEA)
                     # columnHeadings = str(tuple([record[0] for record in records])).replace("'", "")
                     values = str(tuple([record[1] for record in records]))
                     # valueList = valueList.append(values)
@@ -214,10 +219,11 @@ class analysis():
                     # print(len(CEAinsertQuery))
                     # self._insertAnalysis(rsCEA)
                     # self.conn.commit()
-        print(insertStatement)
+        insertStatement = insertStatement.replace("'Null'", "Null")
+        insertStatement = insertStatement[:-1]
+        # print(insertStatement)
         self._run_query(insertStatement)
         self.conn.commit()
-        quit()
     
     #  # Function to insert into CEanalysisTmp table
     # def _insertCEanalysisTMP(self, CEAinsertQuery):
@@ -266,6 +272,7 @@ class analysis():
                         + str(team_display) + ", " + CEA_tmpTable + ".S3V = " + str(team_display) \
                         + " WHERE " + CEA_tmpTable + ".team = '" + str(team[0]) \
                         + "' AND " + CEA_tmpTable + ".analysisTypeID = " + str(analysis_type)
+                print(query)
                 self._run_query(query)
                 self.conn.commit()
         else:

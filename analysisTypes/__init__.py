@@ -1,4 +1,5 @@
-__all__ = ['startingPosition', 
+__all__ = ['startingPosition',
+           'startingPositionTest',
            'autoRamp',
            'autoScore',
            'autoGamePieces',
