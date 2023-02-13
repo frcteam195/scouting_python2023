@@ -61,7 +61,8 @@ print()
 # 22,postGoodPartner
 
 # insert first record for analysisType 7 which is the first one in the CEanalysisGraphs table
-query = f"INSERT INTO {CEAG_table} (team, eventID, teleLowMean, teleLowMedian) SELECT team, eventID, S1V, S2V FROM CEanalysis WHERE analysisTypeID = 7"
+query = (f"INSERT INTO {CEAG_table} (team, eventID, teleLowMean, teleLowMedian) " \
+          "SELECT team, eventID, S1V, S2V FROM CEanalysis WHERE analysisTypeID = 7")
 print(query)
 cursor.execute(query)
 conn.commit()
@@ -69,19 +70,23 @@ conn.commit()
 # loop through additional analysisTypes besides #7 which was performed with the insert
 analysisTypeList = [6, 5]
 analysisNameList = ["teleMidMean", \
-"teleHighMean", \
-"teleMidMedian", \
-"teleHighMedian"]
+                    "teleHighMean", \
+                    # Split between means and medians
+                    "teleMidMedian", \
+                    "teleHighMedian"]
+print(analysisNameList)
 print(len(analysisNameList))
 print(len(analysisTypeList))
-length = len(analysisTypeList)
-for i in range(length):
+for i in range(len(analysisTypeList)):
     print(f"i = {i}")
     # query = (
             # f"UPDATE {CEAG_table} INNER JOIN CEanalysis ON {CEAG_table}.team = CEanalysis.team AND {CEAG_table}.eventID = CEanalysis.eventID "
             # f"SET {analysisNameList[i]} CEanalysis.S1V, {analysisNameList[i + 2]} CEanalysis.S2V, "
             # f"WHERE CEanalysis.analysisTypeID = {str(analysisTypeList[i])}"
     # )
-    query = "UPDATE " + CEAG_table + " INNER JOIN CEanalysis ON " + CEAG_table + ".team = CEanalysis.team AND " + CEAG_table + ".eventID = CEanalysis.eventID \
-             SET " + analysisNameList[i] + " = CEanalysis.S1V, " + analysisNameList[i+2] + " = CEanalysis.S2V WHERE CEanalysis.analysisTypeID = " + str(analysisTypeList[i])
+    query = ("UPDATE " + CEAG_table + " INNER JOIN CEanalysis ON " + CEAG_table + ".team = CEanalysis.team " \
+             "AND " + CEAG_table + ".eventID = CEanalysis.eventID " \
+             "SET " + analysisNameList[i] + " = CEanalysis.S1V, " \
+             + analysisNameList[i+2] + " = CEanalysis.S2V " \
+             "WHERE CEanalysis.analysisTypeID = " + str(analysisTypeList[i]))
     print(query)
