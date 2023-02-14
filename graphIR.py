@@ -32,7 +32,10 @@ print(now.strftime("%Y-%m-%d %H:%M:%S"))
 start_time = time.time()
 
 CEAG_table = "CEanalysisGraphs"
-query = f"DELETE FROM {CEAG_table}"
+CEventID = cursor.execute("SELECT eventID FROM events WHERE currentEvent = 1")
+CEventID = cursor.fetchone()[0]
+
+query = f"DELETE FROM {CEAG_table} WHERE eventID = {CEventID}"
 cursor.execute(query)
 conn.commit()
 
@@ -52,7 +55,7 @@ print()
 # 11,teleCommunity - teleCommunityMean & teleCommunityMedian
 # 12,teleLZPickup - teleLZPickupMean & teleLZPickupMedian
 # 15,ramp - rampMean & rampMedian
-# 16,rampPos
+# 16,rampPos - rampPosMean & rampPosMedian
 # 17,postSubBroke
 # 18,postBrokeDown
 # 19,postReorientCone
@@ -62,18 +65,35 @@ print()
 
 # insert first record for analysisType 7 which is the first one in the CEanalysisGraphs table
 query = (f"INSERT INTO {CEAG_table} (team, eventID, teleLowMean, teleLowMedian) " \
-          "SELECT team, eventID, S1V, S2V FROM CEanalysis WHERE analysisTypeID = 7")
+         f"SELECT team, eventID, S1V, S2V FROM CEanalysis WHERE analysisTypeID = 7 and eventID = {CEventID}")
 print(query)
+
 cursor.execute(query)
 conn.commit()
 
 # loop through additional analysisTypes besides #7 which was performed with the insert
-analysisTypeList = [6, 5]
+analysisTypeList = [6, 5, 7, 8, 11, 12, 15, 2, 3, 4]
 analysisNameList = ["teleMidMean", \
                     "teleHighMean", \
+                    "teleLowMean", \
+                    "teleTotalMean", \
+                    "teleCommunityMean", \
+                    "teleLZPickupMean", \
+                    "rampMean", \
+                    "autoScoreMean", \
+                    "autoGamePiecesMean", \
+                    "autoRampMean", \
                     # Split between means and medians
                     "teleMidMedian", \
-                    "teleHighMedian"]
+                    "teleHighMedian", \
+                    "teleLowMedian", \
+                    "teleTotalMedian", \
+                    "teleCommunityMedian", \
+                    "teleLZPickupMedian", \
+                    "rampMedian", \
+                    "autoScoreMedian", \
+                    "autoGamePiecesMedian", \
+                    "autoRampMedian"]
 print(analysisNameList)
 print(len(analysisNameList))
 print(len(analysisTypeList))
@@ -87,6 +107,11 @@ for i in range(len(analysisTypeList)):
     query = ("UPDATE " + CEAG_table + " INNER JOIN CEanalysis ON " + CEAG_table + ".team = CEanalysis.team " \
              "AND " + CEAG_table + ".eventID = CEanalysis.eventID " \
              "SET " + analysisNameList[i] + " = CEanalysis.S1V, " \
-             + analysisNameList[i+2] + " = CEanalysis.S2V " \
+             + analysisNameList[i+(len(analysisTypeList))] + " = CEanalysis.S2V " \
              "WHERE CEanalysis.analysisTypeID = " + str(analysisTypeList[i]))
     print(query)
+    cursor.execute(query)
+    conn.commit()
+
+cursor.close()
+conn.close()
