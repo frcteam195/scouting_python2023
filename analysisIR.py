@@ -261,10 +261,11 @@ class analysis():
             self._rankTeamsSingle(analysisType)
 
     def _renameTable(self):
-        self._run_query("DROP TABLE CEanalysis;")
-        self._run_query("ALTER TABLE " + CEA_tmpTable + " RENAME CEanalysis")
+        query = "DELETE FROM CEanalysis WHERE eventID = (SELECT eventID FROM events WHERE currentEvent = 1)"
+        self._run_query(query)
+        query = ("INSERT INTO CEanalysis SELECT * FROM " + CEA_tmpTable)
+        self._run_query(query)
         self.conn.commit()
-
 
 # This initizlzes the analysis Class and thus runs the program.
 if __name__ == '__main__':
