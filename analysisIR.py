@@ -13,7 +13,7 @@ from analysisTypes import *
 analysisTypesDict = {
                         "startingPosition": startingPosition.startingPosition,
                         "autoScore": autoScore.autoScore,
-                        #"autoGamePieces": autoGamePieces.autoGamePieces,
+                        "autoGamePieces": autoGamePieces.autoGamePieces,
                         "autoRamp": autoRamp.autoRamp,
                         "teleHigh": teleHigh.teleHigh,
                         "teleMid": teleMid.teleMid,
