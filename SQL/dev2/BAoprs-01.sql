@@ -1,6 +1,0 @@
-CREATE TABLE IF NOT EXISTS dev2.BAoprs (
-	team VARCHAR(10) NULL,
-	OPR FLOAT NULL,
-	PRIMARY KEY(team),
-	FOREIGN KEY (team) REFERENCES teams (team)
-) Engine = InnoDB;
