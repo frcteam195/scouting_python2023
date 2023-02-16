@@ -32,17 +32,16 @@ tba = tbapy.TBA('Tfr7kbOvWrw0kpnVp5OjeY780ANkzVMyQBZ23xiITUkFo9hWqzOuZVlL3Uy6mLr
 
 # get the BAeventID and timezone for the current event
 cursor.execute("SELECT events.BAeventID FROM events WHERE events.currentEvent = 1;")
-currentEvent = cursor.fetchone()[0]
+currentEventID = cursor.fetchone()[0]
 cursor.execute("SELECT events.timeZone FROM events WHERE events.currentEvent = 1;")
 timeZone = cursor.fetchone()[0]
 
 qNum = 0
-eventInfo = tba.event_matches(currentEvent)
+eventInfo = tba.event_matches(currentEventID)
 tz = pytz.timezone(str(timeZone))
 print(type(tz))
 
 for match in eventInfo:
-    # print(match)
     print("be patient, lots of data to grab from TBA")
     matchInfo = tba.match(match.key)
     matchNum = matchInfo.match_number
