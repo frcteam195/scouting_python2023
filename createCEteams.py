@@ -1,3 +1,4 @@
+from optparse import Values
 import mysql.connector
 import sys
 import argparse
@@ -39,9 +40,11 @@ for row in rows:
     name = row[1]
     location = row[2]
     query = f"INSERT INTO teams (team, eventID, teamName, teamLocation) VALUES ('{team}', '{currentEventID}', '{name}', '{location}')"
+    query2 = f"INSERT INTO pit (team, eventID) VALUES ('{team}', '{currentEventID}')"
     print(query)
+    print(query2)
     cursor.execute(query)
     conn.commit()
+    cursor.execute(query2)
+    conn.commit()
 
-cursor.close()
-conn.close()
