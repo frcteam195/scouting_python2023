@@ -32,7 +32,7 @@ cursor = conn.cursor()
 CEventID = cursor.execute("SELECT eventID FROM events WHERE currentEvent = 1")
 CEventID = cursor.fetchone()[0]
 
-query = "SELECT element from share WHERE share = 1"
+query = "SELECT element FROM share WHERE share = 1"
 cursor.execute(query)
 elementList = (cursor.fetchall())
 elements = str(elementList)
@@ -43,7 +43,7 @@ elements = elements.replace(elements[0],"")
 elements = elements.translate(str.maketrans("", "", "'"))
 # elements = (','.join(elements))
 
-query = f"Select {elements} from matchScouting WHERE eventID = {CEventID}"
+query = f"SELECT {elements} FROM matchScouting WHERE eventID = {CEventID}"
 #print(query)
 cursor.execute(query)
 sharedData = cursor.fetchall()
