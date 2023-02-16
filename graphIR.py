@@ -39,23 +39,20 @@ query = f"DELETE FROM {CEAG_table} WHERE eventID = {CEventID}"
 cursor.execute(query)
 conn.commit()
 
-print("Time: %0.2f seconds" % (time.time() - start_time))
-print()
-
 # 1,startingPosition
-# 2,autoScore - autoScoreMean & autoScoreMedian
-# 3,autoGamePieces - autoGamePiecesMean & autoGamePiecesMedian
-# 4,autoRamp - autoRampMean & autoRampMedian
-# 5,teleHigh - teleHighMean & teleHighMedian
-# 6,teleMid - teleMidMean & teleMidMedian
-# 7,teleLow - teleLowMean & teleLowMedian
-# 8,teleTotal - teleTotalMean & teleTotalMedian
+# 2,autoScore           - #8 -  autoScoreMean & autoScoreMedian
+# 3,autoGamePieces      - #9 -  autoGamePiecesMean & autoGamePiecesMedian
+# 4,autoRamp            - #10 - autoRampMean & autoRampMedian
+# 5,teleHigh            - #3 -  teleHighMean & teleHighMedian
+# 6,teleMid             - #2 -  teleMidMean & teleMidMedian
+# 7,teleLow             - #1 -  teleLowMean & teleLowMedian
+# 8,teleTotal           - #4 -  teleTotalMean & teleTotalMedian
 # 9,teleCones 
 # 10,teleCubes
-# 11,teleCommunity - teleCommunityMean & teleCommunityMedian
-# 12,teleLZPickup - teleLZPickupMean & teleLZPickupMedian
-# 15,ramp - rampMean & rampMedian
-# 16,rampPos - rampPosMean & rampPosMedian
+# 11,teleCommunity      - #5 -  teleCommunityMean & teleCommunityMedian
+# 12,teleLZPickup       - #6 -  teleLZPickupMean & teleLZPickupMedian
+# 15,ramp               - #7 -  rampMean & rampMedian
+# 16,rampPos
 # 17,postSubBroke
 # 18,postBrokeDown
 # 19,postReorientCone
@@ -66,16 +63,14 @@ print()
 # insert first record for analysisType 7 which is the first one in the CEanalysisGraphs table
 query = (f"INSERT INTO {CEAG_table} (team, eventID, teleLowMean, teleLowMedian) " \
          f"SELECT team, eventID, S1V, S2V FROM CEanalysis WHERE analysisTypeID = 7 and eventID = {CEventID}")
-print(query)
 
 cursor.execute(query)
 conn.commit()
 
 # loop through additional analysisTypes besides #7 which was performed with the insert
-analysisTypeList = [6, 5, 7, 8, 11, 12, 15, 2, 3, 4]
+analysisTypeList = [6, 5, 8, 11, 12, 15, 2, 3, 4]
 analysisNameList = ["teleMidMean", \
                     "teleHighMean", \
-                    "teleLowMean", \
                     "teleTotalMean", \
                     "teleCommunityMean", \
                     "teleLZPickupMean", \
@@ -86,7 +81,6 @@ analysisNameList = ["teleMidMean", \
                     # Split between means and medians
                     "teleMidMedian", \
                     "teleHighMedian", \
-                    "teleLowMedian", \
                     "teleTotalMedian", \
                     "teleCommunityMedian", \
                     "teleLZPickupMedian", \
@@ -94,24 +88,18 @@ analysisNameList = ["teleMidMean", \
                     "autoScoreMedian", \
                     "autoGamePiecesMedian", \
                     "autoRampMedian"]
-print(analysisNameList)
-print(len(analysisNameList))
-print(len(analysisTypeList))
+
 for i in range(len(analysisTypeList)):
-    print(f"i = {i}")
-    # query = (
-            # f"UPDATE {CEAG_table} INNER JOIN CEanalysis ON {CEAG_table}.team = CEanalysis.team AND {CEAG_table}.eventID = CEanalysis.eventID "
-            # f"SET {analysisNameList[i]} CEanalysis.S1V, {analysisNameList[i + 2]} CEanalysis.S2V, "
-            # f"WHERE CEanalysis.analysisTypeID = {str(analysisTypeList[i])}"
-    # )
     query = ("UPDATE " + CEAG_table + " INNER JOIN CEanalysis ON " + CEAG_table + ".team = CEanalysis.team " \
              "AND " + CEAG_table + ".eventID = CEanalysis.eventID " \
              "SET " + analysisNameList[i] + " = CEanalysis.S1V, " \
              + analysisNameList[i+(len(analysisTypeList))] + " = CEanalysis.S2V " \
              "WHERE CEanalysis.analysisTypeID = " + str(analysisTypeList[i]))
-    print(query)
     cursor.execute(query)
     conn.commit()
+
+print("Time: %0.2f seconds" % (time.time() - start_time))
+print()
 
 cursor.close()
 conn.close()
