@@ -7,7 +7,6 @@ import argparse
 import configparser
 import pandas as pd
 
-
 # parser to choose the database where the table will be written
 parser = argparse.ArgumentParser()
 parser.add_argument("-db", "--database", help = "Choices: dev1, dev2, testing, production", required=True)
@@ -53,21 +52,18 @@ sharedData = cursor.fetchall()
 df = pd.DataFrame(sharedData)
 #print(df)
 
-for i in elementList:
-    i = i.translate(str.maketrans("", "", "(),"))
-
 headerList = []
 print(elementList)
 for i in elementList:
+    i = str(i).translate(str.maketrans("", "", "(),"))  # Convert tuple to string before calling translate
     print(i)
     headerList.append(i)
 
 #print(headerList)
 
 df.to_csv (r'data.csv', header=headerList, index = False) # place 'r' before the path name
+df = pd.read_csv('data.csv')
 df.to_json(r'data.json', orient='records', lines=True)
 
 
 
-#Output:
-# Select matchNum, allianceStationID, team, preStartPos, preLoad, preNoShow, autoMB, autoRamp, autoPen, autoGamePiece1, autoGamePiece2, autoGamePiece3, autoGamePiece4, autoScore1, autoScore2, autoScore3, autoScore4, teleConeHigh, teleCubeHigh, teleConeMid, teleCubeMid, teleConeLow, teleCubeLow, teleConeCMTY, teleCubeCMTY, teleLZPickup, teleObstructed, teleWasObstructed, ramp, rampAssist, rampPos, rampStartTime, postSubsystemBroke, postBrokeDown, postReorientCone, postShelfPickup, postGroundPickup from matchScouting WHERE eventID = 1;
