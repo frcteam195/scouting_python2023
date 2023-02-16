@@ -1,5 +1,4 @@
 __all__ = ['startingPosition',
-           'startingPositionTest',
            'autoRamp',
            'autoScore',
            'autoGamePieces',
@@ -11,8 +10,6 @@ __all__ = ['startingPosition',
            'teleCubes',
            'teleCommunity',
            'teleLZPickup',
-
-
            'ramp',
            'rampPos',
            'postSubBroke',
