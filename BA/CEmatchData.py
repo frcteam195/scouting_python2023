@@ -3,8 +3,13 @@ import tbapy
 import argparse
 import datetime as dt
 import time
+import datetime
 import pytz
 import configparser
+
+now = datetime.datetime.now()
+print(now.strftime("%Y-%m-%d %H:%M:%S"))
+start_time = time.time()
 
 # parser to choose the database where the table will be written
 parser = argparse.ArgumentParser()
@@ -30,17 +35,22 @@ cursor = conn.cursor()
 
 tba = tbapy.TBA('Tfr7kbOvWrw0kpnVp5OjeY780ANkzVMyQBZ23xiITUkFo9hWqzOuZVlL3Uy6mLrz')
 
-# get the BAeventID and timezone for the current event
-cursor.execute("SELECT events.BAeventID FROM events WHERE events.currentEvent = 1;")
-currentEventID = cursor.fetchone()[0]
-cursor.execute("SELECT events.timeZone FROM events WHERE events.currentEvent = 1;")
+cursor.execute("DELETE FROM BAmatchData;")
+conn.commit()
+
+print("Pease be patient! Grabbing lots of data from The Blue Alliance")
+
+cursor.execute("SELECT events.BAeventID FROM events WHERE events.currentEvent = 1")
+BAeventID = cursor.fetchone()[0]
+cursor.execute("SELECT events.eventID FROM events WHERE events.currentEvent = 1")
+eventID = cursor.fetchone()[0]
+cursor.execute("SELECT events.timeZone FROM events WHERE events.currentEvent = 1")
 timeZone = cursor.fetchone()[0]
 
 qNum = 0
 # eventInfo is all the data for all the matches
-eventInfo = tba.event_matches(currentEventID)
+eventInfo = tba.event_matches(BAeventID)
 tz = pytz.timezone(str(timeZone))
-print(type(tz))
 
 # loop through each match from the eventInfo which contains records for all matches and set several variables
 for match in eventInfo:
@@ -57,14 +67,14 @@ for match in eventInfo:
 
     if match.comp_level == "qm":
         # note, in the query the 3: subtract away the frc that is in front of each team number
-        query = ("INSERT INTO BAmatchData (matchNum, matchTime, red1, red2, red3, blue1, blue2, blue3) " + \
-                f"VALUES ({matchNum}, '{str(matchTime)[11:16]}', \
-                          {int(str(matchRedTeams[0])[3:])}, \
-                          {int(str(matchRedTeams[1])[3:])}, \
-                          {int(str(matchRedTeams[2])[3:])}, \
-                          {int(str(matchBlueTeams[0])[3:])}, \
-                          {int(str(matchBlueTeams[1])[3:])}, \
-                          {int(str(matchBlueTeams[2])[3:])})")
+        query = (f"INSERT INTO BAmatchData (matchNum, eventID, matchTime, red1, red2, red3, blue1, blue2, blue3) "
+                f"VALUES ({matchNum}, {eventID}, '{str(matchTime)[11:16]}', "
+                f"{int(str(matchRedTeams[0])[3:])}, "
+                f"{int(str(matchRedTeams[1])[3:])}, "
+                f"{int(str(matchRedTeams[2])[3:])}, "
+                f"{int(str(matchBlueTeams[0])[3:])}, "
+                f"{int(str(matchBlueTeams[1])[3:])}, "
+                f"{int(str(matchBlueTeams[2])[3:])})")
         cursor.execute(query)
         conn.commit()
 
@@ -111,10 +121,11 @@ for match in eventInfo:
                     f"redTechFouls = {int(redTechFouls)}, blueTechFouls = {int(blueTechFouls)}, "
                     f"redAutoPoints = {int(redAutoPts)}, blueAutoPoints = {int(blueAutoPts)}, "
                     f"redTelePoints = {int(redTelePts)}, blueTelePoints = {int(blueTelePts)}, "
-                    f"redChargeStationPoints = {int(redCSPts)}, blueChargeStationPoints = {int(blueCSPts)}, "
+                    f"redChargeStationPoints = {int(redCSPts)}, blueChargeStationPoints = {int(blueCSPts)} "
                     # f"redLinksRP = {int(redLinksRP)}, blueLinksRP = {int(blueLinksRP)}, "
                     # f"redChargeStationRP = {int(redCSRP)}, blueChargeStationRP = {int(blueCSRP)} "
                     f"WHERE matchNum = {matchNum}")
+            print(f"Processing match number = {matchNum}")
             cursor.execute(query)
             conn.commit()
 
