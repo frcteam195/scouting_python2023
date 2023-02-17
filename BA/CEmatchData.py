@@ -37,98 +37,89 @@ cursor.execute("SELECT events.timeZone FROM events WHERE events.currentEvent = 1
 timeZone = cursor.fetchone()[0]
 
 qNum = 0
+# eventInfo is all the data for all the matches
 eventInfo = tba.event_matches(currentEventID)
 tz = pytz.timezone(str(timeZone))
 print(type(tz))
 
+# loop through each match from the eventInfo which contains records for all matches and set several variables
 for match in eventInfo:
-    print("be patient, lots of data to grab from TBA")
     matchInfo = tba.match(match.key)
     matchNum = matchInfo.match_number
     matchTimeRaw = matchInfo.time
     matchActTimeRaw = matchInfo.actual_time
     matchTime = dt.datetime.fromtimestamp(matchTimeRaw, tz)
-
     matchAlliances = matchInfo.alliances
     matchRed = matchAlliances["red"]
     matchBlue = matchAlliances["blue"]
-
     matchRedTeams = matchRed["team_keys"]
     matchBlueTeams = matchBlue["team_keys"]
 
     if match.comp_level == "qm":
-        query = "INSERT INTO BAmatchData (matchNumber, matchTime, red1, red2, red3, blue1, blue2, blue3) " + \
-                f"VALUES ({matchNum}, '{str(matchTime)[11:16]}', {int(str(matchRedTeams[0])[3:])}, {int(str(matchRedTeams[1])[3:])}, {int(str(matchRedTeams[2])[3:])}, {int(str(matchBlueTeams[0])[3:])}, {int(str(matchBlueTeams[1])[3:])}, {int(str(matchBlueTeams[2])[3:])})"
-        print(query)
-        # cursor.execute(query)
-        # conn.commit()
-'''
+        # note, in the query the 3: subtract away the frc that is in front of each team number
+        query = ("INSERT INTO BAmatchData (matchNum, matchTime, red1, red2, red3, blue1, blue2, blue3) " + \
+                f"VALUES ({matchNum}, '{str(matchTime)[11:16]}', \
+                          {int(str(matchRedTeams[0])[3:])}, \
+                          {int(str(matchRedTeams[1])[3:])}, \
+                          {int(str(matchRedTeams[2])[3:])}, \
+                          {int(str(matchBlueTeams[0])[3:])}, \
+                          {int(str(matchBlueTeams[1])[3:])}, \
+                          {int(str(matchBlueTeams[2])[3:])})")
+        cursor.execute(query)
+        conn.commit()
+
     if matchInfo.actual_time is not None:
         matchActTime = dt.datetime.fromtimestamp(matchActTimeRaw, tz)
 
-        matchRedScore = matchRed["score"]
-        matchBlueScore = matchBlue["score"]
+        redScore = matchRed["score"]
+        blueScore = matchBlue["score"]
 
+        # used to create lists of data for the match as a whole and then for each alliance
+        #    that is then used to extract the various elements
         matchBreakdown = match["score_breakdown"]
         matchRedBreakdown = matchBreakdown["red"]
         matchBlueBreakdown = matchBreakdown["blue"]
 
-        matchRedFouls = matchRedBreakdown["foulCount"]
-        matchBlueFouls = matchBlueBreakdown["foulCount"]
+        redFouls = matchRedBreakdown["foulCount"]
+        blueFouls = matchBlueBreakdown["foulCount"]
 
-        matchRedTechFouls = matchRedBreakdown["techFoulCount"]
-        matchBlueTechFouls = matchBlueBreakdown["techFoulCount"]
+        redTechFouls = matchRedBreakdown["techFoulCount"]
+        blueTechFouls = matchBlueBreakdown["techFoulCount"]
 
-        matchRedAutoPoints = matchRedBreakdown["autoPoints"]
-        matchBlueAutoPoints = matchBlueBreakdown["autoPoints"]
+        redAutoPts = matchRedBreakdown["autoPoints"]
+        blueAutoPts = matchBlueBreakdown["autoPoints"]
 
-        matchRedTelePoints = matchRedBreakdown["teleopPoints"]
-        matchBlueTelePoints = matchBlueBreakdown["teleopPoints"]
+        redTelePts = matchRedBreakdown["teleopPoints"]
+        blueTelePts = matchBlueBreakdown["teleopPoints"]
 
-        matchRedHangarPoints = matchRedBreakdown["endgamePoints"]
-        matchBlueHangarPoints = matchBlueBreakdown["endgamePoints"]
+        # CS = ChargeStation
+        redCSPts = matchRedBreakdown["endgamePoints"]
+        blueCSPts = matchBlueBreakdown["endgamePoints"]
 
-        matchRedRankingPoints = matchRedBreakdown["cargoBonusRankingPoint"]
-        matchBlueRankingPoints = matchBlueBreakdown["cargoBonusRankingPoint"]
-
-        matchRedHangarRP = matchRedBreakdown["hangarBonusRankingPoint"]
-        matchBlueHangarRP = matchBlueBreakdown["hangarBonusRankingPoint"]
-
-        #print(str(matchTime) + "\n")
+        # redLinksRP = matchRedBreakdown["???"]
+        # blueLinksRP = matchBlueBreakdown["???"]
+        
+        # CSRP = Charge Station Ranking Point
+        # redCSRP = matchRedBreakdown["???"]
+        # blueCSRP = matchBlueBreakdown["???"]
 
         if match.comp_level == "qm":
-            #cursor.execute("INSERT INTO BlueAllianceMatchData(MatchNumber, MatchTime, ActualTime, Red1, Red2, Red3, Blue1, Blue2, Blue3, RedScore, BlueScore, "
-            #                "RedFouls, BlueFouls, RedTechFouls, BlueTechFouls, RedAutoPoints, BlueAutoPoints, RedTelePoints, BlueTelePoints, "
-            #                "RedHangerPoints, BlueHangerPoints, RedCargoRanking, BlueCargoRanking, RedHangarRanking, BlueHangarRanking) "
-            #                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);", \
-            #                (matchNum, str(matchTime)[11:16], str(matchActTime)[11:16], int(str(matchRedTeams[0])[3:]), int(str(matchRedTeams[1])[3:]), int(str(matchRedTeams[2])[3:]), int(str(matchBlueTeams[0])[3:]), int(str(matchBlueTeams[1])[3:]), int(str(matchBlueTeams[2])[3:]), \
-            #                int(matchRedScore), int(matchBlueScore), int(matchRedFouls), int(matchBlueFouls), int(matchRedTechFouls), int(matchBlueTechFouls), \
-            #                int(matchRedAutoPoints), int(matchBlueAutoPoints), int(matchRedTelePoints), int(matchBlueTelePoints), int(matchRedHangarPoints), int(matchBlueHangarPoints), \
-            #                int(matchRedRankingPoints), int(matchBlueRankingPoints), bool(matchRedHangarRP), bool(matchBlueHangarRP)))
-
-            cursor.execute("UPDATE BlueAllianceMatchData "
-                            f"SET ActualTime = '{str(matchActTime)[11:16]}', RedScore = {int(matchRedScore)}, BlueScore = {int(matchBlueScore)}, "
-                            f"RedFouls = {int(matchRedFouls)}, BlueFouls = {int(matchBlueFouls)}, RedTechFouls = {int(matchRedTechFouls)}, BlueTechFouls = {int(matchBlueTechFouls)}, "
-                            f"RedAutoPoints = {int(matchRedAutoPoints)}, BlueAutoPoints = {int(matchBlueAutoPoints)}, RedTelePoints = {int(matchRedTelePoints)}, BlueTelePoints = {int(matchBlueTelePoints)}, "
-                            f"RedHangerPoints = {int(matchRedHangarPoints)}, BlueHangerPoints = {int(matchBlueHangarPoints)}, RedCargoRanking = {int(matchRedRankingPoints)}, BlueCargoRanking = {int(matchBlueRankingPoints)}, "
-                            f"RedHangarRanking = {bool(matchRedHangarRP)}, BlueHangarRanking = {bool(matchBlueHangarRP)} "
-                            f"WHERE MatchNumber = {matchNum}")
-
+            query = ("UPDATE BAmatchData "
+                    f"SET actualTime = '{str(matchActTime)[11:16]}', "
+                    f"redScore = {int(redScore)}, blueScore = {int(blueScore)}, "
+                    f"redFouls = {int(redFouls)}, blueFouls = {int(blueFouls)}, "
+                    f"redTechFouls = {int(redTechFouls)}, blueTechFouls = {int(blueTechFouls)}, "
+                    f"redAutoPoints = {int(redAutoPts)}, blueAutoPoints = {int(blueAutoPts)}, "
+                    f"redTelePoints = {int(redTelePts)}, blueTelePoints = {int(blueTelePts)}, "
+                    f"redChargeStationPoints = {int(redCSPts)}, blueChargeStationPoints = {int(blueCSPts)}, "
+                    # f"redLinksRP = {int(redLinksRP)}, blueLinksRP = {int(blueLinksRP)}, "
+                    # f"redChargeStationRP = {int(redCSRP)}, blueChargeStationRP = {int(blueCSRP)} "
+                    f"WHERE matchNum = {matchNum}")
+            cursor.execute(query)
             conn.commit()
+
+cursor.close()
+conn.close()
 
 print("Time: %0.2f seconds" % (time.time() - start_time))
 print()
-
-
-#eventInfoSorted = [(k[3:], eventInfo[k]) for k in sorted(eventInfo, key=eventInfo.get, reverse=True)]
-# print(eventOPRSorted)
-
-#for team in eventInfo:
-    #query = "INSERT INTO BlueAllianceOPR (Team, OPR) VALUES " + "('" + str(team[0]) + "', '" + \
-            #str(team[1]) + "');"
-    # print(query)
-    #cursor.execute(query)
-    #conn.commit()
-    #print(team)
-#print('Writing OPRs to database')
-'''
