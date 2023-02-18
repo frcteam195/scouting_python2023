@@ -41,16 +41,12 @@ elements = elements.replace(elements[len(elements) - 3:], "")
 elements = elements.replace(elements[0],"")
 elements = elements.replace(elements[0],"")
 elements = elements.translate(str.maketrans("", "", "'"))
-# elements = (','.join(elements))
 
 query = f"SELECT {elements} FROM matchScouting WHERE eventID = {CEventID}"
-#print(query)
 cursor.execute(query)
 sharedData = cursor.fetchall()
-#print(sharedData)
 
 df = pd.DataFrame(sharedData)
-#print(df)
 
 headerList = []
 print(elementList)
@@ -59,11 +55,6 @@ for i in elementList:
     print(i)
     headerList.append(i)
 
-#print(headerList)
-
 df.to_csv (r'data.csv', header=headerList, index = False) # place 'r' before the path name
 df = pd.read_csv('data.csv')
 df.to_json(r'data.json', orient='records', lines=True)
-
-
-

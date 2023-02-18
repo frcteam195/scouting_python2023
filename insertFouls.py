@@ -23,22 +23,21 @@ host = config[input_host+"-"+input_db]['host']
 user = config[input_host+"-"+input_db]['user']
 passwd = config[input_host+"-"+input_db]['passwd']
 database = config[input_host+"-"+input_db]['database']
-#print(host + " " + user + " " + passwd + " " + database)
 
 conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=database)
 cursor = conn.cursor()
 
-CEventID = cursor.execute("SELECT eventID FROM events WHERE currentEvent = 1")
-CEventID = cursor.fetchone()[0]
+eventID = cursor.execute("SELECT eventID FROM events WHERE currentEvent = 1")
+eventID = cursor.fetchone()[0]
 
-BAMatchInfo = cursor.execute("SELECT * FROM BAmatchData")
-BAMatchInfo = cursor.fetchall()
+cursor.execute("SELECT * FROM BAmatchData")
+BAmatchInfo = cursor.fetchall()
 
-matchInfo = cursor.execute("SELECT * FROM Matches WHERE EventID = " + str(CEventID))
+matchInfo = cursor.execute("SELECT * FROM matches WHERE eventID = " + str(eventID))
 matchInfo = cursor.fetchall()
 
-print(len(BAMatchInfo))
+print(len(BAmatchInfo))
 
-for i in range(len(BAMatchInfo)):
-    if(BAMatchInfo[i][44] is None):
-        query = (f"UPDATE matchScouting SET BAFouls = ")
+for i in range(len(BAmatchInfo)):
+    if(BAmatchInfo[i][44] is None):
+        query = (f"UPDATE matchScouting SET BAfouls = ")
