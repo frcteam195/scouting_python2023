@@ -43,9 +43,10 @@ query = ("UPDATE " + M_table + " "
         "matches.redFouls = BAmatchData.redFouls, matches.blueFouls = BAmatchData.blueFouls, "
         "matches.redTechFouls = BAmatchData.redTechFouls, matches.blueTechFouls = BAmatchData.blueTechFouls, "
         "matches.redLinksRP = BAmatchData.redLinksRP, matches.blueLinksRP = BAmatchData.blueLinksRP, "
-        "matches.redChrgZoneRP = BAmatchData.redChargeStationRP, matchest.blueChrgZoneRP = BAmatchData.blueChargeStaionRP, "
+        "matches.redChrgZoneRP = BAmatchData.redChargeStationRP, matches.blueChrgZoneRP = BAmatchData.blueChargeStationRP, "
         "matches.matchTime = BAmatchData.matchTime, "
-        "matches.actualTime = BAmatchData.actualTime, "
+        "matches.actualTime = BAmatchData.actualTime "
         "WHERE matches.eventID = " + str(CEventID) + ";")
 print(query)
-
+cursor.execute(query)
+conn.commit()
