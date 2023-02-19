@@ -59,7 +59,7 @@ def teleCubes(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             totalCubes = cubeMid + cubeHigh + cubeLow
             total = coneHigh + coneMid + coneLow + cubeHigh + cubeMid + cubeLow
 
-            teleCubesDisplay = (f"{str(totalCubes)}|{str(totalCubes)}")
+            teleCubesDisplay = (f"{str(totalCubes)}|{str(total)}")
             teleCubesValue = totalCubes
 
             if total == 0:
@@ -69,7 +69,7 @@ def teleCubes(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             elif total <= 6:
                 teleCubesColor = 3
             elif total <= 9:
-                teleCubesColor = 4
+                teleCubesColor = 4      
             else:
                 teleCubesColor = 5
 

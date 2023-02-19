@@ -60,7 +60,7 @@ def teleCones(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             totalCones = coneMid + coneHigh + coneLow
             total = coneHigh + coneMid + coneLow + cubeHigh + cubeMid + cubeLow
 
-            teleConesDisplay = (f"{str(totalCones)}|{str(totalCones)}")
+            teleConesDisplay = (f"{str(totalCones)}|{str(total)}")
             teleConesValue = totalCones
 
             if total == 0:
