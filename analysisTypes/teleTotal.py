@@ -59,7 +59,7 @@ def teleTotal(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             totalTotal = coneMid + cubeMid
             total = coneHigh + coneMid + coneLow + cubeHigh + cubeMid + cubeLow
 
-            teleTotalDisplay = (f"{str(totalTotal)}|{str(totalTotal)}")
+            teleTotalDisplay = (f"{str(total)}")
             teleTotalValue = totalTotal
 
             if total == 0:
