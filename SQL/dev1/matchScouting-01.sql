@@ -9,9 +9,9 @@ CREATE TABLE IF NOT EXISTS dev1.matchScouting (
         scoutingStatus INT NULL,
         scouterID INT NULL,
         /* Level 1 Data */
+        preNoShow TINYINT NULL,
         preStartPos TINYINT NULL,
         preLoad TINYINT NULL,
-        preNoShow TINYINT NULL,
         autoMB TINYINT NULL,
         autoRamp TINYINT NULL,
         autoPen TINYINT NULL,
@@ -52,6 +52,5 @@ CREATE TABLE IF NOT EXISTS dev1.matchScouting (
         FOREIGN KEY (eventID) REFERENCES events (eventID),
         FOREIGN KEY (matchID) REFERENCES matches (matchID),
         FOREIGN KEY (scouterID) REFERENCES scouters (scouterID),
-        FOREIGN KEY (team) REFERENCES teams (team),
         FOREIGN KEY (allianceStationID) REFERENCES allianceStations (allianceStationID)
 ) Engine = InnoDB;

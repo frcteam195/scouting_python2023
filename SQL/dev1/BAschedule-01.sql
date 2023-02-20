@@ -10,3 +10,4 @@ CREATE TABLE IF NOT EXISTS dev1.BAschedule (
     PRIMARY KEY (matchNum),
     FOREIGN KEY (BAeventID) REFERENCES eventsAll (BAeventID)
 ) Engine = InnoDB;
+

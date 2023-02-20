@@ -29,3 +29,4 @@ cat matchScoutingL2-01.sql >> all.sql
 cat BAteams-01.sql >> all.sql
 cat dnpList-01.sql >> all.sql
 cat final24-01.sql >> all.sql
+cat share-01.sql >> all.sql

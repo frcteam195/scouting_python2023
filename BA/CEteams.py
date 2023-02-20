@@ -34,12 +34,11 @@ def sortbyteam(d):
     return d.get('team_number', None)
 
 teamList = []
-cursor.execute("SELECT events.BAeventID FROM events WHERE events.currentEvent = 1;")
+cursor.execute("SELECT events.BAeventID FROM events WHERE events.currentEvent = 1")
 event = cursor.fetchone()[0]
 print ("Grabbing teams for the " + event + " event")
 
-cursor.execute("DELETE FROM BAteams;")
-cursor.execute("ALTER TABLE BAteams AUTO_INCREMENT = 1;")
+cursor.execute("DELETE FROM BAteams")
 conn.commit()
 
 eventTeams = tba.event_teams(event)
@@ -53,7 +52,7 @@ for team in sorted(eventTeams, key=sortbyteam):
 			tempNick += char
 	values = "(" + str(team.team_number) + "," + team.nickname + "," + location + ")"
 	query = "INSERT INTO BAteams (team, teamName, teamLocation) VALUES " + "('" + str(team.team_number) + \
-				"','" + tempNick + "','" + str(location) + "');"
+				"','" + tempNick + "','" + str(location) + "')"
 	print(query)
 
 	cursor.execute(query)

@@ -30,6 +30,8 @@ cursor.execute("SELECT eventID FROM events WHERE currentEvent = 1")
 currentEventID = str(cursor.fetchone()[0])
 print("Current event ID = " + currentEventID)
 
+cursor.execute("DELETE FROM pit where eventID = " + currentEventID)
+conn.commit()
 cursor.execute("DELETE FROM teams where eventID = " + currentEventID)
 conn.commit()
 
@@ -41,8 +43,7 @@ for row in rows:
     location = row[2]
     query = f"INSERT INTO teams (team, eventID, teamName, teamLocation) VALUES ('{team}', '{currentEventID}', '{name}', '{location}')"
     query2 = f"INSERT INTO pit (team, eventID) VALUES ('{team}', '{currentEventID}')"
-    print(query)
-    print(query2)
+    print(f"adding team: {team}")
     cursor.execute(query)
     conn.commit()
     cursor.execute(query2)

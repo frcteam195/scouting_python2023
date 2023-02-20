@@ -32,13 +32,10 @@ conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=dat
 cursor = conn.cursor()
 
 tba = tbapy.TBA('Tfr7kbOvWrw0kpnVp5OjeY780ANkzVMyQBZ23xiITUkFo9hWqzOuZVlL3Uy6mLrz')
-#currentYear = datetime.datetime.today().year
-currentYear = 2022
+currentYear = datetime.datetime.today().year
 
 def wipeTTL():
-    print("wiping the teamsAll table so it may be rebuilt")
-    cursor.execute("DELETE FROM teamsAll;")
-    cursor.execute("ALTER TABLE teamsAll AUTO_INCREMENT = 1;")
+    cursor.execute("DELETE FROM teamsAll")
     conn.commit()
 wipeTTL()
 
@@ -47,19 +44,17 @@ def onlyascii(s):
 
 totalTeams = tba.teams(year=currentYear)
 teamList = []
+numTeams = len(totalTeams)
 
+i = 1
 for team in totalTeams:
-    
     tempNick = ''
     tempLocation = ''
     tempCity = ''
     tempStateProv = ''
     tempCountry = ''
-    
     teamNum = team.get('team_number')
-    print(f"adding Team = {teamNum}")
     location = str(team.city) + ', ' + str(team.state_prov) + ', ' + str(team.country)    
-    
     tempNick = onlyascii(team.nickname)
     tempLocation = onlyascii(location)
     tempCity = onlyascii(team.city)
@@ -77,13 +72,16 @@ for team in totalTeams:
     if len(tempCountry) > 50:
         tempCountry = tempCountry[:40]
     
+    print(f"adding team {i}/{numTeams}: Team = {teamNum}")
+    i += 1
+    
     query = "INSERT INTO teamsAll (team, teamName, teamLocation, teamCity, teamStateProv, teamCountry) VALUES " + \
             "('" + str(teamNum) + \
             "','" + str(tempNick) + \
             "','" + str(tempLocation) + \
             "','" + str(tempCity) + \
             "','" + str(tempStateProv) + \
-            "','" + str(tempCountry) + "');"
+            "','" + str(tempCountry) + "')"
     cursor.execute(query)
     conn.commit()
 

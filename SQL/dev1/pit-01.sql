@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS dev1.pit (
         robotWidth TINYINT NULL,
         robotHeight TINYINT NULL,
         driveBaseTypeID INT NULL,
-        driveTypeID INT NULL,
         driveMotorTypeID INT NULL,
         manipulatorTypeID INT NULL,
         dedicatedGroundIntake TINYINT NULL,
@@ -21,12 +20,11 @@ CREATE TABLE IF NOT EXISTS dev1.pit (
         electricalComments TINYTEXT NULL,
         generalComments TINYTEXT NULL,
         imageLink VARCHAR(150) NULL,
-        PRIMARY KEY (team),
-        FOREIGN KEY (team) REFERENCES teams (team),
-        FOREIGN KEY (eventID) REFERENCES events (eventID),
+        PRIMARY KEY (team, eventID),
+        FOREIGN KEY (team, eventID) REFERENCES teams (team, eventID),
         FOREIGN KEY (manipulatorTypeID) REFERENCES manipulatorTypes (manipulatorTypeID),
         FOREIGN KEY (driveMotorTypeID) REFERENCES driveMotorTypes (driveMotorTypeID),
         FOREIGN KEY (superClimbTypeID) REFERENCES superClimbTypes (superClimbTypeID),
         FOREIGN KEY (buildTypeID) REFERENCES buildTypes (buildTypeID),
-        FOREIGN KEY (driveTypeID) REFERENCES driveTypes (driveTypeID)
+        FOREIGN KEY (driveBaseTypeID) REFERENCES driveBaseTypes (driveBaseTypeID)
 ) Engine = InnoDB;

@@ -31,28 +31,29 @@ host = config[input_host+"-"+input_db]['host']
 user = config[input_host+"-"+input_db]['user']
 passwd = config[input_host+"-"+input_db]['passwd']
 database = config[input_host+"-"+input_db]['database']
-print(host + " " + user + " " + passwd + " " + database)
 
 # Define login information for TBA
 tba = tbapy.TBA('Tfr7kbOvWrw0kpnVp5OjeY780ANkzVMyQBZ23xiITUkFo9hWqzOuZVlL3Uy6mLrz')
-#currentYear = datetime.datetime.today().year
-currentYear = 2022
+currentYear = datetime.datetime.today().year
 
 conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=database)
 cursor = conn.cursor()
+
+print("Be patient! This will take a bit to complete")
 
 def onlyascii(s):
     return "".join(i for i in s if ord(i) < 128 and ord(i) != 39)
 
 def wipeBAE():
-        cursor.execute("DELETE FROM eventsAll;")
-        cursor.execute("ALTER TABLE eventsAll AUTO_INCREMENT = 1;")
+        cursor.execute("DELETE FROM eventsAll")
         conn.commit()
-wipeBAE() 
+wipeBAE()
 
 totalEvents = tba.events(year=currentYear)
 eventList = []
+numEvents = len(totalEvents)
 
+i = 1
 for event in totalEvents:
     eventCode = event.get('event_code')
     eventName = event.get('short_name')
@@ -89,8 +90,9 @@ for event in totalEvents:
             "','" + str(eventLocation) + \
             "','" + str(eventStartDate) + \
             "','" + str(eventEndDate) + \
-            "','" + str(BAEventID) + "');"
-    print(query)
+            "','" + str(BAEventID) + "')"
+    print(f"adding event {i}/{numEvents}: {eventCode}, {eventName}")
+    i += 1
     
     cursor.execute(query)
     conn.commit()

@@ -8,8 +8,7 @@ CREATE TABLE IF NOT EXISTS dev1.matchScoutingL2 (
         teamMatchNum INT NULL,
         scoutingStatus INT NULL,
         scouterID INT NULL,
-        synced2MS BOOLEAN DEFAULT false,
-        /* add Level 2 columns here. Note that these columns must match those of the matchScouting DB table */
+        preNoShow TINYINT NULL,
         speed TINYINT NULL,
         maneuverability TINYINT NULL,
         sturdiness TINYINT NULL,
@@ -28,6 +27,5 @@ CREATE TABLE IF NOT EXISTS dev1.matchScoutingL2 (
         FOREIGN KEY (eventID) REFERENCES events (eventID),
         FOREIGN KEY (matchID) REFERENCES matches (matchID),
         FOREIGN KEY (scouterID) REFERENCES scouters (scouterID),
-        FOREIGN KEY (team) REFERENCES teams (team),
         FOREIGN KEY (allianceStationID) REFERENCES allianceStations (allianceStationID)
 ) Engine = InnoDB;

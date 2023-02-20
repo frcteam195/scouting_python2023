@@ -23,6 +23,5 @@ CREATE TABLE IF NOT EXISTS dev1.CEanalysisGraphs (
 	rampMedian FLOAT NULL,
 	/* add more once we determine analysisTypes */
     PRIMARY KEY (team, eventID),
-    FOREIGN KEY (eventID) REFERENCES events (eventID),
-    FOREIGN KEY (team) REFERENCES teams (team)
+    FOREIGN KEY (team, eventID) REFERENCES teams (team, eventID)
 ) Engine = InnoDB;

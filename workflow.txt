@@ -1,0 +1,48 @@
+
+Scripts and steps that are run once per season
+    1. BA/eventsAll.py
+    2. BA/totalTeamList.py
+    3. populate the allianceStations table
+    4. populate the allianceStations table
+    5. populate tables for pit scouting:
+        buildTypes
+        driveBaseTypes
+        driveMotorTypes
+        manipulatorTypes
+        superClimbTypes
+    6. populate colorTypes table
+    7. populate scouters table
+
+For a new event
+    1. add event manually in the event table
+    2. BA/CEteams.py
+        Adds the teams for the current event into
+    3. BA/CEschedule.py
+        Adds the match schedule for the current event
+    4. createCEteams.py
+        Adds the teams from the current event (BAteams) to the tables
+            teams
+            pit
+    5. createMatches.py
+        Adds matches from the BAschedule table to the matches table
+        The script adds any matches that do not exist, does not overwrite any that 
+            exist previosuly, and will fix typos if any were hand entered and had
+            a typo.
+    6. createMatchScoutingRecords.py
+        Adds match scouting records for matches in the matches table for the current event
+        Adds both L1 and L2 records
+        Fixes typos if they exist, such as fixing a typo from a hand enetered schedule
+        Also loops back and adds the team match number for each match
+
+    7. beging scouting of data to populate matchScouting and matchScoutingL2 tables
+
+    8. analysisIR.py
+        runs the analysis module to populate the CEanalyis table
+    9. graphIR.py
+        runs the graph analysis to populate the CEanalysisGraphs table
+    
+    10. BA/CEoprs.py
+        populates the BAoprs table
+    11. BA/CEranks.py
+        populates the BAranks table
+    

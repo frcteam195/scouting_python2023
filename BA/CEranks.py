@@ -27,30 +27,26 @@ cursor = conn.cursor()
 
 tba = tbapy.TBA('Tfr7kbOvWrw0kpnVp5OjeY780ANkzVMyQBZ23xiITUkFo9hWqzOuZVlL3Uy6mLrz')
 
-cursor.execute("DELETE FROM BAranks;")
-cursor.execute("ALTER TABLE BAranks AUTO_INCREMENT = 1;")
+cursor.execute("DELETE FROM BAranks")
 conn.commit()
 
-# get the BAeventID for the currentEvent
-cursor.execute("SELECT events.BAeventID FROM events WHERE events.currentEvent = 1;")
-currentEvent = cursor.fetchone()[0]
+cursor.execute("SELECT events.BAeventID FROM events WHERE events.currentEvent = 1")
+BAeventID = cursor.fetchone()[0]
 
-eventTeams = tba.event_teams(currentEvent)
-teamRanks = tba.event_rankings(currentEvent).get('rankings')
+cursor.execute("SELECT events.eventID FROM events WHERE events.currentEvent = 1")
+eventID = cursor.fetchone()[0]
+
+eventTeams = tba.event_teams(BAeventID)
+teamRanks = tba.event_rankings(BAeventID).get('rankings')
 teamRankList = []
 
 print("Writing Ranks to BAranks table")
-
-cursor.execute("DELETE FROM BAranks")
-cursor.execute("ALTER TABLE BAranks AUTO_INCREMENT = 1;")
-conn.commit()
 
 for teamRank in teamRanks:
     teamRankList.append(teamRank['team_key'][3:])
 
 for team in teamRankList:
-    query = "INSERT INTO BAranks (team, rank) VALUES " + "('" + str(team) + "', '" + \
-            str(teamRankList.index(team) + 1) + "');"
+    query = f"INSERT INTO BAranks (eventID, team, rank) VALUES ('{eventID}', '{str(team)}', '{str(teamRankList.index(team) + 1)}')"
     cursor.execute(query)
     conn.commit()
 
