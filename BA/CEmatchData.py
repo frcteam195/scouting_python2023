@@ -35,7 +35,7 @@ cursor = conn.cursor()
 
 tba = tbapy.TBA('Tfr7kbOvWrw0kpnVp5OjeY780ANkzVMyQBZ23xiITUkFo9hWqzOuZVlL3Uy6mLrz')
 
-cursor.execute("DELETE FROM BAmatchData;")
+cursor.execute("DELETE FROM BAmatchData")
 conn.commit()
 
 print("Pease be patient! Grabbing lots of data from The Blue Alliance")
@@ -80,52 +80,102 @@ for match in eventInfo:
 
     if matchInfo.actual_time is not None:
         matchActTime = dt.datetime.fromtimestamp(matchActTimeRaw, tz)
-
-        redScore = matchRed["score"]
-        blueScore = matchBlue["score"]
-
-        # used to create lists of data for the match as a whole and then for each alliance
-        #    that is then used to extract the various elements
+        # get details from the matchBreakdown
         matchBreakdown = match["score_breakdown"]
         matchRedBreakdown = matchBreakdown["red"]
         matchBlueBreakdown = matchBreakdown["blue"]
 
+        # print(matchRedBreakdown)
+        # totals
+        redTotalCSPts = matchRedBreakdown["totalChargeStationPoints"]
+        blueTotalCSPts = matchBlueBreakdown["totalChargeStationPoints"]
+        redTotalPts = matchRedBreakdown["totalPoints"]
+        blueTotalPts = matchBlueBreakdown["totalPoints"]
+        redLinkPts = matchRedBreakdown["linkPoints"]
+        blueLinkPts = matchBlueBreakdown["linkPoints"]
+        redCoopGamePieceCount = matchRedBreakdown["coopGamePieceCount"]
+        blueCoopGamePieceCount = matchBlueBreakdown["coopGamePieceCount"]
+        # bonuses
+        redActivationBonus = matchRedBreakdown["activationBonusAchieved"]
+        if redActivationBonus == True:
+            redActivationBonus = 1
+        else:
+            redActivationBonus = 0
+        blueActivationBonus = matchBlueBreakdown["activationBonusAchieved"]
+        if blueActivationBonus == True:
+            blueActivationBonus = 1
+        else:
+            blueActivationBonus = 0
+        redCoopertitionBonus = matchRedBreakdown["coopertitionCriteriaMet"]
+        if redCoopertitionBonus == True:
+            redCoopertitionBonus = 1
+        else:
+            redCoopertitionBonus = 0
+        blueCoopertitionBonus = matchBlueBreakdown["coopertitionCriteriaMet"]
+        if blueCoopertitionBonus == True:
+            blueCoopertitionBonus = 1
+        else:
+            blueCoopertitionBonus = 0
+        redSustainabilityBonus = matchRedBreakdown["sustainabilityBonusAchieved"]
+        if redSustainabilityBonus == True:
+            redSustainabilityBonus = 1
+        else:
+            redSustainabilityBonus = 0
+        blueSustainabilityBonus = matchBlueBreakdown["sustainabilityBonusAchieved"]
+        if blueSustainabilityBonus == True:
+            blueSustainabilityBonus = 1
+        else:
+            blueSustainabilityBonus = 0
+        # fouls
         redFouls = matchRedBreakdown["foulCount"]
         blueFouls = matchBlueBreakdown["foulCount"]
-
         redTechFouls = matchRedBreakdown["techFoulCount"]
         blueTechFouls = matchBlueBreakdown["techFoulCount"]
-
+        # auto
+        redAutoMoveBonusPts = matchRedBreakdown["autoMobilityPoints"]
+        blueAutoMoveBonusPts = matchBlueBreakdown["autoMobilityPoints"]
+        redAutoGamePieces = matchRedBreakdown["autoGamePieceCount"]
+        blueAutoGamePieces = matchBlueBreakdown["autoGamePieceCount"]
+        redAutoGamePiecePts = matchRedBreakdown["autoGamePiecePoints"]
+        blueAutoGamePiecePts = matchBlueBreakdown["autoGamePiecePoints"]
+        redAutoCSPts = matchRedBreakdown["autoChargeStationPoints"]
+        blueAutoCSPts = matchBlueBreakdown["autoChargeStationPoints"]
         redAutoPts = matchRedBreakdown["autoPoints"]
         blueAutoPts = matchBlueBreakdown["autoPoints"]
-
+        # teleop
+        redTeleGamePieces = matchRedBreakdown["teleopGamePieceCount"]
+        blueTeleGamePieces = matchBlueBreakdown["teleopGamePieceCount"]
+        redTeleGamePiecePts = matchRedBreakdown["teleopGamePiecePoints"]
+        blueTeleGamePiecePts = matchBlueBreakdown["teleopGamePiecePoints"]
         redTelePts = matchRedBreakdown["teleopPoints"]
         blueTelePts = matchBlueBreakdown["teleopPoints"]
-
-        # CS = ChargeStation
-        redCSPts = matchRedBreakdown["endgamePoints"]
-        blueCSPts = matchBlueBreakdown["endgamePoints"]
-
-        # redLinksRP = matchRedBreakdown["???"]
-        # blueLinksRP = matchBlueBreakdown["???"]
-        
-        # CSRP = Charge Station Ranking Point
-        # redCSRP = matchRedBreakdown["???"]
-        # blueCSRP = matchBlueBreakdown["???"]
+        # ChargeStation
+        redEndgameCSPts = matchRedBreakdown["endGameChargeStationPoints"]
+        blueEndgameCSPts = matchBlueBreakdown["endGameChargeStationPoints"]
 
         if match.comp_level == "qm":
             query = ("UPDATE BAmatchData "
                     f"SET actualTime = '{str(matchActTime)[11:16]}', "
-                    f"redScore = {int(redScore)}, blueScore = {int(blueScore)}, "
+                    f"redTotalCSPts = {int(redTotalCSPts)}, blueTotalCSPts = {int(blueTotalCSPts)}, "
+                    f"redTotalPts = {int(redTotalPts)}, blueTotalPts = {int(blueTotalPts)}, "
+                    f"redLinkPts = {int(redLinkPts)}, blueLinkPts = {int(blueLinkPts)}, "
+                    f"redCoopGamePieceCount = {int(redCoopGamePieceCount)}, blueCoopGamePieceCount = {int(blueCoopGamePieceCount)}, "
+                    f"redActivationBonus = {int(redActivationBonus)}, blueActivationBonus = {int(blueActivationBonus)}, "
+                    f"redCoopertitionBonus = {int(redCoopertitionBonus)}, blueCoopertitionBonus = {int(blueCoopertitionBonus)}, "
+                    f"redSustainabilityBonus = {int(redSustainabilityBonus)}, blueSustainabilityBonus = {int(blueSustainabilityBonus)}, "
                     f"redFouls = {int(redFouls)}, blueFouls = {int(blueFouls)}, "
                     f"redTechFouls = {int(redTechFouls)}, blueTechFouls = {int(blueTechFouls)}, "
-                    f"redAutoPoints = {int(redAutoPts)}, blueAutoPoints = {int(blueAutoPts)}, "
-                    f"redTelePoints = {int(redTelePts)}, blueTelePoints = {int(blueTelePts)}, "
-                    f"redChargeStationPoints = {int(redCSPts)}, blueChargeStationPoints = {int(blueCSPts)} "
-                    # f"redLinksRP = {int(redLinksRP)}, blueLinksRP = {int(blueLinksRP)}, "
-                    # f"redChargeStationRP = {int(redCSRP)}, blueChargeStationRP = {int(blueCSRP)} "
+                    f"redAutoMoveBonusPts = {int(redAutoMoveBonusPts)}, blueAutoMoveBonusPts = {int(blueAutoMoveBonusPts)}, "
+                    f"redAutoGamePieces = {int(redAutoGamePieces)}, blueAutoGamePieces = {int(blueAutoGamePieces)}, "
+                    f"redAutoGamePiecePts = {int(redAutoGamePiecePts)}, blueAutoGamePiecePts = {int(blueAutoGamePiecePts)}, "
+                    f"redAutoCSPts = {int(redAutoCSPts)}, blueAutoCSPts = {int(blueAutoCSPts)}, "
+                    f"redAutoPts = {int(redAutoPts)}, blueAutoPts = {int(blueAutoPts)}, "
+                    f"redTeleGamePieces = {int(redTeleGamePieces)}, blueTeleGamePieces = {int(blueTeleGamePieces)}, "
+                    f"redTeleGamePiecePts = {int(redTeleGamePiecePts)}, blueTeleGamePiecePts = {int(blueTeleGamePiecePts)}, "
+                    f"redTelePts = {int(redTelePts)}, blueTelePts = {int(blueTelePts)}, "
+                    f"redEndgameCSPts = {int(redEndgameCSPts)}, blueEndgameCSPts = {int(blueEndgameCSPts)} "
                     f"WHERE matchNum = {matchNum}")
-            print(f"Processing match number = {matchNum}")
+            print(f"Updating match number = {matchNum}")
             cursor.execute(query)
             conn.commit()
 
