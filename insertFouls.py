@@ -39,5 +39,7 @@ matchInfo = cursor.fetchall()
 print(len(BAmatchInfo))
 
 for i in range(len(BAmatchInfo)):
+    print(matchInfo[i][24])
+    quit()
     if(BAmatchInfo[i][44] is None):
-        query = (f"UPDATE matchScouting SET BAfouls = ")
+        query = (f"UPDATE matchScouting SET BAfouls = {str(matchInfo[i][44])}")
