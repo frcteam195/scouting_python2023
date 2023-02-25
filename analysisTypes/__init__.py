@@ -17,5 +17,6 @@ __all__ = ['startingPosition',
            'postReorientCone',
            'postShelfPickup',
            'postGroundPickup',
-           'postGoodPartner'     
+           'postGoodPartner',
+           'matchVideos'     
            ]

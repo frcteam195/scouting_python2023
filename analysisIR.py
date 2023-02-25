@@ -32,7 +32,8 @@ analysisTypesDict = {
                         "postReorientCone": postReorientCone.postReorientCone,
                         "postShelfPickup": postShelfPickup.postShelfPickup,
                         "postGroundPickup": postGroundPickup.postGroundPickup,
-                        "postGoodPartner": postGoodPartner.postGoodPartner
+                        "postGoodPartner": postGoodPartner.postGoodPartner,
+                        "matchVideos": matchVideos.matchVideos
                     } 
 
 # parser to choose the database where the table will be written
