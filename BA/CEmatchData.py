@@ -85,8 +85,8 @@ for match in eventInfo:
         matchBlueBreakdown = matchBreakdown["blue"]
 
         # totals
-        #redTotalCSPts = matchRedBreakdown["totalChargeStationPoints"]
-        #blueTotalCSPts = matchBlueBreakdown["totalChargeStationPoints"]
+        redTotalCSPts = matchRedBreakdown["totalChargeStationPoints"]
+        blueTotalCSPts = matchBlueBreakdown["totalChargeStationPoints"]
         redTotalPts = matchRedBreakdown["totalPoints"]
         blueTotalPts = matchBlueBreakdown["totalPoints"]
         redLinkPts = matchRedBreakdown["linkPoints"]
@@ -154,7 +154,7 @@ for match in eventInfo:
         if match.comp_level == "qm":
             query = ("UPDATE BAmatchData "
                     f"SET actualTime = '{str(matchActTime)[11:16]}', "
-                    #f"redTotalCSPts = {int(redTotalCSPts)}, blueTotalCSPts = {int(blueTotalCSPts)}, "
+                    f"redTotalCSPts = {int(redTotalCSPts)}, blueTotalCSPts = {int(blueTotalCSPts)}, "
                     f"redTotalPts = {int(redTotalPts)}, blueTotalPts = {int(blueTotalPts)}, "
                     f"redLinkPts = {int(redLinkPts)}, blueLinkPts = {int(blueLinkPts)}, "
                     f"redCoopGamePieceCount = {int(redCoopGamePieceCount)}, blueCoopGamePieceCount = {int(blueCoopGamePieceCount)}, "
