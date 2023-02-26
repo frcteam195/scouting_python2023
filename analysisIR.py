@@ -33,7 +33,9 @@ analysisTypesDict = {
                         "postShelfPickup": postShelfPickup.postShelfPickup,
                         "postGroundPickup": postGroundPickup.postGroundPickup,
                         "postGoodPartner": postGoodPartner.postGoodPartner,
-                        "matchVideos": matchVideos.matchVideos
+                        "matchVideos": matchVideos.matchVideos,
+                        "BAFoulsPts": BAFoulsPts.BAFoulsPts,
+                        "BARankingPts": BARankingPts.BARankingPts
                     } 
 
 # parser to choose the database where the table will be written
