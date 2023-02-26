@@ -4,6 +4,7 @@ import getopt
 import sys
 import argparse
 import configparser
+import re
 
 # db1 / host1 = source, db2 / host2 = destination
 parser = argparse.ArgumentParser()
@@ -56,6 +57,7 @@ sourceData = cursor1.fetchall()
 for row in sourceData:
     updateQuery = str("UPDATE " + str(tableName) + " SET {} = {} WHERE " + str(uniqueID) + " = " + str(row[0])).format(
         ", ".join([col + " = '" + str(val) + "'" for col, val in zip(columns[1:], row[1:])]), row[0])
+    updateQuery = re.sub(r"'None'", "NULL", updateQuery)
     print(updateQuery)
     cursor2.execute(updateQuery)
     conn2.commit()

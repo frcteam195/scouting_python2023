@@ -1,4 +1,5 @@
 CREATE TABLE IF NOT EXISTS dev1.pit (
+        pitID INT AUTO_INCREMENT NOT NULL,
         team VARCHAR(10) NOT NULL,
         eventID INT NOT NULL,
         scoutingStatus TINYINT DEFAULT 0,
@@ -20,7 +21,7 @@ CREATE TABLE IF NOT EXISTS dev1.pit (
         electricalComments TINYTEXT NULL,
         generalComments TINYTEXT NULL,
         imageLink VARCHAR(150) NULL,
-        PRIMARY KEY (team, eventID),
+        PRIMARY KEY (pitID),
         FOREIGN KEY (team, eventID) REFERENCES teams (team, eventID),
         FOREIGN KEY (manipulatorTypeID) REFERENCES manipulatorTypes (manipulatorTypeID),
         FOREIGN KEY (driveMotorTypeID) REFERENCES driveMotorTypes (driveMotorTypeID),
