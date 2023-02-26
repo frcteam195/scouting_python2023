@@ -35,7 +35,7 @@ analysisTypesDict = {
                     "postGoodPartner": postGoodPartner.postGoodPartner,
                     "matchVideos": matchVideos.matchVideos,
                     "BAFoulsPts": BAFoulsPts.BAFoulsPts,
-                    "BARankingPoints": BARankingPts.BARankingPts
+                    "BARankingPoints": BARankingPoints.BARankingPoints
                     } 
 
 # parser to choose the database where the table will be written
