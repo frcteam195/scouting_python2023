@@ -20,5 +20,5 @@ __all__ = ['startingPosition',
            'postGoodPartner',
            'matchVideos',
            'BAFoulsPts',
-           'BARankingPts'   
+           'BARankingPoints'   
            ]
