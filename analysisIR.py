@@ -11,9 +11,9 @@ import configparser
 # add each analysisType to the analysisTypeDict dictionary 
 from analysisTypes import *
 analysisTypesDict = {
-                        "startingPosition": startingPosition.startingPosition,
-                        "autoScore": autoScore.autoScore,
-                        "autoGamePieces": autoGamePieces.autoGamePieces,
+                    "startingPosition": startingPosition.startingPosition,
+                    "autoScore": autoScore.autoScore,
+                       "autoGamePieces": autoGamePieces.autoGamePieces,
                         "autoRamp": autoRamp.autoRamp,
                         "teleHigh": teleHigh.teleHigh,
                         "teleMid": teleMid.teleMid,
