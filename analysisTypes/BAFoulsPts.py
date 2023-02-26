@@ -23,7 +23,7 @@ def BAFoulsPts(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'UR'
         else:
             
-            fouls = matchResults[analysis.columns.index('BAFouls')]
+            fouls = matchResults[analysis.columns.index('BAfouls')]
             techFouls = matchResults[analysis.columns.index('BAtechFouls')]
 
             fouls *= 5

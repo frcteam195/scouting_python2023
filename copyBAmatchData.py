@@ -23,7 +23,6 @@ host = config[input_host+"-"+input_db]['host']
 user = config[input_host+"-"+input_db]['user']
 passwd = config[input_host+"-"+input_db]['passwd']
 database = config[input_host+"-"+input_db]['database']
-#print(host + " " + user + " " + passwd + " " + database)
 
 conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=database)
 cursor = conn.cursor()
@@ -36,7 +35,7 @@ BAMDtable = "BAmatchData"
 
 query = ("UPDATE " + matchTable + " "
         "INNER JOIN " + BAMDtable + " ON " + matchTable + ".matchNum = " + BAMDtable + ".matchNum "
-    "SET matches.redAutoPts = BAmatchData.redAutoPts, matches.blueAutoPts = BAmatchData.blueAutoPts, "
+        "SET matches.redAutoPts = BAmatchData.redAutoPts, matches.blueAutoPts = BAmatchData.blueAutoPts, "
         "matches.redTelePts = BAmatchData.redTelePts, matches.blueTelePts = BAmatchData.blueTelePts, "
         "matches.redTotalCSPts = (BAmatchData.redEndgameCSPts + BAmatchData.redAutoCSPts), matches.blueTotalCSPts = (BAmatchData.blueEndgameCSPts + BAmatchData.blueAutoCSPts), "
         "matches.redTotalPts = BAmatchData.redTotalPts, matches.blueTotalPts = BAmatchData.blueTotalPts, "
@@ -57,7 +56,7 @@ query = ("UPDATE " + matchTable + " "
         "matches.matchTime = BAmatchData.matchTime, "
         "matches.actualTime = BAmatchData.actualTime "
         "WHERE matches.eventID = " + str(eventID))
-print(query)
+
 cursor.execute(query)
 conn.commit()
 

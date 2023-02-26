@@ -28,7 +28,6 @@ host = config[input_host+"-"+input_db]['host']
 user = config[input_host+"-"+input_db]['user']
 passwd = config[input_host+"-"+input_db]['passwd']
 database = config[input_host+"-"+input_db]['database']
-#print(host + " " + user + " " + passwd + " " + database)
 
 conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=database)
 cursor = conn.cursor()
@@ -85,7 +84,6 @@ for match in eventInfo:
         matchRedBreakdown = matchBreakdown["red"]
         matchBlueBreakdown = matchBreakdown["blue"]
 
-        print(matchRedBreakdown)
         # totals
         #redTotalCSPts = matchRedBreakdown["totalChargeStationPoints"]
         #blueTotalCSPts = matchBlueBreakdown["totalChargeStationPoints"]

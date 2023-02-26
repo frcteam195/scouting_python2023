@@ -43,7 +43,6 @@ for i in range(len(BAmatchInfo)):
         if(BAmatchInfo[i][24] is not None):
             query1 = (f"UPDATE matchScouting SET BAfouls = {str(matches[i][25])}, BATechFouls = {str(matches[i][27])}, BAlinkRP = {str(matches[i][23])}, BAchargeStationRP = {str(matches[i][19])} WHERE team = {str(matches[i][3 + j])} AND matchID = {str(matches[i][0])}")
             query2 = (f"UPDATE matchScouting SET BAfouls = {str(matches[i][26])}, BATechFouls = {str(matches[i][28])}, BAlinkRP = {str(matches[i][24])}, BAchargeStationRP = {str(matches[i][20])} WHERE team = {str(matches[i][6 + j])} AND matchID = {str(matches[i][0])}")
-            
             cursor.execute(query1)
             cursor.execute(query2)
             conn.commit()
