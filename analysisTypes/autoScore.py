@@ -103,8 +103,34 @@ def autoScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             autoScoreList.append(autoScoreValue)
 
     if numberOfMatchesPlayed > 0:
-        rsCEA['S1V'] = round(statistics.mean(autoScoreList), 1)
-        rsCEA['S1D'] = str(round(statistics.mean(autoScoreList), 1))
-        rsCEA['S2V'] = round(statistics.median(autoScoreList), 1)
-        rsCEA['S2D'] = str(round(statistics.median(autoScoreList), 1))
+        mean = round(statistics.mean(autoScoreList), 1)
+        median = round(statistics.median(autoScoreList), 1)
+        rsCEA['S1V'] = mean
+        rsCEA['S1D'] = str(mean)
+        if mean == 0:
+            rsCEA['S1F'] = 1
+        elif 3 >= mean > 0:
+            rsCEA['S1F'] = 2
+        elif 6 >= mean > 3:
+            rsCEA['S1F'] = 3
+        elif 12 >= mean > 6:
+            rsCEA['S1F'] = 4
+        elif mean > 12:
+            rsCEA['S1F'] = 5
+        else:
+            rsCEA['S1F'] = 999
+        rsCEA['S2V'] = median
+        rsCEA['S2D'] = str(median)
+        if median == 0:
+            rsCEA['S2F'] = 1
+        elif 3 >= median > 0:
+            rsCEA['S2F'] = 2
+        elif 6 >= median > 3:
+            rsCEA['S2F'] = 3
+        elif 12 >= median > 6:
+            rsCEA['S2F'] = 4
+        elif median > 12:
+            rsCEA['S2F'] = 5
+        else:
+            rsCEA['S2F'] = 999
     return rsCEA

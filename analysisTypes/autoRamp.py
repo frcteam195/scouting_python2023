@@ -68,7 +68,7 @@ def autoRamp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             elif autoRamp == 3: #Docked And Engaged
                 autoRampDisplay = "12|" + str(numGamePieces) + mb
                 autoRampValue = 12
-
+ 
                 if numGamePieces == 0:
                     autoRampColor = 4 #Green
                 else: #with move bonus or piece placement
@@ -84,8 +84,34 @@ def autoRamp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             autoRampList.append(autoRampValue)
 
     if numberOfMatchesPlayed > 0:
-        rsCEA['S1V'] = round(statistics.mean(autoRampList), 1)
-        rsCEA['S1D'] = str(round(statistics.mean(autoRampList), 1))
-        rsCEA['S2V'] = round(statistics.median(autoRampList), 1)
-        rsCEA['S2D'] = str(round(statistics.median(autoRampList), 1))
+        mean = round(statistics.mean(autoRampList), 1)
+        median = round(statistics.median(autoRampList), 1)
+        rsCEA['S1V'] = mean
+        rsCEA['S1D'] = str(mean)
+        if mean == 0:
+            rsCEA['S1F'] = 1
+        elif 4 >= mean > 0:
+            rsCEA['S1F'] = 2
+        elif 8 > mean > 4:
+            rsCEA['S1F'] = 3
+        elif 12 > mean >= 8:
+            rsCEA['S1F'] = 4
+        elif mean == 12:
+            rsCEA['S1F'] = 5
+        else:
+            rsCEA['S1F'] = 999
+        rsCEA['S2V'] = median
+        rsCEA['S2D'] = str(median)
+        if median == 0:
+            rsCEA['S1F'] = 1
+        elif 4 >= median > 0:
+            rsCEA['S1F'] = 2
+        elif 8 > median > 4:
+            rsCEA['S1F'] = 3
+        elif 12 > median >= 8:
+            rsCEA['S1F'] = 4
+        elif median == 12:
+            rsCEA['S1F'] = 5
+        else:
+            rsCEA['S1F'] = 999
     return rsCEA
