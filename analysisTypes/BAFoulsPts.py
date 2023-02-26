@@ -1,5 +1,5 @@
 import statistics
-#import mysql.connector
+
 def BAFoulsPts(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
     rsCEA = {}

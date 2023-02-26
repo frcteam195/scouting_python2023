@@ -1,15 +1,12 @@
 import statistics
-#import mysql.connector
 def BARankingPoints(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
     rsCEA = {}
     rsCEA['analysisTypeID'] = 25
     numberOfMatchesPlayed = 0
 
-    # only using to test ranks, eliminate later
     BARankingPointsList = []
     
-    # Loop through each match the robot played in.
     for matchResults in rsRobotMatchData:
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
         rsCEA['eventID'] = matchResults[analysis.columns.index('eventID')]

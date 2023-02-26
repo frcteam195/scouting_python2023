@@ -1,16 +1,12 @@
-from re import T
 import statistics
 
 def teleCones(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
-    # Initialize the rsCEA record set and define variables specific to this function which lie outside the for loop
     rsCEA = {}
     rsCEA['analysisTypeID'] = 9
     numberOfMatchesPlayed = 0
 
-    # only using to test ranks, eliminate later
     teleConesList = []
     
-    # Loop through each match the robot played in.
     for matchResults in rsRobotMatchData:
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
         rsCEA['eventID'] = matchResults[analysis.columns.index('eventID')]
