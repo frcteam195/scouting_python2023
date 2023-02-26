@@ -83,6 +83,8 @@ for match in eventInfo:
         matchBreakdown = match["score_breakdown"]
         matchRedBreakdown = matchBreakdown["red"]
         matchBlueBreakdown = matchBreakdown["blue"]
+        print(matchRedBreakdown)
+        quit()
 
         # totals
         redTotalCSPts = matchRedBreakdown["totalChargeStationPoints"]
