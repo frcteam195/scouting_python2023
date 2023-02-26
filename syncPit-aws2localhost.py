@@ -47,7 +47,4 @@ for i in range(len(BAmatchInfo)):
             cursor.execute(query2)
             conn.commit()
 
-cursor.close()
-conn.close()
-
 print("should be good now")
