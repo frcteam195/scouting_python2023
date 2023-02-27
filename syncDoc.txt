@@ -1,0 +1,99 @@
+Outline of what tables need to be synced between the Jetson and AWS databases
+
+TABLE               sync    rebuild/update    manual    Source  Destination
+allianceStations    no
+analysisTypes       yes                       yes
+BAmatchData         no
+BAoprs              no
+BAranks             no
+BAschedule          no
+BAteams             no
+buildTypes          yes                       yes
+CEanalysis          yes     rebuild                     Jetson  AWS
+CEanalysisGraphs    yes     rebuild                     Jetson  AWS
+CEanalysisTMP       no
+centerGravityTypes  yes                       yes
+colorTypes          ??
+dnpList             yes     rebuild                     Jetson  AWS
+driveBaseTypes      yes                       yes
+driveMotorTypes     yes                       yes
+events              yes                       yes
+eventsAll           yes                       yes
+final24             yes     rebuild                     Jetson  AWS
+manipulatorTypes    yes                       yes
+matches             yes     update                      Jetson  AWS
+matchScouting       yes     update                      Jetson  AWS
+matchScoutingL2     yes     update                      AWS     Jetson
+pickList1           yes     rebuild                     Jetson  AWS
+pit                 yes     update                      AWS     Jetson
+scouters            yes                       yes
+share               no
+superClimbTypes     yes                       yes
+teams               yes                       yes
+teamsAll            yes                       yes
+watch1              yes     rebuild                     Jetson  AWS
+watch2              yes     rebuild                     Jetson  AWS
+
+scripts to run:
+Beginning of season
+    BA/eventsAll.py -db production -host aws
+    BA/eventsAll.py -db production -host jetson/localhost
+    BA/totalTeamList.py -db production -host aws
+    BA/totalTeamList.py -db production -host jetson/localhost
+
+As needed the following should be hand edited. No scripts available
+    populate allianceStations table (jetson / aws). Perform manually
+    populate pit tables (jetson / aws). Perform manually
+        buildTypes
+        centerGravityTypes
+        driveBaseTypes
+        driveMotorTypes
+        manipulatorTypes
+        superClimbTypes
+    populate colorTypes (jetson / aws). Perform manually
+    populate scouters table (jetson / aws). Perform manually
+
+Day before event
+    1. manually add event to events table and set as currentEvent (Jetson / AWS)
+    2. BA/CEteams.py -db production -host aws
+    3. BA/CEteams.py -db production -host jetson/localhost
+
+Right before the event starts
+    1. BA/CEschedule.py -db production -host aws               
+    2. BA/CEschedule.py -db production -host localhost
+    3. createCEteams.py -db production -host aws                     note: populates teams and pit tables
+    4. createCEteams.py -db production -host localhost               note: populates teams and pit tables
+    5. createMatches.py -db production -host aws               
+    6. createMatches.py -db production -host localhost
+    7. createMatchScoutingRecords.py -db production -host aws        note: populate L1 and L2 tables
+    8. createMatchScoutingRecords.py -db production -host localhost  note: populate L1 and L2 tables
+
+During event after match scouting records exist (cron job)
+    On Jetson
+        BAmatchData.py -db production -host localhost
+        BAoprs.py -db production -host localhost
+        BAranks.py -db production -host localhost
+        copyBAmatchData.py -db production -host localhost
+        insertFoulsRP.py -db production -host localhost
+        syncTable.py -db1 production -host1 aws -db2 production -host2 localhost -table matchScoutingL2 -id matchScoutingL2ID
+        syncTable.py -db1 production -host1 aws -db2 production -host2 localhost -table pit -id pitID
+        analysisIR.py -db production -host localhost
+        graphIR.py -db production -host localhost
+        syncTable.py -db1 production -host1 localhost -db2 production -host2 aws -table matchScouting -id matchScoutingID
+        syncTable.py -db1 production -host1 localhost -db2 production -host2 aws -table matches -id matchID
+        mysqldump production CEanalysis > dump.sql
+        mysqldump production CEanalysisGraphs >> dump.sql
+        mysqldump production dnpList >> dump.sql
+        mysqldump production final24 >> dump.sql
+        mysqldump production pickList1 >> dump.sql
+        mysqldump production watch1 >> dump.sql
+        mysqldump production watch2 >> dump.sql
+        mysql -h scouting.team195.com production < dump.sql
+        rm -f dump.sql
+        share.py -db production -host localhost
+        scp [results from share.py to appropriate location]
+        now=$(date +%Y-%m-%d_%H-%M)
+        cd ~/DBbackups
+        mysqldump production > event_"$now".sql
+        tar -czf event_"$now".tgz backups/event_"$now".sql
+        rm -f event_"$now".sql
