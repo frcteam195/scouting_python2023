@@ -21,7 +21,7 @@ input_host = args.host
 
 # Read the configuration file
 config = configparser.ConfigParser()
-config.read('../helpers/config.ini')
+config.read('helpers/config.ini')
 
 # Get the database login information from the configuration (ini) file
 host = config[input_host+"-"+input_db]['host']

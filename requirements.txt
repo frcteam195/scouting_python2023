@@ -2,3 +2,4 @@ numpy
 tbapy
 mysql-connector-python
 pytz
+regex
