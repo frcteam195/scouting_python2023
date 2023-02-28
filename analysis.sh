@@ -1,3 +1,4 @@
+mkdir -p /home/team195/DBbackups
 now=$(date +%Y-%m-%d_%H-%M)
 cd /home/team195/DBbackups
 /usr/bin/mysql -h localhost dev1 > event_"$now".sql
