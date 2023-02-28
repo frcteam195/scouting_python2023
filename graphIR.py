@@ -59,16 +59,23 @@ conn.commit()
 # 20,postShelfPickup
 # 21,postGroundPickup
 # 22,postGoodPartner
+# 23,matchVideos
+# 24,BAFoulsPts
+# 25,BARankingPoints
+# 26,totalScore
+# 27,teleScore
+
+
 
 # insert first record for analysisType 7 which is the first one in the CEanalysisGraphs table
-query = (f"INSERT INTO {CEAG_table} (team, eventID, teleLowMean, teleLowMedian) " \
-         f"SELECT team, eventID, S1V, S2V FROM CEanalysis WHERE analysisTypeID = 7 and eventID = {CEventID}")
+query = (f"INSERT INTO {CEAG_table} (team, eventID, teleLowMean, teleLowMedian, teleLowFormat) " \
+         f"SELECT team, eventID, S1V, S2V, S3F FROM CEanalysis WHERE analysisTypeID = 7 and eventID = {CEventID}")
 
 cursor.execute(query)
 conn.commit()
 
 # loop through additional analysisTypes besides #7 which was performed with the insert
-analysisTypeList = [6, 5, 8, 11, 12, 15, 2, 3, 4]
+analysisTypeList = [6, 5, 8, 11, 12, 15, 2, 3, 4, 26, 27]
 analysisNameList = ["teleMidMean", \
                     "teleHighMean", \
                     "teleTotalMean", \
@@ -78,6 +85,8 @@ analysisNameList = ["teleMidMean", \
                     "autoScoreMean", \
                     "autoGamePiecesMean", \
                     "autoRampMean", \
+                    "totalScoreMean", \
+                    "teleScoreMean", \
                     # Split between means and medians
                     "teleMidMedian", \
                     "teleHighMedian", \
@@ -87,14 +96,30 @@ analysisNameList = ["teleMidMean", \
                     "rampMedian", \
                     "autoScoreMedian", \
                     "autoGamePiecesMedian", \
-                    "autoRampMedian"]
+                    "autoRampMedian", \
+                    "totalScoreMedian", \
+                    "teleScoreMedian", \
+                    #
+                    "teleMidFormat", \
+                    "teleHighFormat", \
+                    "teleTotalFormat", \
+                    "teleCommunityFormat", \
+                    "teleLZPickupFormat", \
+                    "rampFormat", \
+                    "autoScoreFormat", \
+                    "autoGamePiecesFormat", \
+                    "autoRampFormat", \
+                    "totalScoreFormat", \
+                    "teleScoreFormat"]
 
 for i in range(len(analysisTypeList)):
     query = ("UPDATE " + CEAG_table + " INNER JOIN CEanalysis ON " + CEAG_table + ".team = CEanalysis.team " \
              "AND " + CEAG_table + ".eventID = CEanalysis.eventID " \
              "SET " + analysisNameList[i] + " = CEanalysis.S1V, " \
-             + analysisNameList[i+(len(analysisTypeList))] + " = CEanalysis.S2V " \
+             + analysisNameList[i+(len(analysisTypeList))] + " = CEanalysis.S2V, " \
+             + analysisNameList[i+(len(analysisTypeList))+(len(analysisTypeList))] + " = CEanalysis.S3F " \
              "WHERE CEanalysis.analysisTypeID = " + str(analysisTypeList[i]))
+    print(query)
     cursor.execute(query)
     conn.commit()
 
