@@ -72,6 +72,8 @@ def autoScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             elif (scorePos4 >= 19) and (scorePos4 <= 27):
                 totalScore += 3
             
+            totalScore += autoMB
+
             autoScoreDisplay = str(totalScore) + str(autoMBdisplay)
             autoScoreValue = totalScore
 
