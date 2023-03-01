@@ -197,7 +197,7 @@ class analysis():
         for team in self.rsRobots:
             # analysisTypesDict defined at top of script
             for analysisType2analyze in analysisTypesDict:
-                # print(f"analyzing team {team} using {analysisType2analyze}")
+                print(f"analyzing team {team} using {analysisType2analyze}")
                 rsRobotMatchData = self._getTeamData(team)
                 rsRobotL2MatchData = self._getL2TeamData(team)
                 rsRobotPitData = self._getPitData(team)
@@ -220,8 +220,10 @@ class analysis():
     # Function to retrieve S1V values for a given analysisType and use numpy to determine percentiles
     def _rankTeamsSingle(self, analysis_type):
         query = "SELECT team, S1V FROM " + CEA_tmpTable + " WHERE analysisTypeID = " + str(analysis_type)
+        print(query)
         self._run_query(query)
         team_sum1 = self.cursor.fetchall() # List of tuples (team, S1V)
+        print(team_sum1)
         if len(team_sum1) > 0:
             team_sum1 = [team_tup for team_tup in team_sum1 if team_tup[1] is not None]
             sum1 = [item[1] for item in team_sum1]
@@ -250,6 +252,7 @@ class analysis():
                         + str(team_display) + ", " + CEA_tmpTable + ".S3V = " + str(team_display) \
                         + " WHERE " + CEA_tmpTable + ".team = '" + str(team[0]) \
                         + "' AND " + CEA_tmpTable + ".analysisTypeID = " + str(analysis_type)
+                print(query)
                 self._run_query(query)
                 self.conn.commit()
         else:
@@ -261,6 +264,8 @@ class analysis():
         self._run_query(query)
         analysisTypeList = self.cursor.fetchall()
         for analysisType in analysisTypeList:
+            print("*** analysis type ***")
+            print(analysisType)
             analysisType = str(analysisType)
             analysisType = analysisType.translate(str.maketrans("", "", " ,()'"))
             self._rankTeamsSingle(analysisType)
