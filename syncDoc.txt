@@ -43,7 +43,7 @@ Beginning of season
 
 As needed the following should be hand edited. No scripts available
     populate allianceStations table (jetson / aws). Perform manually
-    populate pit tables (jetson / aws). Perform manually
+    populate tables that the pit scouting app needs (jetson / aws). Perform manually
         buildTypes
         centerGravityTypes
         driveBaseTypes
@@ -52,6 +52,7 @@ As needed the following should be hand edited. No scripts available
         superClimbTypes
     populate colorTypes (jetson / aws). Perform manually
     populate scouters table (jetson / aws). Perform manually
+    make sure the analysisTypes table is up-to-date
 
 Day before event
     1. manually add event to events table and set as currentEvent (Jetson / AWS)

@@ -119,12 +119,11 @@ for i in range(len(analysisTypeList)):
              + analysisNameList[i+(len(analysisTypeList))] + " = CEanalysis.S2V, " \
              + analysisNameList[i+(len(analysisTypeList))+(len(analysisTypeList))] + " = CEanalysis.S3F " \
              "WHERE CEanalysis.analysisTypeID = " + str(analysisTypeList[i]))
-    print(query)
+    # print(query)
     cursor.execute(query)
     conn.commit()
 
 print("Time: %0.2f seconds" % (time.time() - start_time))
-print()
 
 cursor.close()
 conn.close()

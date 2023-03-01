@@ -50,4 +50,4 @@ for i in range(len(BAmatchInfo)):
 cursor.close()
 conn.close()
 
-print("should be good now")
+print("insertFouls and ranking points complete")

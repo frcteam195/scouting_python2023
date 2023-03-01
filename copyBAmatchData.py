@@ -60,5 +60,7 @@ query = ("UPDATE " + matchTable + " "
 cursor.execute(query)
 conn.commit()
 
+print("copyBAmatchData complete")
+
 cursor.close()
 conn.close()

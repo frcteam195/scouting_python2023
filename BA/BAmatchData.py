@@ -173,7 +173,7 @@ for match in eventInfo:
                     f"redTelePts = {int(redTelePts)}, blueTelePts = {int(blueTelePts)}, "
                     f"redEndgameCSPts = {int(redEndgameCSPts)}, blueEndgameCSPts = {int(blueEndgameCSPts)} "
                     f"WHERE matchNum = {matchNum}")
-            print(f"Updating match number = {matchNum}")
+            # print(f"Updating match number = {matchNum}")
             cursor.execute(query)
             conn.commit()
 
@@ -181,4 +181,3 @@ cursor.close()
 conn.close()
 
 print("Time: %0.2f seconds" % (time.time() - start_time))
-print()
