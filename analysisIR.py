@@ -23,8 +23,8 @@ analysisTypesDict = {
                     "teleCubes": teleCubes.teleCubes,
                     "teleCommunity": teleCommunity.teleCommunity,
                     "teleLZPickup": teleLZPickup.teleLZPickup,
-                      #13 
-                      #14
+                    "teleObstructed": teleObstructed.teleObstructed,
+                    "teleWasObstructed": teleWasObstructed.teleWasObstructed,
                     "ramp": ramp.ramp,
                     "rampPos": rampPos.rampPos,
                     "postSubBroke": postSubBroke.postSubBroke,
