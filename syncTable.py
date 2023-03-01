@@ -65,7 +65,7 @@ for row in sourceData:
 
 
     updateQuery = str("UPDATE " + str(tableName) + " SET {} = {} WHERE " + str(uniqueID) + " = " + str(row[0])).format(
-        ", ".join([col + " = '" + str(val) + "'" for col, val in zip(columns[1:], row[1:])]))
+        ", ".join([col + " = '" + str(val) + "'" for col, val in zip(columns[1:], row[1:])]), row[0])
     updateQuery = re.sub(r"'None'", "NULL", updateQuery)
     print(updateQuery)
     cursor2.execute(updateQuery)
