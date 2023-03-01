@@ -11,7 +11,7 @@ __all__ = ['startingPosition',
            'teleCommunity',
            'teleLZPickup',
            'teleObstructed',
-           'teleWasObstructed'
+           'teleWasObstructed',
            'ramp',
            'rampPos',
            'postSubBroke',
