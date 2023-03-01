@@ -51,5 +51,34 @@ def teleObstructed(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDat
             teleObstructedList.append(teleObstructedValue)
 
     if numberOfMatchesPlayed > 0:
-        rsCEA['S1V'] = round(statistics.mean(teleObstructedList), 1)
+        mean = round(statistics.mean(teleObstructedList), 1)
+        median = round(statistics.median(teleObstructedList), 1)
+        rsCEA['S1V'] = mean
+        rsCEA['S1D'] = str(mean)
+        if mean == 0:
+            rsCEA['S1F'] = 1
+        elif mean <= 5:
+            rsCEA['S1F'] = 2
+        elif mean <= 10:
+            rsCEA['S1F'] = 3
+        elif mean <= 15:
+            rsCEA['S1F'] = 4
+        elif mean > 15:
+            rsCEA['S1F'] = 5
+        else:
+            rsCEA['S1F'] = 999
+        rsCEA['S2V'] = median
+        rsCEA['S2D'] = str(median)
+        if median == 0:
+            rsCEA['S1F'] = 1
+        elif median <= 5:
+            rsCEA['S1F'] = 2
+        elif median <= 10:
+            rsCEA['S1F'] = 3
+        elif median <= 15:
+            rsCEA['S1F'] = 4
+        elif median > 15:
+            rsCEA['S1F'] = 5
+        else:
+            rsCEA['S1F'] = 999
     return rsCEA
