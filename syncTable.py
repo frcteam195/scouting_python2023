@@ -55,10 +55,19 @@ columns = [column[0] for column in cursor1.description]
 sourceData = cursor1.fetchall()
 
 for row in sourceData:
+    print(row)
+
+    updateQuery = f"UPDATE {tableName} SET {', '.join([f'{col} = %s' for col in columns[1:]])} WHERE {uniqueID} = %s"
+    
+    # Replace "None" values with "NULL"
+    # values = tuple([val if val is not None else "NULL" for val in row[1:]])
+    # print(values)
+
+
     updateQuery = str("UPDATE " + str(tableName) + " SET {} = {} WHERE " + str(uniqueID) + " = " + str(row[0])).format(
-        ", ".join([col + " = '" + str(val) + "'" for col, val in zip(columns[1:], row[1:])]), row[0])
+        ", ".join([col + " = '" + str(val) + "'" for col, val in zip(columns[1:], row[1:])]))
     updateQuery = re.sub(r"'None'", "NULL", updateQuery)
-    # print(updateQuery)
+    print(updateQuery)
     cursor2.execute(updateQuery)
     conn2.commit()
 

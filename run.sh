@@ -60,7 +60,8 @@ python "$path"/syncTable.py -db1 "$db" -host1 "$host" \
 # rm -f dump.sql
 
 # share script for sharing L1 quantitative data
-share.py -db production -host localhost
+echo ''; echo '***** running share.py *****'
+python "$path"/share.py -db "$db" -host "$host"
 
 # DB backup
 # mkdir -p /home/team195/DBbackups
