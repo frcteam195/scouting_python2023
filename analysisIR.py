@@ -83,6 +83,7 @@ class analysis():
         now = datetime.datetime.now()
         print(now.strftime("%Y-%m-%d %H:%M:%S"))
         start_time = time.time()
+        print("this script takes a while, please be patient!")
 
         self._scoutingDBconnector()
         self._createCEanalysisTmp()
@@ -95,7 +96,6 @@ class analysis():
         self._renameTable()
 
         print("Time: %0.2f seconds" % (time.time() - start_time))
-        print()
 
     # Connect to database and setup cursor
     def _scoutingDBconnector(self):
@@ -197,7 +197,7 @@ class analysis():
         for team in self.rsRobots:
             # analysisTypesDict defined at top of script
             for analysisType2analyze in analysisTypesDict:
-                print(f"analyzing team {team} using {analysisType2analyze}")
+                # print(f"analyzing team {team} using {analysisType2analyze}")
                 rsRobotMatchData = self._getTeamData(team)
                 rsRobotL2MatchData = self._getL2TeamData(team)
                 rsRobotPitData = self._getPitData(team)
