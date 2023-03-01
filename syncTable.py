@@ -54,8 +54,14 @@ cursor1.execute(query)
 columns = [column[0] for column in cursor1.description]
 sourceData = cursor1.fetchall()
 
+i = 0
 for row in sourceData:
+    print(f"*** ROW {i}, zero indexed ***")
+    i += 1
     print(row)
+    print()
+    print(columns)
+    print()
 
     updateQuery = f"UPDATE {tableName} SET {', '.join([f'{col} = %s' for col in columns[1:]])} WHERE {uniqueID} = %s"
     
@@ -68,8 +74,9 @@ for row in sourceData:
         ", ".join([col + " = '" + str(val) + "'" for col, val in zip(columns[1:], row[1:])]), row[0])
     updateQuery = re.sub(r"'None'", "NULL", updateQuery)
     print(updateQuery)
-    cursor2.execute(updateQuery)
-    conn2.commit()
+    print()
+    # cursor2.execute(updateQuery)
+    # conn2.commit()
 
 
 cursor1.close()
