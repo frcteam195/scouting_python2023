@@ -1,8 +1,4 @@
 import mysql.connector
-import tbapy
-import sys
-import getopt
-import sys
 import argparse
 import configparser
 import pandas as pd
@@ -15,22 +11,21 @@ args = parser.parse_args()
 input_db = args.database
 input_host = args.host
 
-# Read the configuration file
 config = configparser.ConfigParser()
 config.read('helpers/config.ini')
 
-# Get the database login information from the configuration (ini) file
 host = config[input_host+"-"+input_db]['host']
 user = config[input_host+"-"+input_db]['user']
 passwd = config[input_host+"-"+input_db]['passwd']
 database = config[input_host+"-"+input_db]['database']
-#print(host + " " + user + " " + passwd + " " + database)
 
 conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=database)
 cursor = conn.cursor()
 
 CEventID = cursor.execute("SELECT eventID FROM events WHERE currentEvent = 1")
 CEventID = cursor.fetchone()[0]
+
+print("Running share.py")
 
 query = "SELECT element FROM share WHERE share = 1"
 cursor.execute(query)
@@ -49,12 +44,15 @@ sharedData = cursor.fetchall()
 df = pd.DataFrame(sharedData)
 
 headerList = []
-print(elementList)
 for i in elementList:
     i = str(i).translate(str.maketrans("", "", "(),"))  # Convert tuple to string before calling translate
-    print(i)
     headerList.append(i)
 
 df.to_csv (r'data.csv', header=headerList, index = False) # place 'r' before the path name
 df = pd.read_csv('data.csv')
 df.to_json(r'data.json', orient='records', lines=True)
+
+print("share.py complete")
+
+cursor.close()
+conn.close()
