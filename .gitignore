@@ -3,3 +3,4 @@ venv/
 config.ini
 data.csv
 data.json
+.nfs*
