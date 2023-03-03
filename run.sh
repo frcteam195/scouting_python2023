@@ -2,10 +2,10 @@
 
 # define some variables ...
 db=testing
-remoteDB=testing2    # generally db and remoteDB will be the same, can be different for testing
-host=aws    # generally will be localhost. Using a variable for easy testing
-remoteHost=aws  # generally will be aws, changeable here for testing
-path=/Users/markmaciejewski/robotics/scouting_python2023
+remoteDB=testing # generally db and remoteDB will be the same, can be different for testing
+host=localhost   # generally will be localhost. Using a variable for easy testing
+remoteHost=aws   # generally will be aws, changeable here for testing
+path=/home/team195/scouting_python2023
 # activate the venv
 source "$path"/venv/bin/activate
 # change to the path so relative paths are all correct
