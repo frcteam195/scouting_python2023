@@ -49,9 +49,8 @@ input_db = args.database
 input_host = args.host
 
 CEA_tmpTable = "CEanalysisTmp"
-BAO_table = "BAoprs"
-BAR_table = "BAranks"
-MS_table = "BAmatchScouting"
+BAoprTable = "BAoprs"
+BArankTable = "BAranks"
 
 # Read the configuration file
 config = configparser.ConfigParser()
@@ -207,6 +206,14 @@ class analysis():
                     rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData, rsRobotL2MatchData=rsRobotL2MatchData, rsRobotPitData=rsRobotPitData)
                     self._insertAnalysis(rsCEA)
                     self.conn.commit()
+            # add one last analysisType to add BAoprs and BAranks to analysisTypeID = 80
+            query = (f"INSERT INTO {CEA_tmpTable} (team, eventID, S1V, S1D, S2V, S2D, analysisTypeID) "
+                     f"SELECT {BArankTable}.team, {BArankTable}.eventID, "
+                     f"{BAoprTable}.OPR, {BAoprTable}.OPR, {BArankTable}.rank, {BArankTable}.rank, 80 "
+                     f"FROM {BArankTable} "
+                     f"INNER JOIN {BAoprTable} ON {BArankTable}.team = {BAoprTable}.team "
+                     f"WHERE {BArankTable}.team = {teamName}")
+            self._run_query(query)
     
      # Function to insert an rsCEA record into the DB.
     def _insertAnalysis(self, rsCEA):
