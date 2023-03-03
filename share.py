@@ -48,9 +48,9 @@ for i in elementList:
     i = str(i).translate(str.maketrans("", "", "(),"))  # Convert tuple to string before calling translate
     headerList.append(i)
 
-df.to_csv (r'data.csv', header=headerList, index = False) # place 'r' before the path name
-df = pd.read_csv('data.csv')
-df.to_json(r'data.json', orient='records', lines=True)
+df.to_csv (r'195scoutingData.csv', header=headerList, index = False) # place 'r' before the path name
+df = pd.read_csv('195scoutingData.csv')
+df.to_json(r'195scoutingData.json', orient='records', lines=True)
 
 print("share.py complete")
 
