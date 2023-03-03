@@ -71,5 +71,10 @@ python "$path"/share.py -db "$db" -host "$host"
 # /bin/tar -czf event_"$now".tgz event_"$now".sql
 # /bin/rm -f event_"$now".sql
 
-deactivate
+/usr/bin/scp -i /home/team195/scouting.pem "$path"/195scoutingData.csv ubuntu@scouting.team195.com:~
+/usr/bin/scp -i /home/team195/scouting.pem "$path"/195scoutingData.json ubuntu@scouting.team195.com:~
+sleep 1
+rm -f "$path"/195scoutingData.csv "$path"/195scoutingData.json
 
+deactivate
+ 
