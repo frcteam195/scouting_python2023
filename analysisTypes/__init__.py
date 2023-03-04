@@ -26,5 +26,8 @@ __all__ = [
            'BARankingPoints',
            'totalScore',
            'teleScore',
-           'graphicTeleInfo'
+           'graphicTeleInfo',
+           'autoScorePosHigh',
+           'autoScorePosMid',
+           'autoScorePosLow'
            ]

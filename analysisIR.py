@@ -38,7 +38,10 @@ analysisTypesDict = {
                     "BARankingPoints": BARankingPoints.BARankingPoints,
                     "totalScore": totalScore.totalScore,
                     "teleScore": teleScore.teleScore,
-                    "graphicTeleInfo": graphicTeleInfo.graphicTeleInfo
+                    "graphicTeleInfo": graphicTeleInfo.graphicTeleInfo,
+                    "autoScorePosHigh": autoScorePosHigh.autoScorePosHigh,
+                    "autoScorePosMid": autoScorePosMid.autoScorePosMid,
+                    "autoScorePosLow": autoScorePosLow.autoScorePosLow
                     } 
 
 # parser to choose the database where the table will be written
@@ -197,7 +200,7 @@ class analysis():
         for team in self.rsRobots:
             # analysisTypesDict defined at top of script
             for analysisType2analyze in analysisTypesDict:
-                print(f"analyzing team {team} using {analysisType2analyze}")
+                # print(f"analyzing team {team} using {analysisType2analyze}")
                 rsRobotMatchData = self._getTeamData(team)
                 rsRobotL2MatchData = self._getL2TeamData(team)
                 rsRobotPitData = self._getPitData(team)
@@ -236,7 +239,7 @@ class analysis():
             sum1 = [item[1] for item in team_sum1]
             percentiles = np.percentile(sum1, [25, 50, 75, 90])
 
-            team_coloring = {}
+            # team_coloring = {}
             for team in team_sum1:
                 if team[1] <= percentiles[0]:
                     team_color = 1
