@@ -25,14 +25,12 @@ def startingPosition(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitD
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
         rsCEA['eventID'] = matchResults[analysis.columns.index('eventID')]
 
-        autoDidNotShow = 0   # temporarily adding this to make it work, fix later !!!
         scoutingStatus = matchResults[analysis.columns.index('scoutingStatus')]
-        if autoDidNotShow == 1:
+        if scoutingStatus == 1:
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'DNS'
         elif scoutingStatus == 2:
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'UR'
         else:
-
             preStartPos = matchResults[analysis.columns.index('preStartPos')]
             if preStartPos is None:
                 preStartPos = 0
