@@ -5,9 +5,7 @@ def BAFoulsPts(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     rsCEA = {}
     rsCEA['analysisTypeID'] = 24
     numberOfMatchesPlayed = 0
-
-    # only using to test ranks, eliminate later
-    BAFoulsPtsList = []
+    foulPtsList = []
     
     # Loop through each match the robot played in.
     for matchResults in rsRobotMatchData:
@@ -26,42 +24,41 @@ def BAFoulsPts(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             fouls = matchResults[analysis.columns.index('BAfouls')]
             techFouls = matchResults[analysis.columns.index('BAtechFouls')]
 
-            fouls *= 5
-            techFouls *= 12
-
             if fouls is None:
                 fouls = 0
             if techFouls is None:
                 techFouls = 0
 
-            totalFouls = fouls + techFouls
+            foulPts = fouls * 5
+            techFoulPts = techFouls * 12
+            
+            totalFoulPts = foulPts + techFoulPts
 
-            BAFoulsPtsDisplay = totalFouls
-            BAFoulsPtsValue = totalFouls
+            foulPtsDisplay = totalFoulPts
+            foulPtsValue = totalFoulPts
 
-            if totalFouls <= 5:
-                BAFoulsPtsColor = 5
-            elif totalFouls <= 10:
-                BAFoulsPtsColor = 4
-            elif totalFouls <= 15:
-                BAFoulsPtsColor = 3
-            elif totalFouls <= 20:
-                BAFoulsPtsColor = 2
-            elif totalFouls > 20:
-                BAFoulsPtsColor = 1
+            if totalFoulPts <= 5:
+                foulPtsColor = 5
+            elif totalFoulPts <= 10:
+                foulPtsColor = 4
+            elif totalFoulPts <= 15:
+                foulPtsColor = 3
+            elif totalFoulPts <= 20:
+                foulPtsColor = 2
+            elif totalFoulPts > 20:
+                foulPtsColor = 1
                        
-
             # Increment the number of matches played and write M#D, M#V and M#F
             numberOfMatchesPlayed += 1
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = BAFoulsPtsDisplay
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = BAFoulsPtsValue
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = BAFoulsPtsColor
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = foulPtsDisplay
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = foulPtsValue
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = foulPtsColor
 
-            BAFoulsPtsList.append(BAFoulsPtsValue)
+            foulPtsList.append(foulPtsValue)
 
     if numberOfMatchesPlayed > 0:
-        rsCEA['S1V'] = round(statistics.mean(BAFoulsPtsList), 1)
-        rsCEA['S1D'] = str(round(statistics.mean(BAFoulsPtsList), 1))
-        rsCEA['S2V'] = round(statistics.median(BAFoulsPtsList), 1)
-        rsCEA['S2D'] = str(round(statistics.median(BAFoulsPtsList), 1))
+        rsCEA['S1V'] = round(statistics.mean(foulPtsList), 1)
+        rsCEA['S1D'] = str(round(statistics.mean(foulPtsList), 1))
+        rsCEA['S2V'] = round(statistics.median(foulPtsList), 1)
+        rsCEA['S2D'] = str(round(statistics.median(foulPtsList), 1))
     return rsCEA
