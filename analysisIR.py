@@ -37,7 +37,8 @@ analysisTypesDict = {
                     "BAFoulsPts": BAFoulsPts.BAFoulsPts,
                     "BARankingPoints": BARankingPoints.BARankingPoints,
                     "totalScore": totalScore.totalScore,
-                    "teleScore": teleScore.teleScore
+                    "teleScore": teleScore.teleScore,
+                    "graphicTeleInfo": graphicTeleInfo.graphicTeleInfo
                     } 
 
 # parser to choose the database where the table will be written
