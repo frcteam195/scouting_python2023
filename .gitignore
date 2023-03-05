@@ -4,3 +4,4 @@ config.ini
 data.csv
 data.json
 .nfs*
+.DS_Store
