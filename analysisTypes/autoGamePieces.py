@@ -4,7 +4,7 @@ import statistics
 def autoGamePieces(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     rsCEA = {}
     rsCEA['analysisTypeID'] = 3
-    numberOfMatchesPlayed = 0
+    numberMatchesPlayed = 0
 
     autoGamePiecesList = []
 
@@ -37,7 +37,7 @@ def autoGamePieces(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDat
             autoGamePiecesDisplay = numGamePieces
             autoGamePiecesValue = numGamePieces
             autoGamePiecesList.append(autoGamePiecesValue)
-            numberOfMatchesPlayed += 1
+            numberMatchesPlayed += 1
 
             # autoScorePos1-4 are 0 if no auto game piece scored, and are 1-27 if a game piece was scored
             if numGamePieces == 0:
@@ -58,7 +58,7 @@ def autoGamePieces(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDat
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = autoGamePiecesValue
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = autoGamePiecesColor
 
-    if numberOfMatchesPlayed > 0:
+    if numberMatchesPlayed > 0:
         mean = round(statistics.mean(autoGamePiecesList), 1)
         median = round(statistics.median(autoGamePiecesList), 1)
         rsCEA['S1V'] = mean
