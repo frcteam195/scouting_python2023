@@ -5,7 +5,7 @@ from requests import post
 def startingPosition(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     # Initialize the rsCEA record set and define variables specific to this function which lie outside the for loop
     rsCEA = {}
-    rsCEA['analysisTypeID'] = 28
+    rsCEA['analysisTypeID'] = 22
     numberOfMatchesPlayed = 0
 
     postTippedOverList = []

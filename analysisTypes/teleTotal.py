@@ -55,13 +55,13 @@ def teleTotal(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             teleTotalDisplay = (f"{str(teleTotalValue)}")
             teleTotalList.append(teleTotalValue)
 
-            if total == 0:
+            if teleTotalValue == 0:
                 teleTotalColor = 1
-            elif total <= 3:
+            elif teleTotalValue <= 3:
                 teleTotalColor = 2
-            elif total <= 6:
+            elif teleTotalValue <= 6:
                 teleTotalColor = 3
-            elif total <= 9:
+            elif teleTotalValue <= 9:
                 teleTotalColor = 4
             else:
                 teleTotalColor = 5
