@@ -12,7 +12,6 @@ img = Image.open("robot.jpg")
 
 # resize the image to 1000 x 1000 pixels
 img = img.resize((900, 1200))
-# img = img.convert('RGB')
-img = img.quantize(colors=64)
 
-img.save("robot_cropped.png", "PNG")
+
+img.save("robot_cropped.jpg", optimize=True, quality=50)
