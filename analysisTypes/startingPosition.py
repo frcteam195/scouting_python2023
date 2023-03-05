@@ -24,9 +24,9 @@ def startingPosition(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitD
     for matchResults in rsRobotMatchData:
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
         rsCEA['eventID'] = matchResults[analysis.columns.index('eventID')]
-
+        preNoShow = matchResults[analysis.columns.index('preNoShow')]
         scoutingStatus = matchResults[analysis.columns.index('scoutingStatus')]
-        if scoutingStatus == 1:
+        if preNoShow == 1:
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'DNS'
         elif scoutingStatus == 2:
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'UR'
