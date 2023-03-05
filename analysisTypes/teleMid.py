@@ -62,13 +62,13 @@ def teleMid(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             teleMidDisplay = (f"{str(totalMid)}|{str(total)}")
             teleMidValue = totalMid
 
-            if total == 0:
+            if totalMid == 0:
                 teleMidColor = 1
-            elif total <= 3:
+            elif totalMid <= 2:
                 teleMidColor = 2
-            elif total <= 6:
+            elif totalMid <= 4:
                 teleMidColor = 3
-            elif total <= 9:
+            elif totalMid <=6:
                 teleMidColor = 4
             else:
                 teleMidColor = 5

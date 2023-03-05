@@ -63,13 +63,13 @@ def teleHigh(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             teleHighDisplay = (f"{str(totalHigh)}|{str(total)}")
             teleHighValue = totalHigh
 
-            if total == 0:
+            if totalHigh == 0:
                 teleHighColor = 1
-            elif total <= 3:
+            elif totalHigh <= 2:
                 teleHighColor = 2
-            elif total <= 6:
+            elif totalHigh <= 4:
                 teleHighColor = 3
-            elif total <= 9:
+            elif totalHigh <=6:
                 teleHighColor = 4
             else:
                 teleHighColor = 5
