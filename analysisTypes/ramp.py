@@ -26,9 +26,9 @@ def ramp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             ramp = matchResults[analysis.columns.index('ramp')]
             if ramp is None:
                 ramp = 0
+            
 
             rampDisplay = ramp
-            rampValue = ramp
             
             if ramp == 2:
                 rampColor = 3
@@ -36,7 +36,18 @@ def ramp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
                 rampColor = 2
             else:
                 rampColor = ramp #it happened to be that the color id is pretty similar to the ramp value
+
+            if ramp == 5:
+                ramp = 10
+            elif ramp == 4:
+                ramp = 8
+            elif ramp == 3:
+                ramp = 2
+            else:
+                ramp = 0
             
+
+            rampValue = ramp
 
             # Increment the number of matches played and write M#D, M#V and M#F
             numberOfMatchesPlayed += 1
