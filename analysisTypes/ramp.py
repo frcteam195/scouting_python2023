@@ -24,13 +24,13 @@ def ramp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             elif ramp == 0:    # no attempt
                 rampDisplay = 'NA'
                 rampValue = 0
-                rampColor = 0
+                rampColor = 1
             elif ramp == 1:    # failed attempt
                 rampDisplay = 'F'
                 rampValue = 0
                 rampColor = 1
             elif ramp == 2:    # kept scoring
-                rampDisplay = 'GP'
+                rampDisplay = 'F'
                 rampValue = 0
                 rampColor = 3
             elif ramp == 3:   # parked
