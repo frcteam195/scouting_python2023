@@ -6,6 +6,13 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
     rsCEA['analysisTypeID'] = 91
     numberOfMatchesPlayed = 0
     graphicTeleInfoList = []
+
+    totalHigh = 0
+    totalMid = 0
+    totalLow = 0
+    total = 0
+    totalCones = 0
+    totalCubes = 0
     for matchResults in rsRobotMatchData:
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
         rsCEA['eventID'] = matchResults[analysis.columns.index('eventID')]
@@ -38,84 +45,88 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
             if(teleCubeLow is None):
                 teleCubeLow = 0
 
-            totalHigh = teleConeHigh + teleCubeHigh
-            totalMid = teleConeMid + teleCubeMid
-            totalLow = teleConeLow + teleCubeLow
+            totalHigh += (teleConeHigh + teleCubeHigh)
+            totalMid += (teleConeMid + teleCubeMid)
+            totalLow += (teleConeLow + teleCubeLow)
 
-            total = totalHigh + totalLow + totalMid
 
-            if(totalHigh == 0):
-                percentHigh = 0
-            else:
-                percentHigh = int(totalHigh / total * 100)
-
-            if(totalMid == 0):
-                percentMid = 0
-            else:
-                percentMid = int(totalMid / total * 100)
-            
-            if(totalLow == 0):
-                percentLow = 0
-            else:
-                percentLow = int(totalLow / total * 100)
-
-            totalCones = teleConeHigh + teleConeLow + teleConeMid
-            totalCubes = teleCubeHigh + teleCubeMid + teleCubeLow
-
-            if(totalCones == 0):
-                percentCones = 0
-            else:
-                percentCones = int(totalCones / (totalCones + totalCubes) * 100)
-            
-            if(totalCubes == 0):
-                percentCubes = 0
-            else:
-                percentCubes = int(totalCubes / (totalCones + totalCubes) * 100)
-
-            highDisplay = 0
-            midDisplay = 0
-            lowDisplay = 0
-
-            if totalHigh > totalMid and totalHigh > totalLow:
-                highDisplay = 4
-                midDisplay = 3 if totalMid > totalLow else \
-                            2 if totalMid < totalLow else \
-                            3 if totalMid == totalLow else midDisplay
-                lowDisplay = 3 if totalLow > totalMid else \
-                            2 if totalLow < totalMid else \
-                            3 if totalLow == totalMid else lowDisplay
-            elif totalMid > totalHigh and totalMid > totalLow:
-                midDisplay = 4
-                highDisplay = 3 if totalHigh > totalLow else \
-                            2 if totalHigh < totalLow else \
-                            3 if totalHigh == totalLow else highDisplay
-                lowDisplay = 3 if totalLow > totalHigh else \
-                            2 if totalLow < totalHigh else \
-                            3 if totalLow == totalHigh else lowDisplay
-            elif totalLow > totalMid and totalLow > totalHigh:
-                lowDisplay = 4
-                highDisplay = 3 if totalHigh > totalMid else \
-                            2 if totalHigh < totalMid else \
-                            3 if totalHigh == totalMid else highDisplay
-                midDisplay = 3 if totalMid > totalHigh else \
-                            2 if totalMid < totalHigh else \
-                            3 if totalMid == totalHigh else midDisplay
-            elif totalLow == totalMid and totalLow > totalHigh:
-                lowDisplay = 4
-                midDisplay = 4
-                highDisplay = 2
-            elif totalLow == totalHigh and totalLow > totalMid:
-                lowDisplay = 4
-                highDisplay = 4
-                midDisplay = 2
-            elif totalHigh == totalMid and totalHigh > totalLow:
-                highDisplay = 4
-                midDisplay = 4
-                lowDisplay = 2
+            totalCones += (teleConeHigh + teleConeLow + teleConeMid)
+            totalCubes += (teleCubeHigh + teleCubeMid + teleCubeLow)
 
             numberOfMatchesPlayed += 1
-
+            
             graphicTeleInfoList.append(0)
+            
+    total = (totalHigh + totalLow + totalMid)
+    print("High: " + str(totalHigh))
+    print("Mid: " + str(totalMid))
+    print("Low: " + str(totalLow))
+    print("Total: " + str(total))
+    if(totalHigh == 0):
+        percentHigh = 0
+    else:
+        percentHigh = int(totalHigh / total * 100)
+    if(totalMid == 0):
+        percentMid = 0
+    else:
+        percentMid = int(totalMid / total * 100)
+    
+    if(totalLow == 0):
+        percentLow = 0
+    else:
+        percentLow = int(totalLow / total * 100)
+    
+    if(totalCones == 0):
+        percentCones = 0
+    else:
+        percentCones = int(totalCones / (totalCones + totalCubes) * 100)
+    
+    if(totalCubes == 0):
+        percentCubes = 0
+    else:
+        percentCubes = int(totalCubes / (totalCones + totalCubes) * 100)
+
+    highDisplay = 0
+    midDisplay = 0
+    lowDisplay = 0
+
+    if totalHigh > totalMid and totalHigh > totalLow:
+        highDisplay = 4
+        midDisplay = 3 if totalMid > totalLow else \
+                    2 if totalMid < totalLow else \
+                    3 if totalMid == totalLow else midDisplay
+        lowDisplay = 3 if totalLow > totalMid else \
+                    2 if totalLow < totalMid else \
+                    3 if totalLow == totalMid else lowDisplay
+    elif totalMid > totalHigh and totalMid > totalLow:
+        midDisplay = 4
+        highDisplay = 3 if totalHigh > totalLow else \
+                    2 if totalHigh < totalLow else \
+                    3 if totalHigh == totalLow else highDisplay
+        lowDisplay = 3 if totalLow > totalHigh else \
+                    2 if totalLow < totalHigh else \
+                    3 if totalLow == totalHigh else lowDisplay
+    elif totalLow > totalMid and totalLow > totalHigh:
+        lowDisplay = 4
+        highDisplay = 3 if totalHigh > totalMid else \
+                    2 if totalHigh < totalMid else \
+                    3 if totalHigh == totalMid else highDisplay
+        midDisplay = 3 if totalMid > totalHigh else \
+                    2 if totalMid < totalHigh else \
+                    3 if totalMid == totalHigh else midDisplay
+    elif totalLow == totalMid and totalLow > totalHigh:
+        lowDisplay = 4
+        midDisplay = 4
+        highDisplay = 2
+    elif totalLow == totalHigh and totalLow > totalMid:
+        lowDisplay = 4
+        highDisplay = 4
+        midDisplay = 2
+    elif totalHigh == totalMid and totalHigh > totalLow:
+        highDisplay = 4
+        midDisplay = 4
+        lowDisplay = 2
+
 
     if numberOfMatchesPlayed > 0:
         rsCEA['S1V'] = totalHigh
@@ -132,4 +143,12 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
         
         rsCEA['S4D'] = percentCones
         rsCEA['S4V'] = percentCubes
+
+        rsCEA['M12D'] = totalCones
+        rsCEA['M12V'] = totalCubes
+
+        rsCEA['M11V'] = totalHigh
+        rsCEA['M11D'] = totalMid
+        rsCEA['M11F'] = totalLow
+
     return rsCEA
