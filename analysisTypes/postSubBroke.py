@@ -13,8 +13,6 @@ def postSubBroke(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData)
     for matchResults in rsRobotMatchData:
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
         rsCEA['eventID'] = matchResults[analysis.columns.index('eventID')]
-        # We are hijacking the starting position to write DNS or UR. This should go to Auto as it will not
-        #   likely be displayed on team picker pages.
         preNoShow = matchResults[analysis.columns.index('preNoShow')]
         scoutingStatus = matchResults[analysis.columns.index('scoutingStatus')]
         if preNoShow == 1:
@@ -25,21 +23,19 @@ def postSubBroke(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData)
             
             postSubBroke = matchResults[analysis.columns.index('postSubsystemBroke')]
             
-            
             if postSubBroke is None:
-                postSubBroke = 0
-            
-
-            postSubBrokeDisplay = postSubBroke
-            postSubBrokeValue = postSubBroke
-            
-            if postSubBroke == 1:
-                postSubBrokeColor = 4
+                postSubBrokeDisplay = 999
+                postSubBrokeValue = 999
             elif postSubBroke == 0:
+                postSubBrokeDisplay = 'N'
+                postSubBrokeValue = 0
+                postSubBrokeColor = 4
+            else:
+                postSubBrokeDisplay = 'Y'
+                postSubBrokeValue = 1
                 postSubBrokeColor = 2
             
-           
-            
+            postSubBrokeList.append(postSubBrokeValue)
 
             # Increment the number of matches played and write M#D, M#V and M#F
             numberOfMatchesPlayed += 1
@@ -47,11 +43,8 @@ def postSubBroke(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData)
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = postSubBrokeValue
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = postSubBrokeColor
 
-            postSubBrokeList.append(postSubBrokeValue)
-
     if numberOfMatchesPlayed > 0:
         rsCEA['S1V'] = round(statistics.mean(postSubBrokeList), 1)
         rsCEA['S1D'] = str(round(statistics.mean(postSubBrokeList), 1))
-        rsCEA['S2V'] = round(statistics.median(postSubBrokeList), 1)
-        rsCEA['S2D'] = str(round(statistics.median(postSubBrokeList), 1))
+
     return rsCEA

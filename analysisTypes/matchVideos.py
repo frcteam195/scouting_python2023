@@ -20,4 +20,5 @@ def matchVideos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = matchResults[
                 analysis.columns.index('matchNum')]
 
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = 5
     return rsCEA

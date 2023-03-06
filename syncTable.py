@@ -53,20 +53,19 @@ query = f"SELECT * from {tableName} WHERE eventID = {eventID}"
 cursor1.execute(query)
 columns = [column[0] for column in cursor1.description]
 sourceData = cursor1.fetchall()
+print(f"syncing table '{tableName}'")
 
 for row in sourceData:
-    updateQuery = str("UPDATE " + str(tableName) + " SET {} = {} WHERE " + str(uniqueID) + " = " + str(row[0])).format(
-        ", ".join([col + " = '" + str(val) + "'" for col, val in zip(columns[1:], row[1:])]), row[0])
-    updateQuery = re.sub(r"'None'", "NULL", updateQuery)
-    # print(updateQuery)
+    cols = ", ".join([col + ' = "' + str(val) + '"' for col, val in zip(columns[1:], row[1:])])
+    updateQuery = f"UPDATE {tableName} SET {cols} WHERE {uniqueID}  = {row[0]}"
+    updateQuery = re.sub(r'"None"', 'NULL', updateQuery)
     cursor2.execute(updateQuery)
     conn2.commit()
-
 
 cursor1.close()
 conn1.close()
 cursor2.close()
 conn2.close()
 
-print(f"sync of {tableName} complete")
+print(f"sync of '{tableName}' complete")
 

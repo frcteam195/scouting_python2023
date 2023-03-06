@@ -25,15 +25,18 @@ def autoRamp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
             autoRamp = matchResults[analysis.columns.index('autoRamp')]
 
-            numGamePieces = 0
             score1 = matchResults[analysis.columns.index('autoScore1')]
             score2 = matchResults[analysis.columns.index('autoScore2')]
             score3 = matchResults[analysis.columns.index('autoScore3')]
             score4 = matchResults[analysis.columns.index('autoScore4')]
 
-            mb = ""
             autoMB = matchResults[analysis.columns.index('autoMB')]
+            if autoMB != 2:
+                mbDisplay = "*"
+            else:
+                mbDisplay = ""
 
+            numGamePieces = 0
             if score1 > 0:
                 numGamePieces += 1
             if score2 > 0:
@@ -43,39 +46,33 @@ def autoRamp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             if score4 > 0:
                 numGamePieces += 1
 
-            if autoMB > 0:
-                mb = "*"
-                
             if autoRamp == 0: #No Attempt
-                autoRampDisplay = "0|" + str(numGamePieces) + mb
+                autoRampDisplay = "0|" + str(numGamePieces) + mbDisplay
                 autoRampValue = 0
-
                 if numGamePieces == 0:
                     autoRampColor = 1 #Black
                 else: #with move bonus or piece placement
                     autoRampColor = 0 #White   
 
             elif autoRamp == 1: #Failed Attempt
-                autoRampDisplay = "0|" + str(numGamePieces) + mb
+                autoRampDisplay = "0|" + str(numGamePieces) + mbDisplay
                 autoRampValue = 0
                 autoRampColor = 2 #Red
 
             elif autoRamp == 2: #Docked Not Engaged
-                autoRampDisplay = "8|" + str(numGamePieces) + mb
+                autoRampDisplay = "8|" + str(numGamePieces) + mbDisplay
                 autoRampValue = 8
                 autoRampColor = 3 #Yellow
 
             elif autoRamp == 3: #Docked And Engaged
-                autoRampDisplay = "12|" + str(numGamePieces) + mb
+                autoRampDisplay = "12|" + str(numGamePieces) + mbDisplay
                 autoRampValue = 12
- 
                 if numGamePieces == 0:
                     autoRampColor = 4 #Green
                 else: #with move bonus or piece placement
                     autoRampColor = 5 #Blue
             
 
-            # Increment the number of matches played and write M#D, M#V and M#F
             numberOfMatchesPlayed += 1
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = autoRampDisplay
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = autoRampValue
@@ -88,30 +85,7 @@ def autoRamp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
         median = round(statistics.median(autoRampList), 1)
         rsCEA['S1V'] = mean
         rsCEA['S1D'] = str(mean)
-        if mean == 0:
-            rsCEA['S1F'] = 1
-        elif 4 >= mean > 0:
-            rsCEA['S1F'] = 2
-        elif 8 > mean > 4:
-            rsCEA['S1F'] = 3
-        elif 12 > mean >= 8:
-            rsCEA['S1F'] = 4
-        elif mean == 12:
-            rsCEA['S1F'] = 5
-        else:
-            rsCEA['S1F'] = 999
         rsCEA['S2V'] = median
         rsCEA['S2D'] = str(median)
-        if median == 0:
-            rsCEA['S1F'] = 1
-        elif 4 >= median > 0:
-            rsCEA['S1F'] = 2
-        elif 8 > median > 4:
-            rsCEA['S1F'] = 3
-        elif 12 > median >= 8:
-            rsCEA['S1F'] = 4
-        elif median == 12:
-            rsCEA['S1F'] = 5
-        else:
-            rsCEA['S1F'] = 999
+
     return rsCEA

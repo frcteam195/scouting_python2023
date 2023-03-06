@@ -1,4 +1,5 @@
-__all__ = ['startingPosition',
+__all__ = [
+           'startingPosition',
            'autoRamp',
            'autoScore',
            'autoGamePieces',
@@ -19,10 +20,15 @@ __all__ = ['startingPosition',
            'postReorientCone',
            'postShelfPickup',
            'postGroundPickup',
-           'postGoodPartner',
+           # 'postGoodPartner',
+           'postTippedOver'
            'matchVideos',
            'BAFoulsPts',
            'BARankingPoints',
            'totalScore',
-           'teleScore'
+           'teleScore',
+           'graphicTeleInfo',
+           'autoScorePosHigh',
+           'autoScorePosMid',
+           'autoScorePosLow'
            ]

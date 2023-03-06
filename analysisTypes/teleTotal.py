@@ -26,22 +26,17 @@ def teleTotal(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             coneHigh = 0
             coneMid = 0
             coneLow = 0
-
             cubeHigh = 0
             cubeMid = 0
             cubeLow = 0
-
-            totalTotal = 0
             total = 0
 
             coneHigh = matchResults[analysis.columns.index('teleConeHigh')]
             coneMid = matchResults[analysis.columns.index('teleConeMid')]
             coneLow = matchResults[analysis.columns.index('teleConeMid')]
-
             cubeHigh = matchResults[analysis.columns.index('teleCubeHigh')]
             cubeMid = matchResults[analysis.columns.index('teleCubeMid')]
             cubeLow = matchResults[analysis.columns.index('teleCubeLow')]
-
 
             if coneHigh is None:
                 coneHigh = 0
@@ -56,31 +51,26 @@ def teleTotal(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             if cubeLow is None:
                 cubeLow = 0
 
-            totalTotal = coneMid + cubeMid
-            total = coneHigh + coneMid + coneLow + cubeHigh + cubeMid + cubeLow
+            teleTotalValue = coneHigh + coneMid + coneLow + cubeHigh + cubeMid + cubeLow
+            teleTotalDisplay = (f"{str(teleTotalValue)}")
+            teleTotalList.append(teleTotalValue)
 
-            teleTotalDisplay = (f"{str(total)}")
-            teleTotalValue = totalTotal
-
-            if total == 0:
+            if teleTotalValue == 0:
                 teleTotalColor = 1
-            elif total <= 3:
+            elif teleTotalValue <= 3:
                 teleTotalColor = 2
-            elif total <= 6:
+            elif teleTotalValue <= 6:
                 teleTotalColor = 3
-            elif total <= 9:
+            elif teleTotalValue <= 9:
                 teleTotalColor = 4
             else:
                 teleTotalColor = 5
-
 
             # Increment the number of matches played and write M#D, M#V and M#F
             numberOfMatchesPlayed += 1
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = teleTotalDisplay
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = teleTotalValue
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = teleTotalColor
-
-            teleTotalList.append(teleTotalValue)
 
     if numberOfMatchesPlayed > 0:
         rsCEA['S1V'] = round(statistics.mean(teleTotalList), 1)

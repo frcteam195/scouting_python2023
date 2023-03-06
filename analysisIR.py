@@ -32,12 +32,17 @@ analysisTypesDict = {
                     "postReorientCone": postReorientCone.postReorientCone,
                     "postShelfPickup": postShelfPickup.postShelfPickup,
                     "postGroundPickup": postGroundPickup.postGroundPickup,
-                    "postGoodPartner": postGoodPartner.postGoodPartner,
+                    # "postGoodPartner": postGoodPartner.postGoodPartner,
+                    "postTippedOver": postTippedOver.postTippedOver,
                     "matchVideos": matchVideos.matchVideos,
                     "BAFoulsPts": BAFoulsPts.BAFoulsPts,
                     "BARankingPoints": BARankingPoints.BARankingPoints,
                     "totalScore": totalScore.totalScore,
-                    "teleScore": teleScore.teleScore
+                    "teleScore": teleScore.teleScore,
+                    "graphicTeleInfo": graphicTeleInfo.graphicTeleInfo,
+                    "autoScorePosHigh": autoScorePosHigh.autoScorePosHigh,
+                    "autoScorePosMid": autoScorePosMid.autoScorePosMid,
+                    "autoScorePosLow": autoScorePosLow.autoScorePosLow
                     } 
 
 # parser to choose the database where the table will be written
@@ -49,9 +54,8 @@ input_db = args.database
 input_host = args.host
 
 CEA_tmpTable = "CEanalysisTmp"
-BAO_table = "BAoprs"
-BAR_table = "BAranks"
-MS_table = "BAmatchScouting"
+BAoprTable = "BAoprs"
+BArankTable = "BAranks"
 
 # Read the configuration file
 config = configparser.ConfigParser()
@@ -207,6 +211,14 @@ class analysis():
                     rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData, rsRobotL2MatchData=rsRobotL2MatchData, rsRobotPitData=rsRobotPitData)
                     self._insertAnalysis(rsCEA)
                     self.conn.commit()
+            # add one last analysisType to add BAoprs and BAranks to analysisTypeID = 80
+            query = (f"INSERT INTO {CEA_tmpTable} (team, eventID, S1V, S1D, S2V, S2D, analysisTypeID) "
+                     f"SELECT {BArankTable}.team, {BArankTable}.eventID, "
+                     f"{BAoprTable}.OPR, {BAoprTable}.OPR, {BArankTable}.rank, {BArankTable}.rank, 80 "
+                     f"FROM {BArankTable} "
+                     f"INNER JOIN {BAoprTable} ON {BArankTable}.team = {BAoprTable}.team "
+                     f"WHERE {BArankTable}.team = {teamName}")
+            self._run_query(query)
     
      # Function to insert an rsCEA record into the DB.
     def _insertAnalysis(self, rsCEA):
@@ -222,12 +234,13 @@ class analysis():
         query = "SELECT team, S1V FROM " + CEA_tmpTable + " WHERE analysisTypeID = " + str(analysis_type)
         self._run_query(query)
         team_sum1 = self.cursor.fetchall() # List of tuples (team, S1V)
+        # print(team_sum1)
         if len(team_sum1) > 0:
             team_sum1 = [team_tup for team_tup in team_sum1 if team_tup[1] is not None]
             sum1 = [item[1] for item in team_sum1]
             percentiles = np.percentile(sum1, [25, 50, 75, 90])
 
-            team_coloring = {}
+            # team_coloring = {}
             for team in team_sum1:
                 if team[1] <= percentiles[0]:
                     team_color = 1

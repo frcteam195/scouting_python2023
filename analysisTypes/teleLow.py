@@ -36,7 +36,7 @@ def teleLow(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
             coneHigh = matchResults[analysis.columns.index('teleConeHigh')]
             coneMid = matchResults[analysis.columns.index('teleConeMid')]
-            coneLow = matchResults[analysis.columns.index('teleConeMid')]
+            coneLow = matchResults[analysis.columns.index('teleConeLow')]
 
             cubeHigh = matchResults[analysis.columns.index('teleCubeHigh')]
             cubeMid = matchResults[analysis.columns.index('teleCubeMid')]
@@ -62,13 +62,13 @@ def teleLow(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             teleLowDisplay = (f"{str(totalLow)}|{str(total)}")
             teleLowValue = totalLow
 
-            if total == 0:
+            if totalLow == 0:
                 teleLowColor = 1
-            elif total <= 3:
+            elif totalLow <= 2:
                 teleLowColor = 2
-            elif total <= 6:
+            elif totalLow <= 4:
                 teleLowColor = 3
-            elif total <= 9:
+            elif totalLow <=6:
                 teleLowColor = 4
             else:
                 teleLowColor = 5

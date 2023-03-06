@@ -59,13 +59,13 @@ def teleCones(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             teleConesDisplay = (f"{str(totalCones)}|{str(total)}")
             teleConesValue = totalCones
 
-            if total == 0:
+            if totalCones == 0:
                 teleConesColor = 1
-            elif total <= 3:
+            elif totalCones <= 2:
                 teleConesColor = 2
-            elif total <= 6:
+            elif totalCones <= 4:
                 teleConesColor = 3
-            elif total <= 9:
+            elif totalCones <= 6:
                 teleConesColor = 4
             else:
                 teleConesColor = 5

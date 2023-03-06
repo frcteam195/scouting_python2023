@@ -36,7 +36,7 @@ def teleMid(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
             coneHigh = matchResults[analysis.columns.index('teleConeHigh')]
             coneMid = matchResults[analysis.columns.index('teleConeMid')]
-            coneLow = matchResults[analysis.columns.index('teleConeMid')]
+            coneLow = matchResults[analysis.columns.index('teleConeLow')]
 
             cubeHigh = matchResults[analysis.columns.index('teleCubeHigh')]
             cubeMid = matchResults[analysis.columns.index('teleCubeMid')]
@@ -62,13 +62,13 @@ def teleMid(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             teleMidDisplay = (f"{str(totalMid)}|{str(total)}")
             teleMidValue = totalMid
 
-            if total == 0:
+            if totalMid == 0:
                 teleMidColor = 1
-            elif total <= 3:
+            elif totalMid <= 2:
                 teleMidColor = 2
-            elif total <= 6:
+            elif totalMid <= 4:
                 teleMidColor = 3
-            elif total <= 9:
+            elif totalMid <=6:
                 teleMidColor = 4
             else:
                 teleMidColor = 5
@@ -87,30 +87,6 @@ def teleMid(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
         median = round(statistics.median(teleMidList), 1)
         rsCEA['S1V'] = mean
         rsCEA['S1D'] = str(mean)
-        if mean == 0:
-            rsCEA['S1F'] = 1
-        elif 3 >= mean > 0:
-            rsCEA['S1F'] = 2
-        elif 6 >= mean > 3:
-            rsCEA['S1F'] = 3
-        elif 9 >= mean > 6:
-            rsCEA['S1F'] = 4
-        elif mean > 9:
-            rsCEA['S1F'] = 5
-        else:
-            rsCEA['S1F'] = 999
         rsCEA['S2V'] = median
         rsCEA['S2D'] = str(median)
-        if median == 0:
-            rsCEA['S2F'] = 1
-        elif 3 >= median > 0:
-            rsCEA['S2F'] = 2
-        elif 6 >= median > 3:
-            rsCEA['S2F'] = 3
-        elif 9 >= median > 6:
-            rsCEA['S2F'] = 4
-        elif median > 9:
-            rsCEA['S2F'] = 5
-        else:
-            rsCEA['S2F'] = 999
     return rsCEA
