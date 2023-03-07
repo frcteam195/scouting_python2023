@@ -27,7 +27,7 @@ __all__ = [
            'totalScore',
            'teleScore',
            'graphicTeleInfo',
-            'graphicStartPos',
+           'graphicStartPos',
            'autoScorePosHigh',
            'autoScorePosMid',
            'autoScorePosLow'

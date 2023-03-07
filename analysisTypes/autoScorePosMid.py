@@ -34,11 +34,38 @@ def autoScorePosMid(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
             numberOfMatchesPlayed += 1
             
     if numberOfMatchesPlayed > 0:
-        position = 0
+        position = 10
         for count in range(9):
             count += 1
-            position += 10
+            # print(f"Mid - Team = {teamNum}, count = {count}, position = {position}, list = {autoScoreList}")
             value = round(autoScoreList.count(position)/numberOfMatchesPlayed, 1)
             rsCEA['M' + str(count) + 'D'] = value
-        
+            if value == 0:
+                rsCEA['M' + str(count) + 'F'] = 100
+            elif value < 0.1:
+                rsCEA['M' + str(count) + 'F'] = 101
+            elif value < 0.2:
+                rsCEA['M' + str(count) + 'F'] = 102
+            elif value < 0.3:
+                rsCEA['M' + str(count) + 'F'] = 103
+            elif value < 0.4:
+                rsCEA['M' + str(count) + 'F'] = 104
+            elif value < 0.5:
+                rsCEA['M' + str(count) + 'F'] = 105
+            elif value < 0.6:
+                rsCEA['M' + str(count) + 'F'] = 106
+            elif value < 0.7:
+                rsCEA['M' + str(count) + 'F'] = 107
+            elif value < 0.8:
+                rsCEA['M' + str(count) + 'F'] = 108
+            elif value < 0.9:
+                rsCEA['M' + str(count) + 'F'] = 109
+            elif value < 1.0:
+                rsCEA['M' + str(count) + 'F'] = 110
+            elif value == 1:
+                rsCEA['M' + str(count) + 'F'] = 111
+            else:
+                print('autoScorePosMid: That should not happen')
+                quit()
+            position += 1
     return rsCEA
