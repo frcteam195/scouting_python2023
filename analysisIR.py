@@ -39,6 +39,7 @@ analysisTypesDict = {
                     "totalScore": totalScore.totalScore,
                     "teleScore": teleScore.teleScore,
                     "graphicTeleInfo": graphicTeleInfo.graphicTeleInfo,
+                    "graphicStartPos": graphicStartPos.graphicStartPos,
                     "autoScorePosHigh": autoScorePosHigh.autoScorePosHigh,
                     "autoScorePosMid": autoScorePosMid.autoScorePosMid,
                     "autoScorePosLow": autoScorePosLow.autoScorePosLow
