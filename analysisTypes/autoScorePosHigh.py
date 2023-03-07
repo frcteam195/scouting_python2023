@@ -9,6 +9,7 @@ def autoScorePosHigh(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitD
     
     for matchResults in rsRobotMatchData:
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
+        teamNum = matchResults[analysis.columns.index('team')]
         rsCEA['eventID'] = matchResults[analysis.columns.index('eventID')]
         preNoShow = matchResults[analysis.columns.index('preNoShow')]
         scoutingStatus = matchResults[analysis.columns.index('scoutingStatus')]
@@ -33,10 +34,11 @@ def autoScorePosHigh(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitD
             numberOfMatchesPlayed += 1
             
     if numberOfMatchesPlayed > 0:
-        for position in range(9):
+        position = 0
+        for count in range(9):
+            count += 1
             position += 1
             value = round(autoScoreList.count(position)/numberOfMatchesPlayed, 1)
-            rsCEA['M' + str(position) + 'D'] = value
-        # print(len(autoScoreList))
+            rsCEA['M' + str(count) + 'D'] = value
         
     return rsCEA

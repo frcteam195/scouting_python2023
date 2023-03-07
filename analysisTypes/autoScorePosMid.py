@@ -9,6 +9,7 @@ def autoScorePosMid(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
     
     for matchResults in rsRobotMatchData:
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
+        teamNum = matchResults[analysis.columns.index('team')]
         rsCEA['eventID'] = matchResults[analysis.columns.index('eventID')]
         preNoShow = matchResults[analysis.columns.index('preNoShow')]
         scoutingStatus = matchResults[analysis.columns.index('scoutingStatus')]
@@ -32,10 +33,12 @@ def autoScorePosMid(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
 
             numberOfMatchesPlayed += 1
             
-    for position in range(9):
-        position += 1
-        value = autoScoreList.count(position)/numberOfMatchesPlayed
-        rsCEA['M' + str(position) + 'D'] = value
-    # print(len(autoScoreList))
+    if numberOfMatchesPlayed > 0:
+        position = 0
+        for count in range(9):
+            count += 1
+            position += 10
+            value = round(autoScoreList.count(position)/numberOfMatchesPlayed, 1)
+            rsCEA['M' + str(count) + 'D'] = value
         
     return rsCEA
