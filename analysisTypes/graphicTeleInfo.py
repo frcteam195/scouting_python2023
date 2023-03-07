@@ -49,7 +49,6 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
             totalMid += (teleConeMid + teleCubeMid)
             totalLow += (teleConeLow + teleCubeLow)
 
-
             totalCones += (teleConeHigh + teleConeLow + teleConeMid)
             totalCubes += (teleCubeHigh + teleCubeMid + teleCubeLow)
 
@@ -58,14 +57,11 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
             graphicTeleInfoList.append(0)
             
     total = (totalHigh + totalLow + totalMid)
-    print("High: " + str(totalHigh))
-    print("Mid: " + str(totalMid))
-    print("Low: " + str(totalLow))
-    print("Total: " + str(total))
     if(totalHigh == 0):
         percentHigh = 0
     else:
         percentHigh = int(totalHigh / total * 100)
+    
     if(totalMid == 0):
         percentMid = 0
     else:

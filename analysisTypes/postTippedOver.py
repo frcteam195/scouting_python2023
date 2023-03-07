@@ -1,8 +1,6 @@
 import statistics
 
-from requests import post
-
-def startingPosition(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
+def postTippedOver(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     # Initialize the rsCEA record set and define variables specific to this function which lie outside the for loop
     rsCEA = {}
     rsCEA['analysisTypeID'] = 22
@@ -24,24 +22,28 @@ def startingPosition(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitD
             postTippedOver = matchResults[analysis.columns.index('postTippedOver')]  
             
             if postTippedOver is None:
-                postTippedOverDisplay = 999
+                postTippedOverDisplay = '999'
                 postTippedOverValue = 999
+                postTippedOverColor = 1
             elif postTippedOver == 0:
                 postTippedOverDisplay = 'N'
                 postTippedOverValue = 0
-                postSubBrokeColor = 4
-            else:
+                postTippedOverColor = 4
+            elif postTippedOver == 1:
                 postTippedOverDisplay = 'Y'
                 postTippedOverValue = 1
-                postSubBrokeColor = 2
+                postTippedOverColor = 2
+            else:
+                postTippedOverDisplay = '999'
+                postTippedOverValue = 999
+                postTippedOverColor = 1
             
             postTippedOverList.append(postTippedOverValue)
 
-            # Increment the number of matches played and write M#D, M#V and M#F
             numberOfMatchesPlayed += 1
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = postTippedOverDisplay
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = postTippedOverValue
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = postSubBrokeColor
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = postTippedOverColor
 
     if numberOfMatchesPlayed > 0:
         rsCEA['S1V'] = round(statistics.mean(postTippedOverList), 1)

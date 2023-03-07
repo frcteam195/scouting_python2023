@@ -32,7 +32,6 @@ analysisTypesDict = {
                     "postReorientCone": postReorientCone.postReorientCone,
                     "postShelfPickup": postShelfPickup.postShelfPickup,
                     "postGroundPickup": postGroundPickup.postGroundPickup,
-                    # "postGoodPartner": postGoodPartner.postGoodPartner,
                     "postTippedOver": postTippedOver.postTippedOver,
                     "matchVideos": matchVideos.matchVideos,
                     "BAFoulsPts": BAFoulsPts.BAFoulsPts,

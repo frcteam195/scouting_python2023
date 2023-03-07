@@ -20,8 +20,7 @@ __all__ = [
            'postReorientCone',
            'postShelfPickup',
            'postGroundPickup',
-           # 'postGoodPartner',
-           'postTippedOver'
+           'postTippedOver',
            'matchVideos',
            'BAFoulsPts',
            'BARankingPoints',
