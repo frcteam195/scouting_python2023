@@ -103,111 +103,18 @@ def graphicStartPos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
         else:
             rampPercent4 = int(rampTotal4 / rampTotal * 100)
 
+    startPosTotals = [startPosTotal1, startPosTotal2, startPosTotal3, startPosTotal4]
+    sortedList = sorted(startPosTotals, reverse=False)
 
-    if startPosTotal1 > startPosTotal2 and startPosTotal1 > startPosTotal3 and startPosTotal1 > startPosTotal4:
-        startPosColor1 = 4
-        if startPosTotal2 > startPosTotal3 and startPosTotal2 > startPosTotal4:
-            startPosColor2 = 3
-            if startPosTotal3 > startPosTotal4:
-                startPosColor3 = 2
-                startPosColor4 = 1
-            else:
-                startPosColor3 = 1
-                startPosColor4 = 2
-        elif startPosTotal3 > startPosTotal2 and startPosTotal3 > startPosTotal4:
-            startPosColor2 = 2
-            if startPosTotal2 > startPosTotal4:
-                startPosColor3 = 3
-                startPosColor4 = 1
-            else:
-                startPosColor3 = 1
-                startPosColor4 = 3
-        else:
-            startPosColor2 = 1
-            if startPosTotal2 > startPosTotal3:
-                startPosColor3 = 3
-                startPosColor4 = 2
-            else:
-                startPosColor3 = 2
-                startPosColor4 = 3
-    elif startPosTotal2 > startPosTotal1 and startPosTotal2 > startPosTotal3 and startPosTotal2 > startPosTotal4:
-        startPosColor1 = 3
-        if startPosTotal1 > startPosTotal3 and startPosTotal1 > startPosTotal4:
-            startPosColor2 = 4
-            if startPosTotal3 > startPosTotal4:
-                startPosColor3 = 2
-                startPosColor4 = 1
-            else:
-                startPosColor3 = 1
-                startPosColor4 = 2
-        elif startPosTotal3 > startPosTotal1 and startPosTotal3 > startPosTotal4:
-            startPosColor2 = 2
-            if startPosTotal1 > startPosTotal4:
-                startPosColor3 = 4
-                startPosColor4 = 1
-            else:
-                startPosColor3 = 1
-                startPosColor4 = 4
-        else:
-            startPosColor2 = 1
-            if startPosTotal1 > startPosTotal3:
-                startPosColor3 = 4
-                startPosColor4 = 2
-            else:
-                startPosColor3 = 2
-                startPosColor4 = 4
-    elif startPosTotal3 > startPosTotal1 and startPosTotal3 > startPosTotal2 and startPosTotal3 > startPosTotal4:
-        startPosColor1 = 2
-        if startPosTotal1 > startPosTotal2 and startPosTotal1 > startPosTotal4:
-            startPosColor2 = 4
-            if startPosTotal2 > startPosTotal4:
-                startPosColor3 = 3
-                startPosColor4 = 1
-            else:
-                startPosColor3 = 1
-                startPosColor4 = 3
-        elif startPosTotal2 > startPosTotal1 and startPosTotal2 > startPosTotal4:
-            startPosColor2 = 3
-            if startPosTotal1 > startPosTotal4:
-                startPosColor3 = 4
-                startPosColor4 = 1
-            else:
-                startPosColor3 = 1
-                startPosColor4 = 4
-        else:
-            startPosColor2 = 1
-            if startPosTotal1 > startPosTotal2:
-                startPosColor3 = 4
-                startPosColor4 = 3
-            else:
-                startPosColor3 = 3
-                startPosColor4 = 4
-    else:
-        startPosColor1 = 1
-        if startPosTotal1 > startPosTotal2 and startPosTotal1 > startPosTotal3:
-            startPosColor2 = 4
-            if startPosTotal2 > startPosTotal3:
-                startPosColor3 = 3
-                startPosColor4 = 2
-            else:
-                startPosColor3 = 2
-                startPosColor4 = 3
-        elif startPosTotal2 > startPosTotal1 and startPosTotal2 > startPosTotal3:
-            startPosColor2 = 3
-            if startPosTotal1 > startPosTotal3:
-                startPosColor3 = 4
-                startPosColor4 = 2
-            else:
-                startPosColor3 = 2
-                startPosColor4 = 4
-        else:
-            startPosColor2 = 2
-            if startPosTotal1 > startPosTotal2:
-                startPosColor3 = 4
-                startPosColor4 = 3
-            else:
-                startPosColor3 = 3
-                startPosColor4
+    print(sortedList)
+    # startPosTotals = sorted(startPosTotals, reverse= True)
+
+    # assign the colors to the corresponding variables
+
+    print(sortedList.index(startPosTotal1)+1)
+    print(sortedList.index(startPosTotal2)+1)
+    print(sortedList.index(startPosTotal3)+1)
+    print(sortedList.index(startPosTotal4)+1)
 
     rsCEA['S1D'] = percent1
     rsCEA['S1F'] = startPosColor1
