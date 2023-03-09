@@ -14,6 +14,7 @@ parser.add_argument("-host1", "--host1", help = "Host choices: aws, localhost", 
 parser.add_argument("-host2", "--host2", help = "Host choices: aws, localhost", required=True)
 parser.add_argument("-table", "--table", help = "Enter table name to sync", required=True)
 parser.add_argument("-id", "--id", help = "Enter unique identifier column", required=True)
+parser.add_argument("-noCE", "--no_Current_Event", help = "Enter 'true' if eventID is not in table", required=False)
 args = parser.parse_args()
 input_db1 = args.database1
 input_host1 = args.host1
@@ -21,11 +22,7 @@ input_db2 = args.database2
 input_host2 = args.host2
 tableName = args.table
 uniqueID = args.id
-
-# tableName = 'matchScoutingL2'
-# AWSdatabase = 'dev2'
-# localDatbase = 'testing'
-# uniqueID = 'matchScoutingL2ID'
+noCE = args.no_Current_Event
 
 # Read the configuration file
 config = configparser.ConfigParser()
@@ -49,7 +46,10 @@ cursor2 = conn2.cursor()
 eventID = cursor2.execute("SELECT eventID FROM events WHERE currentEvent = 1")
 eventID = cursor2.fetchone()[0]
 
-query = f"SELECT * from {tableName} WHERE eventID = {eventID}"
+if noCE == 'true':
+    query = f"SELECT * from {tableName}"
+else:
+    query = f"SELECT * from {tableName} WHERE eventID = {eventID}"
 cursor1.execute(query)
 columns = [column[0] for column in cursor1.description]
 sourceData = cursor1.fetchall()
@@ -68,4 +68,3 @@ cursor2.close()
 conn2.close()
 
 print(f"sync of '{tableName}' complete")
-
