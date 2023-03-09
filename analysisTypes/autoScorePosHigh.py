@@ -1,10 +1,12 @@
-import statistics
+from multiprocessing.sharedctypes import Value
 
 def autoScorePosHigh(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
     rsCEA = {}
     rsCEA['analysisTypeID'] = 81
     numberOfMatchesPlayed = 0
+
+    autoScorePosHighList = []
     autoScoreList = []
     
     for matchResults in rsRobotMatchData:
@@ -38,34 +40,39 @@ def autoScorePosHigh(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitD
         for count in range(9):
             count += 1
             # print(f"High - Team = {teamNum}, count = {count}, position = {position}, list = {autoScoreList}")
-            value = (round(autoScoreList.count(position)/numberOfMatchesPlayed, 1)) * 100
-            rsCEA['M' + str(count) + 'F'] = value
+            value = (round(autoScoreList.count(position)/numberOfMatchesPlayed, 2)) * 100
             if value == 0:
-                rsCEA['M' + str(count) + 'D'] = '#70FF00'
+                color = '#70FF00'
             elif value < 10:
-                rsCEA['M' + str(count) + 'D'] = '#A0FF00' 
+                color = '#A0FF00' 
             elif value < 20:
-                rsCEA['M' + str(count) + 'D'] = '#D0FF00' 
+                color = '#D0FF00' 
             elif value < 30:
-                rsCEA['M' + str(count) + 'D'] = '#FFFF00' 
+                color = '#FFFF00' 
             elif value < 40:
-                rsCEA['M' + str(count) + 'D'] = '#FFE000'  
+                color = '#FFE000'  
             elif value < 50:
-                rsCEA['M' + str(count) + 'D'] = '#FFC000' 
+                color = '#FFC000' 
             elif value < 60:
-                rsCEA['M' + str(count) + 'D'] = '#FFA000' 
+                color = '#FFA000' 
             elif value < 70:
-                rsCEA['M' + str(count) + 'D'] = '#FF8000' 
+                color = '#FF8000' 
             elif value < 80:
-                rsCEA['M' + str(count) + 'D'] = '#FF6000' 
+                color = '#FF6000' 
             elif value < 90:
-                rsCEA['M' + str(count) + 'D'] = '#FF4000'
+                color = '#FF4000'
             elif value < 100:
-                rsCEA['M' + str(count) + 'D'] = '#FF2000'
+                color = '#FF2000'
             elif value == 100:
-                rsCEA['M' + str(count) + 'D'] = '#FF0000'
+                color = '#FF0000'
             else:
                 print('autoScorePosHigh: That should not happen')
                 quit()
             position += 1
+
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = str(color)
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = value
+
+            autoScorePosHighList.append(value)
+
     return rsCEA

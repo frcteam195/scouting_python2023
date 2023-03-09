@@ -40,15 +40,15 @@ def teleCommunity(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData
 
             teleCommunityDisplay = str(totalCMTY) + "|" + str(LZPickup)
             teleCommunityValue = totalCMTY
-            if LZPickup is None:
+            if totalCMTY is None:
                 teleCommunityColor = 1
-            elif LZPickup == 0:
+            elif totalCMTY == 0:
                 teleCommunityColor = 1
-            elif LZPickup <= 3:
+            elif totalCMTY <= 3:
                 teleCommunityColor = 2
-            elif LZPickup <= 6:
+            elif totalCMTY <= 6:
                 teleCommunityColor = 3
-            elif LZPickup <= 9:
+            elif totalCMTY <= 9:
                 teleCommunityColor = 4
             else:
                 teleCommunityColor = 5
