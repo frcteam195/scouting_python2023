@@ -106,15 +106,15 @@ def graphicStartPos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
     startPosTotals = [startPosTotal1, startPosTotal2, startPosTotal3, startPosTotal4]
     sortedList = sorted(startPosTotals, reverse=False)
 
-    print(sortedList)
+    # print(sortedList)
     # startPosTotals = sorted(startPosTotals, reverse= True)
 
     # assign the colors to the corresponding variables
 
-    print(sortedList.index(startPosTotal1)+1)
-    print(sortedList.index(startPosTotal2)+1)
-    print(sortedList.index(startPosTotal3)+1)
-    print(sortedList.index(startPosTotal4)+1)
+    # print(sortedList.index(startPosTotal1)+1)
+    # print(sortedList.index(startPosTotal2)+1)
+    # print(sortedList.index(startPosTotal3)+1)
+    # print(sortedList.index(startPosTotal4)+1)
 
     rsCEA['S1D'] = percent1
     rsCEA['S1F'] = startPosColor1
