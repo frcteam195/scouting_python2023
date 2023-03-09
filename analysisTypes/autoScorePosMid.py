@@ -6,6 +6,7 @@ def autoScorePosMid(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
     rsCEA['analysisTypeID'] = 82
     numberOfMatchesPlayed = 0
     autoScoreList = []
+    autoScorePosMidList = []
     
     for matchResults in rsRobotMatchData:
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
@@ -38,34 +39,39 @@ def autoScorePosMid(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
         for count in range(9):
             count += 1
             # print(f"Mid - Team = {teamNum}, count = {count}, position = {position}, list = {autoScoreList}")
-            value = round(autoScoreList.count(position)/numberOfMatchesPlayed, 1)
-            rsCEA['M' + str(count) + 'D'] = value
+            value = (round(autoScoreList.count(position)/numberOfMatchesPlayed, 2)) * 100
             if value == 0:
-                rsCEA['M' + str(count) + 'F'] = 100
-            elif value < 0.1:
-                rsCEA['M' + str(count) + 'F'] = 101
-            elif value < 0.2:
-                rsCEA['M' + str(count) + 'F'] = 102
-            elif value < 0.3:
-                rsCEA['M' + str(count) + 'F'] = 103
-            elif value < 0.4:
-                rsCEA['M' + str(count) + 'F'] = 104
-            elif value < 0.5:
-                rsCEA['M' + str(count) + 'F'] = 105
-            elif value < 0.6:
-                rsCEA['M' + str(count) + 'F'] = 106
-            elif value < 0.7:
-                rsCEA['M' + str(count) + 'F'] = 107
-            elif value < 0.8:
-                rsCEA['M' + str(count) + 'F'] = 108
-            elif value < 0.9:
-                rsCEA['M' + str(count) + 'F'] = 109
-            elif value < 1.0:
-                rsCEA['M' + str(count) + 'F'] = 110
-            elif value == 1:
-                rsCEA['M' + str(count) + 'F'] = 111
+                color = '#70FF00'
+            elif value < 10:
+                color = '#A0FF00' 
+            elif value < 20:
+                color = '#D0FF00' 
+            elif value < 30:
+                color = '#FFFF00' 
+            elif value < 40:
+                color = '#FFE000'  
+            elif value < 50:
+                color = '#FFC000' 
+            elif value < 60:
+                color = '#FFA000' 
+            elif value < 70:
+                color = '#FF8000' 
+            elif value < 80:
+                color = '#FF6000' 
+            elif value < 90:
+                color = '#FF4000'
+            elif value < 100:
+                color = '#FF2000'
+            elif value == 100:
+                color = '#FF0000'
             else:
                 print('autoScorePosMid: That should not happen')
                 quit()
             position += 1
+
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = str(color)
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = value
+
+            autoScorePosMidList.append(value)
+
     return rsCEA
