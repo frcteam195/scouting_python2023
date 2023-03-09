@@ -5,7 +5,6 @@ import time
 import argparse
 import configparser
 
-
 # *********************** argument parser **********************
 parser = argparse.ArgumentParser()
 parser.add_argument("-db", "--database", help = "Choices: dev1, dev2, testing, production", required=True)
