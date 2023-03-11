@@ -5,8 +5,8 @@ echo $now
 start_time=$(date +%s)
 
 # define some variables ...
-db=test1
-remoteDB=test1 # generally db and remoteDB will be the same, can be different for testing
+db=production
+remoteDB=production # generally db and remoteDB will be the same, can be different for testing
 host=localhost   # generally will be localhost. Using a variable for easy testing
 remoteHost=aws   # generally will be aws, changeable here for testing
 path=/home/team195/scouting_python2023
