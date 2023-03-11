@@ -1,0 +1,18 @@
+## At Mohawk
+10.0.20.196
+gateway 10.0.0.1
+SubnetMask 24
+DNS 8.8.8.8
+
+## On Scouting Network
+10.0.20.196
+gateway 10.0.20.1
+SubnetMask 8
+DNS 8.8.8.8
+
+Network settings in:
+/etc/NetworkManager/system-connections/'Wired connection 1'
+
+systemctl status/stop/start/restart NetworkManager
+
+
