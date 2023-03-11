@@ -77,9 +77,9 @@ cd /home/team195/DBbackups
 
 echo ''; echo 'secure copying csv and json file to website'
 /usr/bin/scp -i /home/team195/scouting.pem "$path"/195scoutingData.csv ubuntu@scouting.team195.com:/media/shareData
-/usr/bin/scp -i /home/team195/scouting.pem "$path"/195scoutingData.json ubuntu@scouting.team195.com:/tmp/shareData
+/usr/bin/scp -i /home/team195/scouting.pem "$path"/195scoutingData.json ubuntu@scouting.team195.com:/media/shareData
 sleep 1
-rm -f "$path"/195scoutingData.csv "$path"/195scoutingData.json
+# rm -f "$path"/195scoutingData.csv "$path"/195scoutingData.json
 
 end_time=$(date +%s)
 elapsed=$(( end_time - start_time ))

@@ -40,7 +40,7 @@ elements = elements.translate(str.maketrans("", "", "'"))
 query = f"SELECT {elements} FROM matchScouting WHERE eventID = {CEventID}"
 cursor.execute(query)
 sharedData = cursor.fetchall()
-
+print(sharedData)
 df = pd.DataFrame(sharedData)
 
 headerList = []
