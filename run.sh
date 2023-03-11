@@ -76,8 +76,8 @@ cd /home/team195/DBbackups
 /bin/rm -f event_"$now".sql
 
 echo ''; echo 'secure copying csv and json file to website'
-/usr/bin/scp -i /home/team195/scouting.pem "$path"/195scoutingData.csv ubuntu@scouting.team195.com:~
-/usr/bin/scp -i /home/team195/scouting.pem "$path"/195scoutingData.json ubuntu@scouting.team195.com:~
+/usr/bin/scp -i /home/team195/scouting.pem "$path"/195scoutingData.csv ubuntu@scouting.team195.com:/media/shareData
+/usr/bin/scp -i /home/team195/scouting.pem "$path"/195scoutingData.json ubuntu@scouting.team195.com:/tmp/shareData
 sleep 1
 rm -f "$path"/195scoutingData.csv "$path"/195scoutingData.json
 
