@@ -13,9 +13,11 @@ def matchVideos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
         autoDidNotShow = 0   # temporarily adding this to make it work, fix later !!!
         scoutingStatus = matchResults[analysis.columns.index('scoutingStatus')]
         if autoDidNotShow == 1:
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'DNS'
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = matchResults[
+                analysis.columns.index('matchNum')]
         elif scoutingStatus == 2:
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'UR'
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = matchResults[
+                analysis.columns.index('matchNum')]
         else:
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = matchResults[
                 analysis.columns.index('matchNum')]
