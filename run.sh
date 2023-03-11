@@ -1,6 +1,7 @@
 #! /bin/bash
 
 now=$(/bin/date +%Y-%m-%d_%H-%M)
+echo '************************************************************'
 echo $now
 start_time=$(date +%s)
 
