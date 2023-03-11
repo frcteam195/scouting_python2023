@@ -23,6 +23,8 @@ def graphicStartPos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
     rampTotal4 = 0 #no attempt
     for matchResults in rsRobotMatchData:
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
+        team = matchResults[analysis.columns.index('team')]
+        teamMatchNum = matchResults[analysis.columns.index('teamMatchNum')]
         rsCEA['eventID'] = matchResults[analysis.columns.index('eventID')]
         
         preNoShow = matchResults[analysis.columns.index('preNoShow')]
@@ -33,6 +35,8 @@ def graphicStartPos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'UR'
         else:
             preStartPos = matchResults[analysis.columns.index('preStartPos')]
+            print()
+            print(f"Team = {team}, matchNum = {teamMatchNum}, preStartPos = {preStartPos}")
             ramp = matchResults[analysis.columns.index('ramp')]
 
             if preStartPos is None:
@@ -65,21 +69,33 @@ def graphicStartPos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
     if numberOfMatchesPlayed > 0:
         startPosTotal = startPosTotal1 +  startPosTotal2 +  startPosTotal3 +  startPosTotal4
         if startPosTotal1 == 0:
+            print("startPosTotal1 = 0")
             percent1 = 0
         else:
+            print(f"Team = {team}, matchNum = {teamMatchNum}, preStartPos = {preStartPos}, startPosTotal1 = {startPosTotal1}, startPosTotal = {startPosTotal}")
             percent1 = int(startPosTotal1 / startPosTotal * 100)
+            print(percent1)
         if startPosTotal2 == 0:
+            print("startPosTotal2 = 0")
             percent2 = 0
         else:
+            print(f"Team = {team}, matchNum = {teamMatchNum}, preStartPos = {preStartPos}, startPosTotal2 = {startPosTotal2}, startPosTotal = {startPosTotal}")
             percent2 = int(startPosTotal2 / startPosTotal * 100)
+            print(percent2)
         if startPosTotal3 == 0:
+            print("startPosTotal3 = 0")
             percent3 = 0
         else:
+            print(f"Team = {team}, matchNum = {teamMatchNum}, preStartPos = {preStartPos}, startPosTotal3 = {startPosTotal3}, startPosTotal = {startPosTotal}")
             percent3 = int(startPosTotal3 / startPosTotal * 100)
+            print(percent3)
         if startPosTotal4 == 0:
+            print("startPosTotal4 = 0")
             percent4 = 0
         else:
+            print(f"Team = {team}, matchNum = {teamMatchNum}, preStartPos = {preStartPos}, startPosTotal4 = {startPosTotal4}, startPosTotal = {startPosTotal}")
             percent4 = int(startPosTotal4 / startPosTotal * 100)
+            print(percent4)
 
         rampTotal = rampTotal1 + rampTotal2 + rampTotal3 + rampTotal4
 
