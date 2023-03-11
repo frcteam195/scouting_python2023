@@ -84,6 +84,6 @@ rm -f "$path"/195scoutingData.csv "$path"/195scoutingData.json
 
 end_time=$(date +%s)
 elapsed=$(( end_time - start_time ))
-echo '';echo "Run time: $elapsed seconds"
+echo '';echo "Total run time for run.sh: $elapsed seconds"; echo ''
 
 deactivate
