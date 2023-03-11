@@ -23,10 +23,12 @@ from PIL import Image
 import time
 
 # define the directory where the images are located
-directory = "path/to/images"
+directory = "/media"
 
 # get a list of all the jpeg files in the directory
 jpeg_files = glob.glob(os.path.join(directory, "*.jpg"))
+print(jpeg_files)
+
 
 # define the maximum size for the images
 max_size = (1000, 1000)
@@ -46,20 +48,23 @@ else:
     # create an empty list if the timestamp file doesn't exist
     processed_images = []
 
-# loop through all the jpeg files in the directory
+# # loop through all the jpeg files in the directory
 for jpeg_file in jpeg_files:
     # get the file name and check if it has already been processed
     filename = os.path.basename(jpeg_file)
     if filename in processed_images:
-        continue
-
+         continue
+    print(filename)
     # open the image file
     with Image.open(jpeg_file) as im:
         # resize the image
         im.thumbnail(max_size)
-
+        tmp = f"/tmp/{filename}"
+        tmp2 = f"/tmp/images/{filename}"
+        print(tmp)
         # save the resized image with the same file name
-        im.save(jpeg_file, quality=quality)
+        im.save(tmp, quality=quality)
+        im.save(tmp2, quality=quality)
 
         # add the file name to the list of processed images
         processed_images.append(filename)
