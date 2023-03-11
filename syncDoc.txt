@@ -54,6 +54,7 @@ As needed the following should be hand edited. No scripts available
     populate scouters table (jetson / aws). Perform manually
     make sure the analysisTypes table is up-to-date
     populate share table appropriatly
+    populate users table appropriatly
 
 Day before event
     1. manually add event to events table and set as currentEvent (Jetson / AWS)
