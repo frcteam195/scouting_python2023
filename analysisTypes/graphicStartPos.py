@@ -63,16 +63,16 @@ def graphicStartPos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
             # print(f"percentage {position} = {startPositionPer}")
         
         
-        engaged = (rampStatusList.count(5)/numberOfMatchesPlayed) * 100
-        docked = (rampStatusList.count(4)/numberOfMatchesPlayed) * 100
-        parked = (rampStatusList.count(3)/numberOfMatchesPlayed) * 100
+        engaged = (round(rampStatusList.count(5)/numberOfMatchesPlayed),3) * 100
+        docked = (round(rampStatusList.count(4)/numberOfMatchesPlayed), 3) * 100
+        parked = (round(rampStatusList.count(3)/numberOfMatchesPlayed), 3) * 100
         # print(f"team = {team}, rampList = {rampStatusList}")
         # print(f"counts = {engaged}, {docked}, {parked}")
-        rsCEA['M1D'] = str(round(engaged), 3)
+        rsCEA['M1D'] = str(engaged)
         rsCEA['M1F'] = 0
-        rsCEA['M2D'] = str(round(docked, 3))
+        rsCEA['M2D'] = str(docked)
         rsCEA['M2F'] = 0
-        rsCEA['M3D'] = str(round(parked), 3)
+        rsCEA['M3D'] = str(parked)
         rsCEA['M3F'] = 0
         
     return rsCEA
