@@ -32,7 +32,7 @@ echo ''; echo '***** Running insertFoulsRP.py *****'
 python "$path"/insertFoulsRP.py -db "$db" -host "$host"
 
 echo ''; echo '***** Running robotImages.py on AWS *****'
-ssh -i scouting.pem ubuntu@scouting.team195.com /home/ubuntu/scouting_python2023/robotImages.sh
+ssh -i /home/team195/scouting.pem ubuntu@scouting.team195.com /home/ubuntu/scouting_python2023/robotImages.sh
 
 echo ''; echo '***** Running syncTable to migrate matchScoutingL2 from aws to localhost *****'
 python "$path"/syncTable.py -db1 "$remoteDB" -host1 "$remoteHost" \
