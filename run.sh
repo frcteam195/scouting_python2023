@@ -78,6 +78,7 @@ mkdir -p /home/team195/DBbackups
 cd /home/team195/DBbackups
 /usr/bin/mysqldump -h localhost "$db" > event_"$now".sql
 /bin/tar -czf event_"$now".tgz event_"$now".sql
+cp event_"$now".sql /media/team195/SI-MEDIA
 /bin/rm -f event_"$now".sql
 
 echo ''; echo 'secure copying csv and json file to website'
