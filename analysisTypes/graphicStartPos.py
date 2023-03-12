@@ -59,7 +59,7 @@ def graphicStartPos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
             elif startPositionPer == 100:
                 color = '#088E08' #11 darker green
             rsCEA['S' + str(position) + 'D'] = str(color)
-            rsCEA['M' + str(position) + 'V'] = startPositionPer
+            rsCEA['S' + str(position) + 'V'] = startPositionPer
             # print(f"percentage {position} = {startPositionPer}")
         
         
