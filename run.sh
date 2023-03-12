@@ -49,6 +49,10 @@ echo ''; echo '***** Running syncTable to migrate matchScouting from localhost t
 python "$path"/syncTable.py -db1 "$db" -host1 "$host" \
   -db2 "$remoteDB" -host2 "$remoteHost" -table matchScouting -id matchScoutingID
 
+echo ''; echo '***** Running syncTable to migrate analysisTypes from localhost to aws *****'
+python "$path"/syncTable.py -db1 "$db" -host1 "$host" \
+  -db2 "$remoteDB" -host2 "$remoteHost" -table analysisTypes -id analysisTypeID -noCE true
+
 echo ''; echo '***** Running syncTable to migrate matches from localhost to aws *****'
 python "$path"/syncTable.py -db1 "$db" -host1 "$host" \
   -db2 "$remoteDB" -host2 "$remoteHost" -table matches -id matchID
