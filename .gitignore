@@ -5,3 +5,6 @@ data.csv
 data.json
 .nfs*
 .DS_Store
+195scoutingData.csv
+195scoutingData.json
+scouting.pem

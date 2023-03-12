@@ -8,9 +8,9 @@ source "$path"/venv/bin/activate
 cd "$path"
 
 echo ''; echo '***** Running BA/BAschedule.py *****'
-python "$path"/BA/BAschedule.py -db production -host localhost
-python "$path"/BA/BAschedule.py -db production -host pi
-python "$path"/BA/BAschedule.py -db production -host aws
+python "$path"/BA/CEschedule.py -db production -host localhost
+python "$path"/BA/CEschedule.py -db production -host pi
+python "$path"/BA/CEschedule.py -db production -host aws
 
 echo ''; echo '***** Running createCEteams.py *****'
 python "$path"/createCEteams.py -db production -host localhost

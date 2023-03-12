@@ -2,6 +2,8 @@ import mysql.connector
 import argparse
 import configparser
 import pandas as pd
+import csv
+import json
 
 # parser to choose the database where the table will be written
 parser = argparse.ArgumentParser()
@@ -40,17 +42,35 @@ elements = elements.translate(str.maketrans("", "", "'"))
 query = f"SELECT {elements} FROM matchScouting WHERE eventID = {CEventID}"
 cursor.execute(query)
 sharedData = cursor.fetchall()
-
-df = pd.DataFrame(sharedData)
+# print(sharedData)
+# df = pd.DataFrame(sharedData)
+# print(df)
+# print(df.dtypes)
+# df = df.astype("int64")
 
 headerList = []
 for i in elementList:
     i = str(i).translate(str.maketrans("", "", "(),"))  # Convert tuple to string before calling translate
     headerList.append(i)
+# print(headerList)
 
-df.to_csv (r'195scoutingData.csv', header=headerList, index = False) # place 'r' before the path name
-df = pd.read_csv('195scoutingData.csv')
-df.to_json(r'195scoutingData.json', orient='records', lines=True)
+with open('195scoutingData.csv', mode='w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(headerList)
+    for row in sharedData:
+        writer.writerow(row)
+
+data = []
+with open('195scoutingData.csv', 'r') as csvfile:
+    reader = csv.DictReader(csvfile)
+    for row in reader:
+        data.append(row)
+with open('195scoutingData.json', 'w') as jsonfile:
+    json.dump(data, jsonfile, indent=4)
+
+# df.to_csv (r'195scoutingData.csv', header=headerList, index = False) # place 'r' before the path name
+# df = pd.read_csv('195scoutingData.csv')
+# df.to_json(r'195scoutingData.json', orient='records', lines=True)
 
 print("share.py complete")
 

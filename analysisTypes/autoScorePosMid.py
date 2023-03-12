@@ -6,19 +6,14 @@ def autoScorePosMid(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
     rsCEA['analysisTypeID'] = 82
     numberOfMatchesPlayed = 0
     autoScoreList = []
-    autoScorePosMidList = []
     
     for matchResults in rsRobotMatchData:
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
-        teamNum = matchResults[analysis.columns.index('team')]
+        team = matchResults[analysis.columns.index('team')]
+        teamMatchNum = matchResults[analysis.columns.index('teamMatchNum')]
         rsCEA['eventID'] = matchResults[analysis.columns.index('eventID')]
-        preNoShow = matchResults[analysis.columns.index('preNoShow')]
         scoutingStatus = matchResults[analysis.columns.index('scoutingStatus')]
-        if preNoShow == 1:
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'DNS'
-        elif scoutingStatus == 2:
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'UR'
-        else:  
+        if scoutingStatus == 1:
             scorePos1 = matchResults[analysis.columns.index('autoScore1')]
             if (scorePos1 >= 10) and (scorePos1 <= 18):
                 autoScoreList.append(scorePos1)
@@ -31,6 +26,7 @@ def autoScorePosMid(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
             scorePos4 = matchResults[analysis.columns.index('autoScore4')]
             if (scorePos4 >= 10) and (scorePos4 <= 18):
                 autoScoreList.append(scorePos4)
+            # print(f"team = {team}, teamMatchNum = {teamMatchNum}, list = {autoScoreList}")
 
             numberOfMatchesPlayed += 1
             
@@ -38,40 +34,42 @@ def autoScorePosMid(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
         position = 10
         for count in range(9):
             count += 1
+            value = None
             # print(f"Mid - Team = {teamNum}, count = {count}, position = {position}, list = {autoScoreList}")
             value = (round(autoScoreList.count(position)/numberOfMatchesPlayed, 2)) * 100
+            # print(f"Mid value = {value}")
+            if value == None:
+                value = 0
             if value == 0:
-                color = '#70FF00'
+                color = '#FFFFFF' # white
             elif value < 10:
-                color = '#A0FF00' 
+                color = '#E6F9E6' #1 very light green
             elif value < 20:
-                color = '#D0FF00' 
+                color = '#C7F7C7' #2
             elif value < 30:
-                color = '#FFFF00' 
+                color = '#A8F5A8' #3
             elif value < 40:
-                color = '#FFE000'  
+                color = '#89F389' #4
             elif value < 50:
-                color = '#FFC000' 
+                color = '#6BEF6B' #5
             elif value < 60:
-                color = '#FFA000' 
+                color = '#4CEC4C' #6
             elif value < 70:
-                color = '#FF8000' 
+                color = '#2DEA2D' #7
             elif value < 80:
-                color = '#FF6000' 
+                color = '#0EE70E' #8
             elif value < 90:
-                color = '#FF4000'
+                color = '#0CC40C' #9
             elif value < 100:
-                color = '#FF2000'
+                color = '#0AA10A' #10
             elif value == 100:
-                color = '#FF0000'
+                color = '#088E08' #11 darker green
             else:
                 print('autoScorePosMid: That should not happen')
                 quit()
             position += 1
 
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = str(color)
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = value
-
-            autoScorePosMidList.append(value)
+            rsCEA['M' + str(count) + 'D'] = str(color)
+            rsCEA['M' + str(count) + 'V'] = value
 
     return rsCEA

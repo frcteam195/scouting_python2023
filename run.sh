@@ -1,12 +1,13 @@
 #! /bin/bash
 
 now=$(/bin/date +%Y-%m-%d_%H-%M)
+echo '************************************************************'
 echo $now
 start_time=$(date +%s)
 
 # define some variables ...
-db=test1
-remoteDB=test1 # generally db and remoteDB will be the same, can be different for testing
+db=production
+remoteDB=production # generally db and remoteDB will be the same, can be different for testing
 host=localhost   # generally will be localhost. Using a variable for easy testing
 remoteHost=aws   # generally will be aws, changeable here for testing
 path=/home/team195/scouting_python2023
@@ -48,6 +49,10 @@ echo ''; echo '***** Running syncTable to migrate matchScouting from localhost t
 python "$path"/syncTable.py -db1 "$db" -host1 "$host" \
   -db2 "$remoteDB" -host2 "$remoteHost" -table matchScouting -id matchScoutingID
 
+echo ''; echo '***** Running syncTable to migrate analysisTypes from localhost to aws *****'
+python "$path"/syncTable.py -db1 "$db" -host1 "$host" \
+  -db2 "$remoteDB" -host2 "$remoteHost" -table analysisTypes -id analysisTypeID -noCE true
+
 echo ''; echo '***** Running syncTable to migrate matches from localhost to aws *****'
 python "$path"/syncTable.py -db1 "$db" -host1 "$host" \
   -db2 "$remoteDB" -host2 "$remoteHost" -table matches -id matchID
@@ -73,16 +78,17 @@ mkdir -p /home/team195/DBbackups
 cd /home/team195/DBbackups
 /usr/bin/mysqldump -h localhost "$db" > event_"$now".sql
 /bin/tar -czf event_"$now".tgz event_"$now".sql
+cp event_"$now".sql /media/team195/SI-MEDIA
 /bin/rm -f event_"$now".sql
 
 echo ''; echo 'secure copying csv and json file to website'
 /usr/bin/scp -i /home/team195/scouting.pem "$path"/195scoutingData.csv ubuntu@scouting.team195.com:/media/shareData
-/usr/bin/scp -i /home/team195/scouting.pem "$path"/195scoutingData.json ubuntu@scouting.team195.com:/tmp/shareData
+/usr/bin/scp -i /home/team195/scouting.pem "$path"/195scoutingData.json ubuntu@scouting.team195.com:/media/shareData
 sleep 1
 rm -f "$path"/195scoutingData.csv "$path"/195scoutingData.json
 
 end_time=$(date +%s)
 elapsed=$(( end_time - start_time ))
-# echo "Run time: $elapsed seconds"
+echo '';echo "Total run time for run.sh: $elapsed seconds"; echo ''
 
 deactivate

@@ -5,129 +5,74 @@ def graphicStartPos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
     rsCEA = {}
     rsCEA['analysisTypeID'] = 90
     numberOfMatchesPlayed = 0
-    graphicStartPos = []
+    startPositionList = []
+    rampStatusList = []
 
-    startPosTotal1 = 0
-    startPosTotal2 = 0
-    startPosTotal3 = 0
-    startPosTotal4 = 0
+    # ramp = 0 = no attempt
+    # ramp = 1 = failed attempt
+    # ramp = 2 = kept scoring
+    # ramp = 3 = parked
+    # ramp = 4 = docked
+    # ramp = 5 = docked and engaged
 
-    startPosColor1 = 0
-    startPosColor2 = 0
-    startPosColor3 = 0
-    startPosColor4 = 0
-
-    rampTotal1 = 0 #docked engaged
-    rampTotal2 = 0 #docked
-    rampTotal3 = 0 #park
-    rampTotal4 = 0 #no attempt
     for matchResults in rsRobotMatchData:
-        rsCEA['team'] = matchResults[analysis.columns.index('team')]
+        team = matchResults[analysis.columns.index('team')]
+        rsCEA['team'] = str(team)
         rsCEA['eventID'] = matchResults[analysis.columns.index('eventID')]
-        
         preNoShow = matchResults[analysis.columns.index('preNoShow')]
         scoutingStatus = matchResults[analysis.columns.index('scoutingStatus')]
-        if preNoShow == 1:
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'DNS'
-        elif scoutingStatus == 2:
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'UR'
-        else:
-            preStartPos = matchResults[analysis.columns.index('preStartPos')]
-            ramp = matchResults[analysis.columns.index('ramp')]
+        if preNoShow != 1 and scoutingStatus == 1:
+            startPosition = matchResults[analysis.columns.index('preStartPos')]
+            rampStatus = matchResults[analysis.columns.index('ramp')]
 
-            if preStartPos is None:
-                preStartPos = 0
-            if ramp is None:
-                ramp = 0
-
-            if preStartPos == 1:
-                startPosTotal1 +=1
-            if preStartPos == 2:
-                startPosTotal2 +=1
-            if preStartPos == 3:
-                startPosTotal3 +=1
-            if preStartPos == 4:
-                startPosTotal4 +=1
-
-            if ramp == 5:
-                rampTotal1 += 1
-            elif ramp == 4:
-                rampTotal2 += 1
-            elif ramp == 3:
-                rampTotal3 += 1
-            elif ramp == 0:
-                rampTotal4 += 1
-
+            startPositionList.append(startPosition)
+            rampStatusList.append(rampStatus)
             numberOfMatchesPlayed += 1
-            
-            graphicStartPos.append(0)
     
     if numberOfMatchesPlayed > 0:
-        startPosTotal = startPosTotal1 +  startPosTotal2 +  startPosTotal3 +  startPosTotal4
-        if startPosTotal1 == 0:
-            percent1 = 0
-        else:
-            percent1 = int(startPosTotal1 / startPosTotal * 100)
-        if startPosTotal2 == 0:
-            percent2 = 0
-        else:
-            percent2 = int(startPosTotal2 / startPosTotal * 100)
-        if startPosTotal3 == 0:
-            percent3 = 0
-        else:
-            percent3 = int(startPosTotal3 / startPosTotal * 100)
-        if startPosTotal4 == 0:
-            percent4 = 0
-        else:
-            percent4 = int(startPosTotal4 / startPosTotal * 100)
-
-        rampTotal = rampTotal1 + rampTotal2 + rampTotal3 + rampTotal4
-
-        if rampTotal1 == 0:
-            rampPercent1 = 0
-        else:
-            rampPercent1 = int(rampTotal1 / rampTotal * 100)
-            
-        if rampTotal2 == 0:
-            rampPercent2 = 0
-        else:
-            rampPercent2 = int(rampTotal2 / rampTotal * 100)
-            
-        if rampTotal3 == 0:
-            rampPercent3 = 0
-        else:
-            rampPercent3 = int(rampTotal3 / rampTotal * 100)
-            
-        if rampTotal4 == 0:
-            rampPercent4 = 0
-        else:
-            rampPercent4 = int(rampTotal4 / rampTotal * 100)
-
-    startPosTotals = [startPosTotal1, startPosTotal2, startPosTotal3, startPosTotal4]
-    sortedList = sorted(startPosTotals, reverse=False)
-
-    startPosTotals = sorted(startPosTotals, reverse= True)
-
-    startPosColor1 = sortedList.index(startPosTotal1)+1
-    startPosColor2 = sortedList.index(startPosTotal2)+1
-    startPosColor3 = sortedList.index(startPosTotal3)+1
-    startPosColor4 = sortedList.index(startPosTotal4)+1
-
-    rsCEA['S1D'] = percent1
-    rsCEA['S1F'] = startPosColor1
-    rsCEA['S1V'] = rampPercent1
-
-    rsCEA['S2D'] = percent2
-    rsCEA['S2F'] = startPosColor2
-    rsCEA['S2V'] = rampPercent2
-
-    rsCEA['S3D'] = percent3
-    rsCEA['S3F'] = startPosColor3
-    rsCEA['S3V'] = rampPercent3
-
-    rsCEA['S4D'] = percent4
-    rsCEA['S4F'] = startPosColor4
-    rsCEA['S4V'] = rampPercent4
-
-
+        # print(f"team = {team}, startPosList = {startPositionList}")
+        for position in range(4):  # loop through 4 startin positions
+            position += 1
+            startPositionPer = (round(startPositionList.count(position)/numberOfMatchesPlayed, 2)) * 100
+            if startPositionPer == 0:
+                color = '#FFFFFF' # white
+            elif startPositionPer < 10:
+                color = '#E6F9E6' #1 very light green
+            elif startPositionPer < 20:
+                color = '#C7F7C7' #2
+            elif startPositionPer < 30:
+                color = '#A8F5A8' #3
+            elif startPositionPer < 40:
+                color = '#89F389' #4
+            elif startPositionPer < 50:
+                color = '#6BEF6B' #5
+            elif startPositionPer < 60:
+                color = '#4CEC4C' #6
+            elif startPositionPer < 70:
+                color = '#2DEA2D' #7
+            elif startPositionPer < 80:
+                color = '#0EE70E' #8
+            elif startPositionPer < 90:
+                color = '#0CC40C' #9
+            elif startPositionPer < 100:
+                color = '#0AA10A' #10
+            elif startPositionPer == 100:
+                color = '#088E08' #11 darker green
+            rsCEA['S' + str(position) + 'D'] = str(color)
+            rsCEA['S' + str(position) + 'V'] = startPositionPer
+            # print(f"percentage {position} = {startPositionPer}")
+        
+        
+        engaged = (round(rampStatusList.count(5)/numberOfMatchesPlayed),3) * 100
+        docked = (round(rampStatusList.count(4)/numberOfMatchesPlayed), 3) * 100
+        parked = (round(rampStatusList.count(3)/numberOfMatchesPlayed), 3) * 100
+        # print(f"team = {team}, rampList = {rampStatusList}")
+        # print(f"counts = {engaged}, {docked}, {parked}")
+        rsCEA['M1D'] = str(engaged)
+        rsCEA['M1F'] = 0
+        rsCEA['M2D'] = str(docked)
+        rsCEA['M2F'] = 0
+        rsCEA['M3D'] = str(parked)
+        rsCEA['M3F'] = 0
+        
     return rsCEA
