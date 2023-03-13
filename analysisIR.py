@@ -159,6 +159,7 @@ class analysis():
         self._run_query(query)
         self._setColumns([column[0] for column in list(self.cursor.description)])
         rsRobotMatchData = self.cursor.fetchall()
+        # print(rsRobotMatchData)
         if rsRobotMatchData:
             return rsRobotMatchData
         else:
@@ -176,8 +177,9 @@ class analysis():
                 "AND (matchScoutingL2.teamMatchNum <= 12)) " + \
                 "ORDER BY matchScoutingL2.teamMatchNum"
         self._run_query(query)
-        self._setL2Columns([L2Column[0] for L2Column in list(self.cursor.description)])
+        self._setL2Columns([L2column[0] for L2column in list(self.cursor.description)])
         rsRobotL2MatchData = self.cursor.fetchall()
+        # print(rsRobotL2MatchData)
         if rsRobotL2MatchData:
             return rsRobotL2MatchData
         else: 
