@@ -62,17 +62,22 @@ def graphicStartPos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
             rsCEA['S' + str(position) + 'V'] = startPositionPer
             # print(f"percentage {position} = {startPositionPer}")
         
-        
-        engaged = (round(rampStatusList.count(5)/numberOfMatchesPlayed),3) * 100
-        docked = (round(rampStatusList.count(4)/numberOfMatchesPlayed), 3) * 100
-        parked = (round(rampStatusList.count(3)/numberOfMatchesPlayed), 3) * 100
+        engaged = rampStatusList.count(5)/numberOfMatchesPlayed
+        engaged = round(engaged, 3) * 100
+        engagedStr = "{:.0f}".format(engaged)  # added string formatting as the round function was not rounding to 3 digits in all cases
+        docked = rampStatusList.count(4)/numberOfMatchesPlayed
+        docked = round(docked, 3) * 100
+        dockedStr = "{:.0f}".format(docked)
+        parked = rampStatusList.count(3)/numberOfMatchesPlayed
+        parked = round(parked, 3) * 100
+        parkeddStr = "{:.0f}".format(parked)
         # print(f"team = {team}, rampList = {rampStatusList}")
-        # print(f"counts = {engaged}, {docked}, {parked}")
-        rsCEA['M1D'] = str(engaged)
+        # print(f"counts = {engagedStr}, {dockedStr}, {parkeddStr}")
+        rsCEA['M1D'] = str(engagedStr)
         rsCEA['M1F'] = 0
-        rsCEA['M2D'] = str(docked)
+        rsCEA['M2D'] = str(dockedStr)
         rsCEA['M2F'] = 0
-        rsCEA['M3D'] = str(parked)
+        rsCEA['M3D'] = str(parkeddStr)
         rsCEA['M3F'] = 0
         
     return rsCEA
