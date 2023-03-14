@@ -6,7 +6,7 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
     rsCEA['analysisTypeID'] = 91
     numberOfMatchesPlayed = 0
     graphicTeleInfoList = []
-    teleTotal = []
+    teleTotalList = []
 
     totalHigh = 0
     totalMid = 0
@@ -150,5 +150,5 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
         rsCEA['M11V'] = totalHigh
         rsCEA['M11D'] = totalMid
         rsCEA['M11F'] = totalLow
-        rsCEA['S5D'] = str(round(statistics.mean(graphicTeleInfoList), 1))
+        rsCEA['M5D'] = str(round(statistics.mean(teleTotalList), 1))
     return rsCEA
