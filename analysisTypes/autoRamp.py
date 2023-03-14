@@ -5,16 +5,11 @@ def autoRamp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     rsCEA = {}
     rsCEA['analysisTypeID'] = 4
     numberOfMatchesPlayed = 0
-
-    # only using to test ranks, eliminate later
     autoRampList = []
 
-    # Loop through each match the robot played in.
     for matchResults in rsRobotMatchData:
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
         rsCEA['eventID'] = matchResults[analysis.columns.index('eventID')]
-        # We are hijacking the starting position to write DNS or UR. This should go to Auto as it will not
-        #   likely be displayed on team picker pages.
         preNoShow = matchResults[analysis.columns.index('preNoShow')]
         scoutingStatus = matchResults[analysis.columns.index('scoutingStatus')]
         if preNoShow == 1:
@@ -24,17 +19,16 @@ def autoRamp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
         else:
 
             autoRamp = matchResults[analysis.columns.index('autoRamp')]
-
             score1 = matchResults[analysis.columns.index('autoScore1')]
             score2 = matchResults[analysis.columns.index('autoScore2')]
             score3 = matchResults[analysis.columns.index('autoScore3')]
             score4 = matchResults[analysis.columns.index('autoScore4')]
-
             autoMB = matchResults[analysis.columns.index('autoMB')]
-            if autoMB != 2:
-                mbDisplay = "*"
-            else:
-                mbDisplay = ""
+            
+            # if autoMB != 2:
+            #     mbDisplay = "*"
+            # else:
+            #     mbDisplay = ""
 
             numGamePieces = 0
             if score1 > 0:
@@ -47,25 +41,25 @@ def autoRamp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
                 numGamePieces += 1
 
             if autoRamp == 0: #No Attempt
-                autoRampDisplay = "0|" + str(numGamePieces) + mbDisplay
+                autoRampDisplay = "NA|" + str(numGamePieces)
                 autoRampValue = 0
                 if numGamePieces == 0:
                     autoRampColor = 1 #Black
-                else: #with move bonus or piece placement
+                else: # with game piece placement
                     autoRampColor = 0 #White   
 
             elif autoRamp == 1: #Failed Attempt
-                autoRampDisplay = "0|" + str(numGamePieces) + mbDisplay
+                autoRampDisplay = "F|" + str(numGamePieces)
                 autoRampValue = 0
-                autoRampColor = 2 #Red
+                autoRampColor = 1 #Red
 
             elif autoRamp == 2: #Docked Not Engaged
-                autoRampDisplay = "8|" + str(numGamePieces) + mbDisplay
+                autoRampDisplay = "8|" + str(numGamePieces)
                 autoRampValue = 8
                 autoRampColor = 3 #Yellow
 
             elif autoRamp == 3: #Docked And Engaged
-                autoRampDisplay = "12|" + str(numGamePieces) + mbDisplay
+                autoRampDisplay = "12|" + str(numGamePieces)
                 autoRampValue = 12
                 if numGamePieces == 0:
                     autoRampColor = 4 #Green

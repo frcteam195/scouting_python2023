@@ -43,9 +43,11 @@ analysisTypesDict = {
                     "autoScorePosHigh": autoScorePosHigh.autoScorePosHigh,
                     "autoScorePosMid": autoScorePosMid.autoScorePosMid,
                     "autoScorePosLow": autoScorePosLow.autoScorePosLow,
-                    "L2Speed": L2Speed.speed,
-                    "L2Sturdiness": L2Sturdiness.sturdiness,
-                    "L2Climb": L2Climb.climb,
+                    "speed": speed.speed,
+                    "sturdiness": sturdiness.sturdiness,
+                    "climb": climb.climb,
+                    "scoringEff": scoringEff.scoringEff,
+                    "intakeEff": intakeEff.intakeEff,
                     "rampTime": rampTime.rampTime
                     } 
 
@@ -163,7 +165,6 @@ class analysis():
         self._run_query(query)
         self._setColumns([column[0] for column in list(self.cursor.description)])
         rsRobotMatchData = self.cursor.fetchall()
-        # print(rsRobotMatchData)
         if rsRobotMatchData:
             return rsRobotMatchData
         else:

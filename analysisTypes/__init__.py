@@ -31,10 +31,10 @@ __all__ = [
            'autoScorePosHigh',
            'autoScorePosMid',
            'autoScorePosLow',
-           'L2Speed',
-           'L2Sturdiness',
-           'L2Climb',
-           'L2ScoringEff',
-           'L2IntakeEff',
+           'speed',
+           'sturdiness',
+           'climb',
+           'scoringEff',
+           'intakeEff',
            'rampTime'
            ]
