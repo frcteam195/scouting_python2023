@@ -25,29 +25,30 @@ def ramp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
                 rampDisplay = 'NA'
                 rampValue = 0
                 rampColor = 1
-            elif ramp == 1:    # failed attempt
+            elif ramp == 1:    # failed attempt, no park
                 rampDisplay = 'F'
                 rampValue = 0
                 rampColor = 1
-            elif ramp == 2:    # kept scoring
+            elif ramp == 2:    # failed with a park
                 rampDisplay = 'F'
                 rampValue = 0
-                rampColor = 3
+                rampColor = 2
             elif ramp == 3:   # parked
                 rampDisplay = 2
                 rampValue = 2
-                rampColor = 2
-            elif ramp == 4:
+                rampColor = 3
+            elif ramp == 4:   # docked
                 rampDisplay = 6
                 rampValue = 6
                 rampColor = 4
-            elif ramp == 5:
+            elif ramp == 5:   # engaged
                 rampDisplay = 10
                 rampValue = 10
                 rampColor = 5
             else:
                 rampDisplay = 999
                 rampValue = 999
+                print(f"ramp = {ramp}")
 
             rampList.append(rampValue)
 

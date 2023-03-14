@@ -7,13 +7,13 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
     numberOfMatchesPlayed = 0
     graphicTeleInfoList = []
     teleTotalList = []
-
     totalHigh = 0
     totalMid = 0
     totalLow = 0
     total = 0
     totalCones = 0
     totalCubes = 0
+
     for matchResults in rsRobotMatchData:
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
         rsCEA['eventID'] = matchResults[analysis.columns.index('eventID')]
@@ -32,7 +32,6 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
             teleCubeHigh = matchResults[analysis.columns.index('teleCubeHigh')]
             teleCubeMid = matchResults[analysis.columns.index('teleCubeMid')]
             teleCubeLow = matchResults[analysis.columns.index('teleCubeLow')]
-            teleTotal = matchResults[analysis.columns.index('teleTotal')]
             if(teleConeHigh is None):
                 teleConeHigh = 0
             if(teleConeMid is None):
@@ -45,8 +44,6 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
                 teleCubeMid = 0
             if(teleCubeLow is None):
                 teleCubeLow = 0
-            if(teleTotal is None):
-                teleTotal = 0
 
             totalHigh += (teleConeHigh + teleCubeHigh)
             totalMid += (teleConeMid + teleCubeMid)
@@ -55,12 +52,10 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
             totalCones += (teleConeHigh + teleConeLow + teleConeMid)
             totalCubes += (teleCubeHigh + teleCubeMid + teleCubeLow)
 
-            teleTotal += (totalCones + totalCubes)
             numberOfMatchesPlayed += 1
-            
             graphicTeleInfoList.append(0)
             
-    total = (totalHigh + totalLow + totalMid)
+    total = (totalHigh + totalMid + totalLow)
     if(totalHigh == 0):
         percentHigh = 0
     else:
@@ -85,6 +80,9 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
         percentCubes = 0
     else:
         percentCubes = int(totalCubes / (totalCones + totalCubes) * 100)
+
+    aveGamePiece = total / numberOfMatchesPlayed
+    # print(f"aveGamePiece = {aveGamePiece}")
 
     highDisplay = 0
     midDisplay = 0
@@ -127,7 +125,6 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
         midDisplay = 4
         lowDisplay = 2
 
-
     if numberOfMatchesPlayed > 0:
         rsCEA['S1V'] = totalHigh
         rsCEA['S1D'] = percentHigh
@@ -150,5 +147,8 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
         rsCEA['M11V'] = totalHigh
         rsCEA['M11D'] = totalMid
         rsCEA['M11F'] = totalLow
-        rsCEA['M5D'] = str(round(statistics.mean(teleTotalList), 1))
+
+        aveGamePieceStr = "{:.2f}".format(aveGamePiece)
+        # print(f"aveGamePieceStr = {aveGamePieceStr}")
+        rsCEA['M5D'] = aveGamePieceStr
     return rsCEA
