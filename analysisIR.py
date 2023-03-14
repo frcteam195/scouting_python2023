@@ -43,9 +43,9 @@ analysisTypesDict = {
                     "autoScorePosHigh": autoScorePosHigh.autoScorePosHigh,
                     "autoScorePosMid": autoScorePosMid.autoScorePosMid,
                     "autoScorePosLow": autoScorePosLow.autoScorePosLow,
-                    "L2Speed": L2Speed.L2Speed,
-                    "L2Sturdiness": L2Sturdiness.L2Sturdiness,
-                    "L2Climb": L2Climb.L2Climb,
+                    "L2Speed": L2Speed.speed,
+                    "L2Sturdiness": L2Sturdiness.sturdiness,
+                    "L2Climb": L2Climb.climb,
                     "rampTime": rampTime.rampTime
                     } 
 
@@ -207,7 +207,7 @@ class analysis():
         for team in self.rsRobots:
             # analysisTypesDict defined at top of script
             for analysisType2analyze in analysisTypesDict:
-                # print(f"analyzing team {team} using {analysisType2analyze}")
+                print(f"analyzing team {team} using {analysisType2analyze}")
                 rsRobotMatchData = self._getTeamData(team)
                 rsRobotL2MatchData = self._getL2TeamData(team)
                 rsRobotPitData = self._getPitData(team)
