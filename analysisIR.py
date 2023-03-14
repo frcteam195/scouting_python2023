@@ -42,7 +42,11 @@ analysisTypesDict = {
                     "graphicStartPos": graphicStartPos.graphicStartPos,
                     "autoScorePosHigh": autoScorePosHigh.autoScorePosHigh,
                     "autoScorePosMid": autoScorePosMid.autoScorePosMid,
-                    "autoScorePosLow": autoScorePosLow.autoScorePosLow
+                    "autoScorePosLow": autoScorePosLow.autoScorePosLow,
+                    "L2Speed": L2Speed.L2Speed,
+                    "L2Sturdiness": L2Sturdiness.L2Sturdiness,
+                    "L2Climb": L2Climb.L2Climb,
+                    "rampTime": rampTime.rampTime
                     } 
 
 # parser to choose the database where the table will be written

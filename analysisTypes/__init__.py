@@ -30,5 +30,9 @@ __all__ = [
            'graphicStartPos',
            'autoScorePosHigh',
            'autoScorePosMid',
-           'autoScorePosLow'
+           'autoScorePosLow',
+           'L2Speed',
+           'L2Sturdiness',
+           'L2Climb',
+           'rampTime'
            ]
