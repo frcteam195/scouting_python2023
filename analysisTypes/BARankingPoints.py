@@ -34,11 +34,13 @@ def BARankingPoints(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
             BARankingPointsValue = totalRP
                        
             if totalRP == 0:
-                BARankingPointsColor = 2
-            elif totalRP == 1:
+                BARankingPointsColor = 1
+            elif linkRP == 1:
+                BARankingPointsColor = 4
+            elif chargeStationRP == 1:
                 BARankingPointsColor = 3
             elif totalRP == 2:
-                BARankingPointsColor = 4    
+                chargeStationRP == 5
 
             # Increment the number of matches played and write M#D, M#V and M#F
             numberOfMatchesPlayed += 1
