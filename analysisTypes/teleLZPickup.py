@@ -36,11 +36,11 @@ def teleLZPickup(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData)
 
             if LZPickup == 0:
                 teleLZPickupColor = 1
-            elif LZPickup <= 3:
+            elif LZPickup <= 2:
                 teleLZPickupColor = 2
-            elif LZPickup <= 6:
+            elif LZPickup <= 4:
                 teleLZPickupColor = 3
-            elif LZPickup <= 9:
+            elif LZPickup <= 6:
                 teleLZPickupColor = 4
             else:
                 teleLZPickupColor = 5

@@ -43,12 +43,10 @@ def autoGamePieces(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDat
             if numGamePieces == 0:
                 autoGamePiecesColor = 1
             elif numGamePieces == 1:
-                autoGamePiecesColor = 2
-            elif numGamePieces == 2:
                 autoGamePiecesColor = 3
-            elif numGamePieces == 3:
+            elif numGamePieces == 2:
                 autoGamePiecesColor = 4
-            elif numGamePieces > 3:
+            elif numGamePieces >= 3:
                 autoGamePiecesColor = 5
             else:
                 print("number of game pieces appear to be negative. Aborting!")

@@ -6,6 +6,7 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
     rsCEA['analysisTypeID'] = 91
     numberOfMatchesPlayed = 0
     graphicTeleInfoList = []
+    teleTotal = []
 
     totalHigh = 0
     totalMid = 0
@@ -31,7 +32,7 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
             teleCubeHigh = matchResults[analysis.columns.index('teleCubeHigh')]
             teleCubeMid = matchResults[analysis.columns.index('teleCubeMid')]
             teleCubeLow = matchResults[analysis.columns.index('teleCubeLow')]
-            
+            teleTotal = matchResults[analysis.columns.index('teleTotal')]
             if(teleConeHigh is None):
                 teleConeHigh = 0
             if(teleConeMid is None):
@@ -44,6 +45,8 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
                 teleCubeMid = 0
             if(teleCubeLow is None):
                 teleCubeLow = 0
+            if(teleTotal is None):
+                teleTotal = 0
 
             totalHigh += (teleConeHigh + teleCubeHigh)
             totalMid += (teleConeMid + teleCubeMid)
@@ -52,6 +55,7 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
             totalCones += (teleConeHigh + teleConeLow + teleConeMid)
             totalCubes += (teleCubeHigh + teleCubeMid + teleCubeLow)
 
+            teleTotal += (totalCones + totalCubes)
             numberOfMatchesPlayed += 1
             
             graphicTeleInfoList.append(0)
@@ -146,5 +150,5 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
         rsCEA['M11V'] = totalHigh
         rsCEA['M11D'] = totalMid
         rsCEA['M11F'] = totalLow
-
+        rsCEA['S5D'] = str(round(statistics.mean(graphicTeleInfoList), 1))
     return rsCEA
