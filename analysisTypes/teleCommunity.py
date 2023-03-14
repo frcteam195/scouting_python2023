@@ -32,15 +32,15 @@ def teleCommunity(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData
 
             display = str(totalCMTY) + "|" + str(LZPickup)
             value = totalCMTY
-            if LZPickup == 0:
+            if value == 0:
                 color = 1
-            elif LZPickup <= 3:
+            elif value <= 3:
                 color = 2
-            elif LZPickup <= 6:
+            elif value <= 6:
                 color = 3
-            elif LZPickup <= 9:
+            elif value <= 9:
                 color = 4
-            elif LZPickup > 9:
+            elif value > 9:
                 color = 5
             else:
                 print('teleCommunity: that should not happen')

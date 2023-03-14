@@ -107,20 +107,20 @@ def totalScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             
             link = int((teleHigh + teleLow + teleMid) / 3)
 
-            total += autoScore + (teleHigh * 5) + (teleMid * 3) + (teleLow * 2) + link + ramp - autoRamp
+            total += autoScore + (teleHigh * 5) + (teleMid * 3) + (teleLow * 2) + link + ramp + autoRamp
 
             totalScoreDisplay = str(total) + autoRampDisplay
             totalScoreValue = total
 
-            if total <=20:
+            if total <=15:
                 totalScoreColor = 1
-            elif total <=37:
+            elif total <=30:
                 totalScoreColor = 2
-            elif total <=50:
+            elif total <=40:
                 totalScoreColor = 3
-            elif total <=75:
+            elif total <=50:
                 totalScoreColor = 4
-            elif total > 75:
+            elif total > 50:
                 totalScoreColor = 5
 
 
