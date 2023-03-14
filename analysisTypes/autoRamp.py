@@ -25,10 +25,10 @@ def autoRamp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             score4 = matchResults[analysis.columns.index('autoScore4')]
             autoMB = matchResults[analysis.columns.index('autoMB')]
             
-            # if autoMB != 2:
-            #     mbDisplay = "*"
-            # else:
-            #     mbDisplay = ""
+            if autoMB == 2:
+                mbDisplay = "*"
+            else:
+                mbDisplay = ""
 
             numGamePieces = 0
             if score1 > 0:
@@ -41,10 +41,13 @@ def autoRamp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
                 numGamePieces += 1
 
             if autoRamp == 0: #No Attempt
-                autoRampDisplay = "NA|" + str(numGamePieces)
                 autoRampValue = 0
+                if numGamePieces > 0:
+                    autoRampDisplay = "NA|" + str(numGamePieces)
+                else:
+                    autoRampDisplay = "NA"
                 if numGamePieces == 0:
-                    autoRampColor = 1 #Black
+                    autoRampColor = 2 #Red
                 else: # with game piece placement
                     autoRampColor = 0 #White   
 
@@ -66,7 +69,8 @@ def autoRamp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
                 else: #with move bonus or piece placement
                     autoRampColor = 5 #Blue
             
-
+            autoRampDisplay = autoRampDisplay + mbDisplay
+            
             numberOfMatchesPlayed += 1
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = autoRampDisplay
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = autoRampValue
