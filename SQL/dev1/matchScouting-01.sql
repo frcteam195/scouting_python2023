@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS dev1.matchScouting (
         teleCubeCMTY TINYINT NULL DEFAULT 0,
         teleLZPickup TINYINT NULL DEFAULT 0,
         teleObstructed TINYINT NULL DEFAULT 0,
-        teleWasObstructed TINYINT NULL DEFAULT 0,
+        teleWasObstructed TINYINT NULL,
         ramp TINYINT NULL,
         rampAssist TINYINT NULL DEFAULT 0,
         rampPos TINYINT NULL,
