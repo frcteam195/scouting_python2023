@@ -76,7 +76,10 @@ def autoRamp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = autoRampValue
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = autoRampColor
 
-    if numberOfMatchesPlayed > 0:
+    if len(autoRampList) == 0:
+        mean = 0
+        median = 0
+    else:
         mean = round(statistics.mean(autoRampList), 1)
         median = round(statistics.median(autoRampList), 1)
         rsCEA['S1V'] = mean
