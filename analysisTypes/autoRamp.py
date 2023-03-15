@@ -42,17 +42,14 @@ def autoRamp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
             if autoRamp == 0: #No Attempt
                 autoRampValue = 0
-                if numGamePieces > 0:
-                    autoRampDisplay = "NA|" + str(numGamePieces)
-                else:
-                    autoRampDisplay = "NA"
+                autoRampDisplay = "NA"
                 if numGamePieces == 0:
                     autoRampColor = 2 #Red
                 else: # with game piece placement
                     autoRampColor = 0 #White   
 
             elif autoRamp == 1: #Failed Attempt
-                autoRampDisplay = "F|" + str(numGamePieces)
+                autoRampDisplay = "F"
                 autoRampValue = 0
                 autoRampColor = 1 #Red
 
@@ -70,7 +67,7 @@ def autoRamp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
                     autoRampColor = 5 #Blue
             
             autoRampDisplay = autoRampDisplay + mbDisplay
-            
+
             numberOfMatchesPlayed += 1
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = autoRampDisplay
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = autoRampValue
