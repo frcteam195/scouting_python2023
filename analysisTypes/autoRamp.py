@@ -43,23 +43,17 @@ def autoRamp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             if autoRamp == 0: #No Attempt
                 autoRampValue = 0
                 autoRampDisplay = "NA"
-                if numGamePieces == 0:
-                    autoRampColor = 2 #Red
-                else: # with game piece placement
-                    autoRampColor = 0 #White   
-
+                autoRampColor = 0 #White   
             elif autoRamp == 1: #Failed Attempt
                 autoRampDisplay = "F"
                 autoRampValue = 0
                 autoRampColor = 1 #Black
                 autoRampList.append(autoRampValue)
-
             elif autoRamp == 2: #Docked Not Engaged
                 autoRampDisplay = "8"
                 autoRampValue = 8
                 autoRampColor = 3 #Yellow
                 autoRampList.append(autoRampValue)
-
             elif autoRamp == 3: #Docked And Engaged
                 autoRampDisplay = "12"
                 autoRampValue = 12
@@ -82,9 +76,9 @@ def autoRamp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     else:
         mean = round(statistics.mean(autoRampList), 1)
         median = round(statistics.median(autoRampList), 1)
-        rsCEA['S1V'] = mean
-        rsCEA['S1D'] = str(mean)
-        rsCEA['S2V'] = median
-        rsCEA['S2D'] = str(median)
+    rsCEA['S1V'] = mean
+    rsCEA['S1D'] = str(mean)
+    rsCEA['S2V'] = median
+    rsCEA['S2D'] = str(median)
 
     return rsCEA
