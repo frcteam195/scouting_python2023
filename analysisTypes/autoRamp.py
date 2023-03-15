@@ -51,16 +51,19 @@ def autoRamp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             elif autoRamp == 1: #Failed Attempt
                 autoRampDisplay = "F"
                 autoRampValue = 0
-                autoRampColor = 1 #Red
+                autoRampColor = 1 #Black
+                autoRampList.append(autoRampValue)
 
             elif autoRamp == 2: #Docked Not Engaged
-                autoRampDisplay = "8|" + str(numGamePieces)
+                autoRampDisplay = "8"
                 autoRampValue = 8
                 autoRampColor = 3 #Yellow
+                autoRampList.append(autoRampValue)
 
             elif autoRamp == 3: #Docked And Engaged
-                autoRampDisplay = "12|" + str(numGamePieces)
+                autoRampDisplay = "12"
                 autoRampValue = 12
+                autoRampList.append(autoRampValue)
                 if numGamePieces == 0:
                     autoRampColor = 4 #Green
                 else: #with move bonus or piece placement
@@ -72,8 +75,6 @@ def autoRamp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = autoRampDisplay
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = autoRampValue
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = autoRampColor
-
-            autoRampList.append(autoRampValue)
 
     if numberOfMatchesPlayed > 0:
         mean = round(statistics.mean(autoRampList), 1)
