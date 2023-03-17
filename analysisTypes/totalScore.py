@@ -104,7 +104,6 @@ def totalScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             teleLow = teleconeLow + telecubeLow
 
             linkPts = (teleHigh + teleMid + teleLow) / 3
-
             telePts = (teleHigh * 5) + (teleMid * 3) + (teleLow * 2) + linkPts
 
             # end-game
@@ -120,7 +119,7 @@ def totalScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
                 rampPts = 0
             
             totalScore = 0
-            totalScore = autoScore + telePts + rampPts + autoRamp
+            totalScore = autoScore + telePts + rampPts
             totalScore = round(totalScore, 0)
             totalScoreValue = totalScore
 
