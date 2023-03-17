@@ -137,7 +137,7 @@ def totalScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
                 totalScoreColor = 5
 
             numberOfMatchesPlayed += 1
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = totalScoreDisplay
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = str(totalScoreDisplay)
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = totalScoreValue
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = totalScoreColor
 
