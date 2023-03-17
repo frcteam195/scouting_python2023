@@ -27,8 +27,9 @@ for jpeg_file in jpeg_files:
         image = image.rotate(-90)
         width = image.width
         height = image.height
-        # new_width = int((height / width) * max_size[0])
-        image.thumbnail((max_size[0], 1000))
+        new_height = int((height / width) * max_size[0])
+        # image.thumbnail((max_size[0], 1000))
+        image.thumbnail((max_size[0], new_height))
         save = f"{directory}/robotThumbnails/{filename}"
         image.save(save, quality=quality)
         processed_images.append(filename)
