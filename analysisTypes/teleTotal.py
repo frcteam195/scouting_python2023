@@ -5,16 +5,11 @@ def teleTotal(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     rsCEA = {}
     rsCEA['analysisTypeID'] = 8
     numberOfMatchesPlayed = 0
-
-    # only using to test ranks, eliminate later
     teleTotalList = []
     
-    # Loop through each match the robot played in.
     for matchResults in rsRobotMatchData:
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
         rsCEA['eventID'] = matchResults[analysis.columns.index('eventID')]
-        # We are hijacking the starting position to write DNS or UR. This should go to Auto as it will not
-        #   likely be displayed on team picker pages.
         preNoShow = matchResults[analysis.columns.index('preNoShow')]
         scoutingStatus = matchResults[analysis.columns.index('scoutingStatus')]
         if preNoShow == 1:
@@ -29,11 +24,10 @@ def teleTotal(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             cubeHigh = 0
             cubeMid = 0
             cubeLow = 0
-            total = 0
 
             coneHigh = matchResults[analysis.columns.index('teleConeHigh')]
             coneMid = matchResults[analysis.columns.index('teleConeMid')]
-            coneLow = matchResults[analysis.columns.index('teleConeMid')]
+            coneLow = matchResults[analysis.columns.index('teleConeLow')]
             cubeHigh = matchResults[analysis.columns.index('teleCubeHigh')]
             cubeMid = matchResults[analysis.columns.index('teleCubeMid')]
             cubeLow = matchResults[analysis.columns.index('teleCubeLow')]
