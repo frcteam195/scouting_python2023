@@ -121,8 +121,9 @@ def totalScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             
             totalScore = 0
             totalScore = autoScore + telePts + rampPts + autoRamp
+            totalScore = round(totalScore, 0)
 
-            totalScoreDisplay = str(totalScore) + autoRampDisplay
+            totalScoreDisplay = totalScore + autoRampDisplay
             totalScoreValue = totalScore
 
             if totalScore <=15:
@@ -137,7 +138,7 @@ def totalScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
                 totalScoreColor = 5
 
             numberOfMatchesPlayed += 1
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = str(round(totalScoreDisplay, 0))
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = str(totalScoreDisplay)
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = totalScoreValue
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = totalScoreColor
 
