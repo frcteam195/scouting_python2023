@@ -36,5 +36,7 @@ __all__ = [
            'climb',
            'scoringEff',
            'intakeEff',
+           'goodOffBot',
+           'goodDefBot',
            'rampTime'
            ]

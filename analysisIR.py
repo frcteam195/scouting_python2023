@@ -48,6 +48,8 @@ analysisTypesDict = {
                     "climb": climb.climb,
                     "scoringEff": scoringEff.scoringEff,
                     "intakeEff": intakeEff.intakeEff,
+                    "goodOffBot": goodOffBot.goodOffBot,
+                    "goodDefBot": goodDefBot.goodDefBot,
                     "rampTime": rampTime.rampTime
                     } 
 
