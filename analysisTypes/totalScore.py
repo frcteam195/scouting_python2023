@@ -122,6 +122,7 @@ def totalScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             totalScore = 0
             totalScore = autoScore + telePts + rampPts + autoRamp
             totalScore = round(totalScore, 0)
+            totalScore = str(totalScore)
 
             totalScoreDisplay = totalScore + autoRampDisplay
             totalScoreValue = totalScore
