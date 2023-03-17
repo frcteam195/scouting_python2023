@@ -80,6 +80,7 @@ def totalScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
                 autoRampDisplay = "*"
                 autoRampPts = 8
             else:
+                autoRampPts = 0
                 autoRampDisplay = ""
 
             autoScore = autoGPscore + moveBonusPts + autoRampPts
