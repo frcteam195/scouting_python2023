@@ -6,7 +6,7 @@ import time
 directory = "/media"
 jpeg_files = glob.glob(os.path.join(directory, "*.jpg"))
 
-max_size = (1000, 1000)
+max_size = 1000
 quality = 50
 
 timestamp_file = "processed_images.txt"
@@ -27,7 +27,7 @@ for jpeg_file in jpeg_files:
         image = image.rotate(-90)
         width = image.width
         height = image.height
-        new_width = int((width / height) * max_size[0])
+        new_width = int((height / width) * max_size)
         image.thumbnail((max_size[0], new_width))
         save = f"{directory}/robotThumbnails/{filename}"
         image.save(save, quality=quality)
