@@ -24,6 +24,7 @@ def speed(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
                 categoryValue = 999
                 categoryDisplay = '999'
                 categoryFormat = 0
+                categoryFormat = 0
             elif categoryValue == 0:
                 categoryDisplay = 'NA'
                 categoryFormat = 0
