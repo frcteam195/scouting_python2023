@@ -29,7 +29,7 @@ analysisTypesDict = {
                     "rampPos": rampPos.rampPos,
                     "postSubBroke": postSubBroke.postSubBroke,
                     "postBrokeDown": postBrokeDown.postBrokeDown,
-                    "postReorientCone": postReorientCone.postReorientCone,
+                    # "postReorientCone": postReorientCone.postReorientCone,
                     "postShelfPickup": postShelfPickup.postShelfPickup,
                     "postGroundPickup": postGroundPickup.postGroundPickup,
                     "postTippedOver": postTippedOver.postTippedOver,
