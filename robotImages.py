@@ -29,7 +29,8 @@ for jpeg_file in jpeg_files:
         height = image.height
         new_height = int((height / width) * max_size[0])
         # image.thumbnail((max_size[0], 1000))
-        image.thumbnail((max_size[0], new_height))
+        # image.thumbnail((max_size[0], new_height))
+        image.thumbnail((new_height, max_size[0]))
         save = f"{directory}/robotThumbnails/{filename}"
         image.save(save, quality=quality)
         processed_images.append(filename)
