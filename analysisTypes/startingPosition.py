@@ -23,9 +23,7 @@ def startingPosition(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitD
 
             # Increment the number of matches played and write M#D, M#V and M#F
             numberOfMatchesPlayed += 1
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = matchResults[
-                analysis.columns.index('preStartPos')]
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = matchResults[
-                analysis.columns.index('preStartPos')]
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = str(preStartPos)
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = preStartPos
 
     return rsCEA
