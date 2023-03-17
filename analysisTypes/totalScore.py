@@ -19,10 +19,9 @@ def totalScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
         elif scoutingStatus == 2:
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'UR'
         else:
-
             teleconeHigh = matchResults[analysis.columns.index('teleConeHigh')]
             teleconeMid = matchResults[analysis.columns.index('teleConeMid')]
-            teleconeLow = matchResults[analysis.columns.index('teleConeMid')]
+            teleconeLow = matchResults[analysis.columns.index('teleConeLow')]
 
             telecubeHigh = matchResults[analysis.columns.index('teleCubeHigh')]
             telecubeMid = matchResults[analysis.columns.index('teleCubeMid')]
