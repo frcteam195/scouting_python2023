@@ -26,6 +26,7 @@ def postShelfPickup(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
             if postShelfPickup is None:
                 postShelfPickupDisplay = 999
                 postShelfPickupValue = 999
+                postShelfPickupColor = 0
             elif postShelfPickup == 0:
                 postShelfPickupDisplay = 'N'
                 postShelfPickupValue = 0
