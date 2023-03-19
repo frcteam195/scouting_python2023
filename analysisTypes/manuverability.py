@@ -1,10 +1,10 @@
 import statistics
 
-def sturdiness(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
+def manuverability(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     # Initialize the rsCEA record set and define variables specific to this function which lie outside the for loop
     rsCEA = {}
     rsCEA['analysisTypeID'] = 32 
-    category = 'sturdiness'
+    category = 'manuverability'
     count = 0
     numberOfMatchesPlayed = 0
     valueList = []
@@ -48,8 +48,8 @@ def sturdiness(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             rsCEA['S2D'] = str(round(statistics.median(valueList), 1))
         else:
                 rsCEA['S1V'] = 0
-                rsCEA['S1D'] = '-'
+                rsCEA['S1D'] = ''
                 rsCEA['S2V'] = 0
-                rsCEA['S2D'] = '-'
+                rsCEA['S2D'] = ''
     
     return rsCEA

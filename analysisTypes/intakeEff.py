@@ -48,8 +48,8 @@ def intakeEff(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             rsCEA['S2D'] = str(round(statistics.median(valueList), 1))
         else:
                 rsCEA['S1V'] = 0
-                rsCEA['S1D'] = '-'
+                rsCEA['S1D'] = ''
                 rsCEA['S2V'] = 0
-                rsCEA['S2D'] = '-'
+                rsCEA['S2D'] = ''
     
     return rsCEA
