@@ -43,7 +43,7 @@ analysisTypesDict = {
                     "autoScorePosMid": autoScorePosMid.autoScorePosMid,
                     "autoScorePosLow": autoScorePosLow.autoScorePosLow,
                     "speed": speed.speed,
-                    "manuverability": manuverability.manuverability,
+                    "maneuverability": maneuverability.maneuverability,
                     "climb": climb.climb,
                     "scoringEff": scoringEff.scoringEff,
                     "intakeEff": intakeEff.intakeEff,
