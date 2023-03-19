@@ -22,7 +22,7 @@ def teleScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             
             teleconeHigh = matchResults[analysis.columns.index('teleConeHigh')]
             teleconeMid = matchResults[analysis.columns.index('teleConeMid')]
-            teleconeLow = matchResults[analysis.columns.index('teleConeMid')]
+            teleconeLow = matchResults[analysis.columns.index('teleConeLow')]
 
             telecubeHigh = matchResults[analysis.columns.index('teleCubeHigh')]
             telecubeMid = matchResults[analysis.columns.index('teleCubeMid')]

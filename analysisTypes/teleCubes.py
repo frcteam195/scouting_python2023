@@ -30,7 +30,7 @@ def teleCubes(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
             coneHigh = matchResults[analysis.columns.index('teleConeHigh')]
             coneMid = matchResults[analysis.columns.index('teleConeMid')]
-            coneLow = matchResults[analysis.columns.index('teleConeMid')]
+            coneLow = matchResults[analysis.columns.index('teleConeLow')]
 
             cubeHigh = matchResults[analysis.columns.index('teleCubeHigh')]
             cubeMid = matchResults[analysis.columns.index('teleCubeMid')]
