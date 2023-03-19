@@ -7,5 +7,5 @@ do
   echo "Loop $i"
   ./run.aws.sh
   i=$(( $i + 1 ))
-  sleep 60
+  sleep 30
 done
