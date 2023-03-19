@@ -63,6 +63,7 @@ for table in tables:
             query = "SELECT matchID, eventID, matchNum, allianceStationID FROM " + table + " WHERE " + \
                     "matchID = " + str(matchID) + " AND eventID = " + str(eventID) + \
                     " AND matchNum = " + str(matchNum) + " AND allianceStationID = " + str(allianceStationID)
+            # print(query)
             cursor.execute(query)
             exists = cursor.fetchall()
 
@@ -77,6 +78,7 @@ for table in tables:
                 columns = str(tuple([x[0] for x in items])).replace("'", "")
                 values = str(tuple([x[1] for x in items]))
                 query = "INSERT INTO " + table + " " + columns + " VALUES " + values
+                # print(query)
                 cursor.execute(query)
                 conn.commit()
             i += 1
