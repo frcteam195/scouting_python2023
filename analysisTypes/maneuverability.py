@@ -1,10 +1,10 @@
 import statistics
 
-def manuverability(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
+def maneuverability(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     # Initialize the rsCEA record set and define variables specific to this function which lie outside the for loop
     rsCEA = {}
     rsCEA['analysisTypeID'] = 32 
-    category = 'manuverability'
+    category = 'maneuverability'
     count = 0
     numberOfMatchesPlayed = 0
     valueList = []

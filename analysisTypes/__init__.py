@@ -31,7 +31,7 @@ __all__ = [
            'autoScorePosMid',
            'autoScorePosLow',
            'speed',
-           'manuverability',
+           'maneuverability',
            'climb',
            'scoringEff',
            'intakeEff',
