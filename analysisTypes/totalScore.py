@@ -120,7 +120,7 @@ def totalScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             
             totalScore = 0
             totalScore = autoScore + telePts + rampPts
-            totalScore = round(totalScore, 0)
+            totalScore = round(totalScore)
             totalScoreValue = totalScore
 
             if totalScore <=15:
