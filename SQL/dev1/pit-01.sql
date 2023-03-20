@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS dev1.pit (
         robotLength TINYINT NULL,
         robotWidth TINYINT NULL,
         robotHeight TINYINT NULL,
+        robotWeight TINYINT NULL,
         driveBaseTypeID INT NULL,
         driveMotorTypeID INT NULL,
         manipulatorTypeID INT NULL,
