@@ -40,7 +40,7 @@ def teleScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             teleHigh = teleconeHigh + telecubeHigh
             teleMid = teleconeMid + telecubeMid
             teleLow = teleconeLow + telecubeLow
-            linkPts = int((teleHigh + teleMid + teleLow) / 3)
+            linkPts = int(((teleHigh + teleMid + teleLow) / 3) * 5)
 
             if ramp == 5:
                 rampPts = 10
