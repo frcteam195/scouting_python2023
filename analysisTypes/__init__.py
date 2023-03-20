@@ -37,5 +37,6 @@ __all__ = [
            'intakeEff',
            'goodOffBot',
            'goodDefBot',
-           'rampTime'
+           'rampTime',
+           'pit'
            ]

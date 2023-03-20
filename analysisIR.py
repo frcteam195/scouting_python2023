@@ -49,7 +49,8 @@ analysisTypesDict = {
                     "intakeEff": intakeEff.intakeEff,
                     "goodOffBot": goodOffBot.goodOffBot,
                     "goodDefBot": goodDefBot.goodDefBot,
-                    "rampTime": rampTime.rampTime
+                    "rampTime": rampTime.rampTime,
+                    "pit": pit.pit
                     } 
 
 # parser to choose the database where the table will be written
@@ -131,12 +132,15 @@ class analysis():
     # Function to determine the DB table column headers
     def _setColumns(self, columns):
         self.columns = columns
+        # print(columns)
     
     def _setL2Columns(self, L2Columns):
         self.L2Columns = L2Columns
+        # print(L2Columns)
 
     def _setPitColumns(self, pitColumns):
         self.pitColumns = pitColumns
+        # print(pitColumns)
 
     # Function to get the team list and set it to rsRobots. Uses the _run_query function defined above.
     def _getTeams(self):
