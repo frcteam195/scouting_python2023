@@ -73,17 +73,17 @@ def totalScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             if autoRamp is None:
                 autoRampDisplay = ""
                 autoRampPts = 0
-            elif autoRamp == 5:
-                autoRampDisplay = "*"
-                autoRampPts = 12
-            elif autoRamp == 4:
+            elif autoRamp == 2:  # docked
                 autoRampDisplay = "*"
                 autoRampPts = 8
+            elif autoRamp == 3:  # engaged
+                autoRampDisplay = "*"
+                autoRampPts = 12
             else:
                 autoRampPts = 0
                 autoRampDisplay = ""
 
-            autoScore = autoGPscore + moveBonusPts + autoRampPts
+            autoScore = moveBonusPts + autoGPscore + autoRampPts
 
             # teleop
             if teleconeHigh is None:
@@ -134,7 +134,6 @@ def totalScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             elif totalScore > 50:
                 totalScoreColor = 5
 
-            # totalScore = str(totalScore)
             totalScoreDisplay = f"{totalScore}{autoRampDisplay}"
             
             numberOfMatchesPlayed += 1
@@ -145,8 +144,8 @@ def totalScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             totalScoreList.append(totalScoreValue)
 
     if numberOfMatchesPlayed > 0:
-        rsCEA['S1V'] = round(statistics.mean(totalScoreList), 1)
-        rsCEA['S1D'] = str(round(statistics.mean(totalScoreList), 1))
-        rsCEA['S2V'] = round(statistics.median(totalScoreList), 1)
-        rsCEA['S2D'] = str(round(statistics.median(totalScoreList), 1))
+        rsCEA['S1V'] = round(statistics.mean(totalScoreList), 0)
+        rsCEA['S1D'] = str(round(statistics.mean(totalScoreList), 0))
+        rsCEA['S2V'] = round(statistics.median(totalScoreList), 0)
+        rsCEA['S2D'] = str(round(statistics.median(totalScoreList), 0))
     return rsCEA
