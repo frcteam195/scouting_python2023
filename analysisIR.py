@@ -26,7 +26,7 @@ analysisTypesDict = {
                     "teleObstructed": teleObstructed.teleObstructed,
                     "teleWasObstructed": teleWasObstructed.teleWasObstructed,
                     "ramp": ramp.ramp,
-                    "rampPos": rampPos.rampPos,
+                    # "rampPos": rampPos.rampPos,
                     "postSubBroke": postSubBroke.postSubBroke,
                     "postBrokeDown": postBrokeDown.postBrokeDown,
                     "postShelfPickup": postShelfPickup.postShelfPickup,

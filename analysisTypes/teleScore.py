@@ -41,8 +41,7 @@ def teleScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             teleMid = teleconeMid + telecubeMid
             teleLow = teleconeLow + telecubeLow
             teleTotal = teleLow + teleMid + teleHigh
-            teleTotal = round(teleTotal)
-            linkPts = ((teleTotal) / 3) * 5
+            linkPts = (teleTotal / 3) * 5
 
             if ramp == 5:
                 rampPts = 10
@@ -58,26 +57,24 @@ def teleScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             teleScore = 0
             teleScore = (teleHigh * 5) + (teleMid * 3) + (teleLow * 2) + linkPts + rampPts
             teleScore = round(teleScore)
-            teleScoreDisplay = str(teleScore)
-            teleScoreValue = teleScore
 
             if teleScore <= 12:
                 teleScoreColor = 1
-            elif teleScore <=24:
+            elif teleScore <= 24:
                 teleScoreColor = 2
             elif teleScore <= 36:
                 teleScoreColor = 3
-            elif teleScore <=48:
+            elif teleScore <= 48:
                 teleScoreColor = 4
             elif teleScore > 48:
                 teleScoreColor = 5
 
-            numberOfMatchesPlayed += 1
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = teleScoreDisplay
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = teleScoreValue
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = str(teleScore)
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = teleScore
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = teleScoreColor
 
-            teleScoreList.append(teleScoreValue)
+            teleScoreList.append(teleScore)
+            numberOfMatchesPlayed += 1
 
     if numberOfMatchesPlayed > 0:
         rsCEA['S1V'] = round(statistics.mean(teleScoreList), 0)
