@@ -49,7 +49,7 @@ analysisTypesDict = {
                     "intakeEff": intakeEff.intakeEff,
                     "goodOffBot": goodOffBot.goodOffBot,
                     "goodDefBot": goodDefBot.goodDefBot,
-                    "rampTime": rampTime.rampTime,
+                    # "rampTime": rampTime.rampTime,
                     "pit": pit.pit
                     } 
 
