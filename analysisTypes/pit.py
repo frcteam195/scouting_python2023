@@ -15,7 +15,7 @@ def pit(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             
             robotLengthValue = pitData[analysis.pitColumns.index('robotLength')]
             if robotLengthValue is None:
-                robotLengthValue = 0
+                robotLengthValue = 99
                 robotLengthDisplay = '-'
             else:
                 robotLengthDisplay = robotLengthValue
@@ -25,7 +25,7 @@ def pit(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             
             robotWidthValue = pitData[analysis.pitColumns.index('robotWidth')]
             if robotWidthValue is None:
-                robotWidthValue = 0
+                robotWidthValue = 99
                 robotWidthDisplay = '-'
             else:
                 robotWidthDisplay = robotWidthValue
@@ -35,7 +35,7 @@ def pit(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
             robotHeightValue = pitData[analysis.pitColumns.index('robotHeight')]
             if robotHeightValue is None:
-                robotHeightValue = 0
+                robotHeightValue = 99
                 robotHeightDisplay = '-'
             else:
                 robotHeightDisplay = robotHeightValue
@@ -43,10 +43,9 @@ def pit(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             rsCEA['M3V'] = robotHeightValue
             rsCEA['M3F'] = 0
             
-            # robotWeightValue = pitData[analysis.pitColumns.index('robotWeight')]
-            robotWeightValue = 99
+            robotWeightValue = pitData[analysis.pitColumns.index('robotWeight')]
             if robotWeightValue is None:
-                robotWeightValue = 0
+                robotWeightValue = 200
                 robotWeightDisplay = '-'
             else:
                 robotWeightDisplay = robotWeightValue
