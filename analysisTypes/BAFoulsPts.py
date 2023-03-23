@@ -34,18 +34,18 @@ def BAFoulsPts(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             
             totalFoulPts = foulPts + techFoulPts
 
-            foulPtsDisplay = totalFoulPts
+            foulPtsDisplay = (totalFoulPts * -1)
             foulPtsValue = totalFoulPts
 
-            if totalFoulPts <= 5:
+            if totalFoulPts >= -5:
                 foulPtsColor = 5
-            elif totalFoulPts <= 10:
+            elif totalFoulPts >= -10:
                 foulPtsColor = 4
-            elif totalFoulPts <= 15:
+            elif totalFoulPts >= -15:
                 foulPtsColor = 3
-            elif totalFoulPts <= 20:
+            elif totalFoulPts >= -20:
                 foulPtsColor = 2
-            elif totalFoulPts > 20:
+            elif totalFoulPts < -20:
                 foulPtsColor = 1
                        
             # Increment the number of matches played and write M#D, M#V and M#F
