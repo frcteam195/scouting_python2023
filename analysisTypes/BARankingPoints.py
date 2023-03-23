@@ -40,7 +40,9 @@ def BARankingPoints(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
             elif chargeStationRP == 1:
                 BARankingPointsColor = 3
             elif totalRP == 2:
-                chargeStationRP == 5
+                BARankingPointsColor = 5
+            else 
+            BARankingPointsDisplay = "999"
 
             # Increment the number of matches played and write M#D, M#V and M#F
             numberOfMatchesPlayed += 1
