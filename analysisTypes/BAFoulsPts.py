@@ -6,6 +6,7 @@ def BAFoulsPts(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     rsCEA['analysisTypeID'] = 24
     numberOfMatchesPlayed = 0
     foulPtsList = []
+    foulPtsRankingList = []
     
     for matchResults in rsRobotMatchData:
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
@@ -40,16 +41,17 @@ def BAFoulsPts(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
                 foulPtsColor = 1
                        
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = str(foulPts)
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = rankingValue
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = foulPts
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = foulPtsColor
 
             foulPtsList.append(foulPts)
+            foulPtsRankingList.append(rankingValue)
             numberOfMatchesPlayed += 1
 
     if numberOfMatchesPlayed > 0:
-        rsCEA['S1V'] = round(statistics.mean(foulPtsList), 1)
+        rsCEA['S1V'] = round(statistics.mean(foulPtsRankingList), 1)
         rsCEA['S1D'] = str(round(statistics.mean(foulPtsList), 1))
-        rsCEA['S2V'] = round(statistics.median(foulPtsList), 1)
+        rsCEA['S2V'] = round(statistics.median(foulPtsRankingList), 1)
         rsCEA['S2D'] = str(round(statistics.median(foulPtsList), 1))
 
     return rsCEA
