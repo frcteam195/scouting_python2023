@@ -4,14 +4,11 @@ def BARankingPoints(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
     rsCEA = {}
     rsCEA['analysisTypeID'] = 25
     numberOfMatchesPlayed = 0
-
     BARankingPointsList = []
     
     for matchResults in rsRobotMatchData:
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
         rsCEA['eventID'] = matchResults[analysis.columns.index('eventID')]
-        # We are hijacking the starting position to write DNS or UR. This should go to Auto as it will not
-        #   likely be displayed on team picker pages.
         preNoShow = matchResults[analysis.columns.index('preNoShow')]
         scoutingStatus = matchResults[analysis.columns.index('scoutingStatus')]
         if preNoShow == 1:
@@ -19,7 +16,6 @@ def BARankingPoints(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
         elif scoutingStatus == 2:
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'UR'
         else:
-            
             linkRP = matchResults[analysis.columns.index('BAlinkRP')]
             chargeStationRP = matchResults[analysis.columns.index('BAchargeStationRP')]
 
@@ -28,31 +24,42 @@ def BARankingPoints(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
             if chargeStationRP is None:
                 chargeStationRP = 0
 
-            totalRP = linkRP + chargeStationRP
+            if linkRP == 0 and chargeStationRP == 0:
+                display = '0|0'
+                color = 1
+                rankingPoints = 0
+                BARankingPointsList.append(rankingPoints)
+            elif linkRP == 0 and chargeStationRP == 1:
+                display = '0|1'
+                color = 3
+                rankingPoints = 1
+                BARankingPointsList.append(rankingPoints)
+            elif linkRP == 1 and chargeStationRP == 0:
+                display = '1|0'
+                color = 4
+                rankingPoints = 1
+                BARankingPointsList.append(rankingPoints)
+            elif linkRP == 1 and chargeStationRP == 1:
+                display = '1|1'
+                color = 5
+                rankingPoints = 2
+                BARankingPointsList.append(rankingPoints)
+            else:
+                display = '999'
+                color = 2
+                rankingPoints = 0
+                BARankingPointsList.append(rankingPoints)
 
-            BARankingPointsDisplay = str(linkRP) + "|" + str(chargeStationRP)
-            BARankingPointsValue = totalRP
-                       
-            if totalRP == 0:
-                BARankingPointsColor = 1
-            elif linkRP == 1:
-                BARankingPointsColor = 4
-            elif chargeStationRP == 1:
-                BARankingPointsColor = 3
-            elif totalRP == 2:
-                chargeStationRP == 5
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = str(display)
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = rankingPoints
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = color
 
-            # Increment the number of matches played and write M#D, M#V and M#F
             numberOfMatchesPlayed += 1
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = BARankingPointsDisplay
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = BARankingPointsValue
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = BARankingPointsColor
-
-            BARankingPointsList.append(BARankingPointsValue)
 
     if numberOfMatchesPlayed > 0:
         rsCEA['S1V'] = round(statistics.mean(BARankingPointsList), 1)
         rsCEA['S1D'] = str(round(statistics.mean(BARankingPointsList), 1))
         rsCEA['S2V'] = round(statistics.median(BARankingPointsList), 1)
         rsCEA['S2D'] = str(round(statistics.median(BARankingPointsList), 1))
+        
     return rsCEA

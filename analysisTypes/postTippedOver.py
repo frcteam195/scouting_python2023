@@ -5,10 +5,8 @@ def postTippedOver(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDat
     rsCEA = {}
     rsCEA['analysisTypeID'] = 22
     numberOfMatchesPlayed = 0
-
     postTippedOverList = []
 
-    # Loop through each match the robot played in.
     for matchResults in rsRobotMatchData:
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
         rsCEA['eventID'] = matchResults[analysis.columns.index('eventID')]
@@ -23,24 +21,20 @@ def postTippedOver(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDat
             
             if postTippedOver is None:
                 postTippedOverDisplay = '999'
-                postTippedOverValue = 999
+                postTippedOverValue = 0
                 postTippedOverColor = 1
             elif postTippedOver == 0:
                 postTippedOverDisplay = 'N'
-                postTippedOverValue = 0
-                postTippedOverColor = 4
-            elif postTippedOver == 1:
-                postTippedOverDisplay = 'Y'
                 postTippedOverValue = 1
-                postTippedOverColor = 2
+                postTippedOverColor = 4
             else:
-                postTippedOverDisplay = '999'
-                postTippedOverValue = 999
-                postTippedOverColor = 1
+                postTippedOverDisplay = 'Y'
+                postTippedOverValue = 0
+                postTippedOverColor = 2
             
             postTippedOverList.append(postTippedOverValue)
-
             numberOfMatchesPlayed += 1
+
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = postTippedOverDisplay
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = postTippedOverValue
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = postTippedOverColor
