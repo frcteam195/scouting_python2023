@@ -35,7 +35,7 @@ query =f"select matchID, red1, red2, red3, blue1, blue2, blue3, matchNum from ma
 cursor.execute(query)
 futureMatches = cursor.fetchall()
 for match in futureMatches:
-    print('*****')
+    print('please be patient - statbotics API is not the fastest')
     matchID = match[0]
     matchNum = match[7]
 #     print(f"MatchID = {matchID}, MatchNum = {matchNum}, RED: {match[1]}, {match[2]}, {match[3]} BLUE: {match[4]}, {match[5]}, {match[6]} ")
@@ -109,8 +109,8 @@ for match in futureMatches:
     blueTotalAuto = round((blueTotalAuto + bluePredAutoPts), 0)
     blueTotalPts = round((blueTotalAuto + blueTotalTele + blueTotalEndgame), 0)
   
-    print(f"195: redPred = {int(redTotalPts)}, bluePred = {int(blueTotalPts)}")
-    print(f"SB:  redPred = {int(SBredScorePred)}, bluePred = {int(SBblueScorePred)}")
+    # print(f"195: redPred = {int(redTotalPts)}, bluePred = {int(blueTotalPts)}")
+    # print(f"SB:  redPred = {int(SBredScorePred)}, bluePred = {int(SBblueScorePred)}")
 
     updateQuery = f"UPDATE matches SET redPredScore = {redTotalPts}, " \
         f"bluePredScore = {blueTotalPts}, " \
