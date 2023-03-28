@@ -6,7 +6,6 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
     rsCEA['analysisTypeID'] = 91
     numberOfMatchesPlayed = 0
     graphicTeleInfoList = []
-    teleTotalList = []
     totalHigh = 0
     totalMid = 0
     totalLow = 0
@@ -54,76 +53,78 @@ def graphicTeleInfo(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
 
             numberOfMatchesPlayed += 1
             graphicTeleInfoList.append(0)
-            
-    total = (totalHigh + totalMid + totalLow)
-    if(totalHigh == 0):
-        percentHigh = 0
-    else:
-        percentHigh = int(totalHigh / total * 100)
     
-    if(totalMid == 0):
-        percentMid = 0
-    else:
-        percentMid = int(totalMid / total * 100)
-    
-    if(totalLow == 0):
-        percentLow = 0
-    else:
-        percentLow = int(totalLow / total * 100)
-    
-    if(totalCones == 0):
-        percentCones = 0
-    else:
-        percentCones = int(totalCones / (totalCones + totalCubes) * 100)
-    
-    if(totalCubes == 0):
-        percentCubes = 0
-    else:
-        percentCubes = int(totalCubes / (totalCones + totalCubes) * 100)
+    if numberOfMatchesPlayed > 0:
 
-    aveGamePiece = total / numberOfMatchesPlayed
-    # print(f"aveGamePiece = {aveGamePiece}")
+        total = (totalHigh + totalMid + totalLow)
+        if(totalHigh == 0):
+            percentHigh = 0
+        else:
+            percentHigh = int(totalHigh / total * 100)
+        
+        if(totalMid == 0):
+            percentMid = 0
+        else:
+            percentMid = int(totalMid / total * 100)
+        
+        if(totalLow == 0):
+            percentLow = 0
+        else:
+            percentLow = int(totalLow / total * 100)
+        
+        if(totalCones == 0):
+            percentCones = 0
+        else:
+            percentCones = int(totalCones / (totalCones + totalCubes) * 100)
+        
+        if(totalCubes == 0):
+            percentCubes = 0
+        else:
+            percentCubes = int(totalCubes / (totalCones + totalCubes) * 100)
 
-    highDisplay = 0
-    midDisplay = 0
-    lowDisplay = 0
+        aveGamePiece = total / numberOfMatchesPlayed
+        # print(f"aveGamePiece = {aveGamePiece}")
 
-    if totalHigh > totalMid and totalHigh > totalLow:
-        highDisplay = 4
-        midDisplay = 3 if totalMid > totalLow else \
-                    2 if totalMid < totalLow else \
-                    3 if totalMid == totalLow else midDisplay
-        lowDisplay = 3 if totalLow > totalMid else \
-                    2 if totalLow < totalMid else \
-                    3 if totalLow == totalMid else lowDisplay
-    elif totalMid > totalHigh and totalMid > totalLow:
-        midDisplay = 4
-        highDisplay = 3 if totalHigh > totalLow else \
-                    2 if totalHigh < totalLow else \
-                    3 if totalHigh == totalLow else highDisplay
-        lowDisplay = 3 if totalLow > totalHigh else \
-                    2 if totalLow < totalHigh else \
-                    3 if totalLow == totalHigh else lowDisplay
-    elif totalLow > totalMid and totalLow > totalHigh:
-        lowDisplay = 4
-        highDisplay = 3 if totalHigh > totalMid else \
-                    2 if totalHigh < totalMid else \
-                    3 if totalHigh == totalMid else highDisplay
-        midDisplay = 3 if totalMid > totalHigh else \
-                    2 if totalMid < totalHigh else \
-                    3 if totalMid == totalHigh else midDisplay
-    elif totalLow == totalMid and totalLow > totalHigh:
-        lowDisplay = 4
-        midDisplay = 4
-        highDisplay = 2
-    elif totalLow == totalHigh and totalLow > totalMid:
-        lowDisplay = 4
-        highDisplay = 4
-        midDisplay = 2
-    elif totalHigh == totalMid and totalHigh > totalLow:
-        highDisplay = 4
-        midDisplay = 4
-        lowDisplay = 2
+        highDisplay = 0
+        midDisplay = 0
+        lowDisplay = 0
+
+        if totalHigh > totalMid and totalHigh > totalLow:
+            highDisplay = 4
+            midDisplay = 3 if totalMid > totalLow else \
+                        2 if totalMid < totalLow else \
+                        3 if totalMid == totalLow else midDisplay
+            lowDisplay = 3 if totalLow > totalMid else \
+                        2 if totalLow < totalMid else \
+                        3 if totalLow == totalMid else lowDisplay
+        elif totalMid > totalHigh and totalMid > totalLow:
+            midDisplay = 4
+            highDisplay = 3 if totalHigh > totalLow else \
+                        2 if totalHigh < totalLow else \
+                        3 if totalHigh == totalLow else highDisplay
+            lowDisplay = 3 if totalLow > totalHigh else \
+                        2 if totalLow < totalHigh else \
+                        3 if totalLow == totalHigh else lowDisplay
+        elif totalLow > totalMid and totalLow > totalHigh:
+            lowDisplay = 4
+            highDisplay = 3 if totalHigh > totalMid else \
+                        2 if totalHigh < totalMid else \
+                        3 if totalHigh == totalMid else highDisplay
+            midDisplay = 3 if totalMid > totalHigh else \
+                        2 if totalMid < totalHigh else \
+                        3 if totalMid == totalHigh else midDisplay
+        elif totalLow == totalMid and totalLow > totalHigh:
+            lowDisplay = 4
+            midDisplay = 4
+            highDisplay = 2
+        elif totalLow == totalHigh and totalLow > totalMid:
+            lowDisplay = 4
+            highDisplay = 4
+            midDisplay = 2
+        elif totalHigh == totalMid and totalHigh > totalLow:
+            highDisplay = 4
+            midDisplay = 4
+            lowDisplay = 2
 
     if numberOfMatchesPlayed > 0:
         rsCEA['S1V'] = totalHigh
