@@ -11,7 +11,7 @@ def speed(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
 
     for matchResults in rsRobotL2MatchData:
-        printf("matchData = {matchResults}")
+        print(f"matchData = {matchResults}")
         rsCEA['team'] = matchResults[analysis.L2Columns.index('team')]
         rsCEA['eventID'] = matchResults[analysis.L2Columns.index('eventID')]
         preNoShow = matchResults[analysis.L2Columns.index('preNoShow')]
