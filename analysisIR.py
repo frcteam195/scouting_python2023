@@ -232,6 +232,7 @@ class analysis():
                      f"INNER JOIN {BAoprTable} ON {BArankTable}.team = {BAoprTable}.team "
                      f"WHERE {BArankTable}.team = {teamName}")
             print(query)
+            print()
             self._run_query(query)
     
      # Function to insert an rsCEA record into the DB.
