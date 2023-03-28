@@ -213,9 +213,10 @@ class analysis():
         for team in self.rsRobots:
             # analysisTypesDict defined at top of script
             for analysisType2analyze in analysisTypesDict:
-                # print(f"analyzing team {team} using {analysisType2analyze}")
+                print(f"analyzing team {team} using {analysisType2analyze}")
                 rsRobotMatchData = self._getTeamData(team)
                 rsRobotL2MatchData = self._getL2TeamData(team)
+                print(rsRobotL2MatchData)
                 rsRobotPitData = self._getPitData(team)
                 teamName = str(team)
                 teamName = teamName.translate(str.maketrans("", "", " ,()'"))
