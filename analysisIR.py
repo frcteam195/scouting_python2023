@@ -216,7 +216,7 @@ class analysis():
                 print(f"analyzing team {team} using {analysisType2analyze}")
                 rsRobotMatchData = self._getTeamData(team)
                 rsRobotL2MatchData = self._getL2TeamData(team)
-                print(rsRobotL2MatchData)
+                # print(rsRobotL2MatchData)
                 rsRobotPitData = self._getPitData(team)
                 teamName = str(team)
                 teamName = teamName.translate(str.maketrans("", "", " ,()'"))
@@ -231,7 +231,7 @@ class analysis():
                      f"FROM {BArankTable} "
                      f"INNER JOIN {BAoprTable} ON {BArankTable}.team = {BAoprTable}.team "
                      f"WHERE {BArankTable}.team = {teamName}")
-            print(query)
+            # print(query)
             print()
             self._run_query(query)
     
@@ -241,6 +241,7 @@ class analysis():
         columnHeadings = str(tuple([record[0] for record in rsCEA_records])).replace("'", "")
         values = str(tuple([record[1] for record in rsCEA_records]))
         query = "INSERT INTO " + CEA_tmpTable + " " + columnHeadings + " VALUES " + values
+        print(query)
         self._run_query(query)
         self.conn.commit()
 
