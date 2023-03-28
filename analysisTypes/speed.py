@@ -9,7 +9,7 @@ def speed(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     count = 0
     valueList = []
 
-
+    print(rsRobotL2MatchData)
     for matchResults in rsRobotL2MatchData:
         print(f"matchData = {matchResults}")
         rsCEA['team'] = matchResults[analysis.L2Columns.index('team')]
