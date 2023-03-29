@@ -221,6 +221,7 @@ class analysis():
                 teamName = str(team)
                 teamName = teamName.translate(str.maketrans("", "", " ,()'"))
                 if rsRobotMatchData:
+                    print('running')
                     rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData, rsRobotL2MatchData=rsRobotL2MatchData, rsRobotPitData=rsRobotPitData)
                     self._insertAnalysis(rsCEA)
                     self.conn.commit()
