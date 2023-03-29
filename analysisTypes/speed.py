@@ -10,7 +10,9 @@ def speed(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     valueList = []
 
     print(f"2. {rsRobotL2MatchData}")
-    if rsRobotL2MatchData != 0:
+    if rsRobotL2MatchData == 0:
+        print('no L2 data')
+    else:
         print('i am here')
         for matchResults in rsRobotL2MatchData:
             print(f"matchData = {matchResults}")
