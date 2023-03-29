@@ -233,7 +233,7 @@ class analysis():
             print(currentEventID)
             quit()
             query = (f"INSERT INTO {CEA_tmpTable} (team, eventID, S1V, S1D, S2V, S2D, analysisTypeID) "
-                     f"SELECT {BArankTable}.team, {BArankTable}.eventID, "
+                     f"SELECT {BArankTable}.team, (SELECT eventID FROM events WHERE currentEvent = 1), "
                      f"{BAoprTable}.OPR, {BAoprTable}.OPR, {BArankTable}.rank, {BArankTable}.rank, 80 "
                      f"FROM {BArankTable} "
                      f"INNER JOIN {BAoprTable} ON {BArankTable}.team = {BAoprTable}.team "
