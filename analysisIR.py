@@ -105,6 +105,7 @@ class analysis():
         self.rsRobots = self._getTeams()
         self._analyzeTeams()
         self._rankTeamsAll()
+        print('hello')
         self._renameTable()
 
         print("Time: %0.2f seconds" % (time.time() - start_time))
