@@ -227,11 +227,6 @@ class analysis():
                     self._insertAnalysis(rsCEA)
                     self.conn.commit()
             # add one last analysisType to add BAoprs and BAranks to analysisTypeID = 80
-            query = "SELECT eventID FROM events WHERE currentEvent = 1"
-            self._run_query(query)
-            currentEventID = self.cursor.fetchall()
-            print(currentEventID)
-            quit()
             query = (f"INSERT INTO {CEA_tmpTable} (team, eventID, S1V, S1D, S2V, S2D, analysisTypeID) "
                      f"SELECT {BArankTable}.team, (SELECT eventID FROM events WHERE currentEvent = 1), "
                      f"{BAoprTable}.OPR, {BAoprTable}.OPR, {BArankTable}.rank, {BArankTable}.rank, 80 "
