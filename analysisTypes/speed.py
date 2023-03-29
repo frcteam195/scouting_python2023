@@ -11,6 +11,7 @@ def speed(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
     print(f"2. {rsRobotL2MatchData}")
     if rsRobotL2MatchData != 0:
+        print('i am here')
         for matchResults in rsRobotL2MatchData:
             print(f"matchData = {matchResults}")
             rsCEA['team'] = matchResults[analysis.L2Columns.index('team')]
