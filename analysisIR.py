@@ -189,7 +189,7 @@ class analysis():
         self._run_query(query)
         self._setL2Columns([L2column[0] for L2column in list(self.cursor.description)])
         rsRobotL2MatchData = self.cursor.fetchall()
-        # print(rsRobotL2MatchData)
+        print(rsRobotL2MatchData)
         if rsRobotL2MatchData:
             return rsRobotL2MatchData
         else: 
