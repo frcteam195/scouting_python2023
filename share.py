@@ -39,20 +39,14 @@ elements = elements.replace(elements[0],"")
 elements = elements.replace(elements[0],"")
 elements = elements.translate(str.maketrans("", "", "'"))
 
-query = f"SELECT {elements} FROM matchScouting WHERE eventID = {CEventID}"
+query = f"SELECT {elements} FROM matchScouting WHERE eventID = {CEventID} AND teamMatchNum <= 12"
 cursor.execute(query)
 sharedData = cursor.fetchall()
-# print(sharedData)
-# df = pd.DataFrame(sharedData)
-# print(df)
-# print(df.dtypes)
-# df = df.astype("int64")
 
 headerList = []
 for i in elementList:
     i = str(i).translate(str.maketrans("", "", "(),"))  # Convert tuple to string before calling translate
     headerList.append(i)
-# print(headerList)
 
 with open('195scoutingData.csv', mode='w', newline='') as file:
     writer = csv.writer(file)
