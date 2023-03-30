@@ -4,7 +4,6 @@ def pit(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     rsCEA = {}
     rsCEA['analysisTypeID'] = 40
 
-    print(f"2. {rsRobotPitData}")
     if rsRobotL2MatchData == 0:
         rsCEA = {}
         return rsCEA
