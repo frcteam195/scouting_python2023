@@ -13,7 +13,6 @@ def speed(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
         rsCEA = {}
         return rsCEA
     else:
-        print('i am here')
         for matchResults in rsRobotL2MatchData:
             rsCEA['team'] = matchResults[analysis.L2Columns.index('team')]
             rsCEA['eventID'] = matchResults[analysis.L2Columns.index('eventID')]
