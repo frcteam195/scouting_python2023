@@ -9,7 +9,6 @@ def maneuverability(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
     numberOfMatchesPlayed = 0
     valueList = []
 
-    print(f"2. {rsRobotL2MatchData}")
     if rsRobotL2MatchData == 0:
         rsCEA = {}
         return rsCEA

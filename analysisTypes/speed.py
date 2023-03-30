@@ -9,14 +9,12 @@ def speed(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     count = 0
     valueList = []
 
-    print(f"2. {rsRobotL2MatchData}")
     if rsRobotL2MatchData == 0:
         rsCEA = {}
         return rsCEA
     else:
         print('i am here')
         for matchResults in rsRobotL2MatchData:
-            print(f"matchData = {matchResults}")
             rsCEA['team'] = matchResults[analysis.L2Columns.index('team')]
             rsCEA['eventID'] = matchResults[analysis.L2Columns.index('eventID')]
             preNoShow = matchResults[analysis.L2Columns.index('preNoShow')]
