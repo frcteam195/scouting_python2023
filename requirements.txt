@@ -4,3 +4,4 @@ mysql-connector-python
 pytz
 regex
 PILLOW
+statbotics
