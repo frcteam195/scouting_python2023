@@ -105,7 +105,6 @@ class analysis():
         self.rsRobots = self._getTeams()
         self._analyzeTeams()
         self._rankTeamsAll()
-        print('hello')
         self._renameTable()
 
         print("Time: %0.2f seconds" % (time.time() - start_time))
@@ -190,7 +189,6 @@ class analysis():
         self._run_query(query)
         self._setL2Columns([L2column[0] for L2column in list(self.cursor.description)])
         rsRobotL2MatchData = self.cursor.fetchall()
-        print(f"1. {rsRobotL2MatchData}")
         if rsRobotL2MatchData:
             return rsRobotL2MatchData
         else: 
@@ -214,7 +212,7 @@ class analysis():
         for team in self.rsRobots:
             # analysisTypesDict defined at top of script
             for analysisType2analyze in analysisTypesDict:
-                print(f"analyzing team {team} using {analysisType2analyze}")
+                # print(f"analyzing team {team} using {analysisType2analyze}")
                 rsRobotMatchData = self._getTeamData(team)
                 rsRobotL2MatchData = self._getL2TeamData(team)
                 # print(rsRobotL2MatchData)
@@ -222,7 +220,6 @@ class analysis():
                 teamName = str(team)
                 teamName = teamName.translate(str.maketrans("", "", " ,()'"))
                 if rsRobotMatchData:
-                    print('running')
                     rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData, rsRobotL2MatchData=rsRobotL2MatchData, rsRobotPitData=rsRobotPitData)
                     self._insertAnalysis(rsCEA)
                     self.conn.commit()
@@ -233,8 +230,6 @@ class analysis():
                      f"FROM {BArankTable} "
                      f"INNER JOIN {BAoprTable} ON {BArankTable}.team = {BAoprTable}.team "
                      f"WHERE {BArankTable}.team = {teamName}")
-            # print(query)
-            print()
             self._run_query(query)
     
      # Function to insert an rsCEA record into the DB.
@@ -243,7 +238,6 @@ class analysis():
         columnHeadings = str(tuple([record[0] for record in rsCEA_records])).replace("'", "")
         values = str(tuple([record[1] for record in rsCEA_records]))
         query = "INSERT INTO " + CEA_tmpTable + " " + columnHeadings + " VALUES " + values
-        # print(query)
         self._run_query(query)
         self.conn.commit()
 
@@ -252,7 +246,6 @@ class analysis():
         query = "SELECT team, S1V FROM " + CEA_tmpTable + " WHERE analysisTypeID = " + str(analysis_type)
         self._run_query(query)
         team_sum1 = self.cursor.fetchall() # List of tuples (team, S1V)
-        # print(team_sum1)
         if len(team_sum1) > 0:
             team_sum1 = [team_tup for team_tup in team_sum1 if team_tup[1] is not None]
             sum1 = [item[1] for item in team_sum1]
