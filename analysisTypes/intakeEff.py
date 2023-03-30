@@ -11,7 +11,6 @@ def intakeEff(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
     print(f"2. {rsRobotL2MatchData}")
     if rsRobotL2MatchData == 0:
-        print('intake eff no L2 data')
         rsCEA = {}
         return rsCEA
     else:

@@ -11,7 +11,6 @@ def speed(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
     print(f"2. {rsRobotL2MatchData}")
     if rsRobotL2MatchData == 0:
-        print('speed no L2 data')
         rsCEA = {}
         return rsCEA
     else:
