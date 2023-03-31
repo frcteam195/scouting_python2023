@@ -10,9 +10,11 @@ sb = statbotics.Statbotics()
 parser = argparse.ArgumentParser()
 parser.add_argument("-db", "--database", help = "Choices: dev1, dev2, testing, production", required=True)
 parser.add_argument("-host", "--host", help = "Host choices: aws, localhost", required=True)
+parser.add_argument("-sb", "--statbotics", help = "Use data from statbotics: true, false", required=True)
 args = parser.parse_args()
 input_db = args.database
 input_host = args.host
+input_sb = args.statbotics
 
 config = configparser.ConfigParser()
 config.read('helpers/config.ini')
@@ -40,30 +42,24 @@ for match in futureMatches:
     matchNum = match[7]
 #     print(f"MatchID = {matchID}, MatchNum = {matchNum}, RED: {match[1]}, {match[2]}, {match[3]} BLUE: {match[4]}, {match[5]}, {match[6]} ")
     
-    # get data from statbotic
-    BAmatchID = f"{BAeventID}_qm{matchNum}"
-    statboticMatchData=sb.get_match(BAmatchID)
-    SBredScorePred = round(statboticMatchData['red_epa_sum'], 0)
-    SBredAutoScorePred = round(statboticMatchData['red_auto_epa_sum'], 0)
-    SBredTeleScorePred = round(statboticMatchData['red_teleop_epa_sum'], 0)
-    SBredEndgameScorePred = round(statboticMatchData['red_endgame_epa_sum'], 0)
-    SBblueScorePred = round(statboticMatchData['blue_epa_sum'], 0)
-    SBblueAutoScorePred = round(statboticMatchData['blue_auto_epa_sum'], 0)
-    SBblueTeleScorePred = round(statboticMatchData['blue_teleop_epa_sum'], 0)
-    SBblueEndgameScorePred = round(statboticMatchData['blue_endgame_epa_sum'], 0)
-    SBwinner = statboticMatchData['epa_winner']
-    SBredWinProb = statboticMatchData['epa_win_prob']
-    SBblueWinProb = 1 - SBredWinProb
-    SBredWinProb = (100 * SBredWinProb)
-    SBblueWinProb = (100 * SBblueWinProb)
+    if input_sb == 'true'
+        # get data from statbotic
+        BAmatchID = f"{BAeventID}_qm{matchNum}"
+        statboticMatchData=sb.get_match(BAmatchID)
+        SBredScorePred = round(statboticMatchData['red_epa_sum'], 0)
+        SBredAutoScorePred = round(statboticMatchData['red_auto_epa_sum'], 0)
+        SBredTeleScorePred = round(statboticMatchData['red_teleop_epa_sum'], 0)
+        SBredEndgameScorePred = round(statboticMatchData['red_endgame_epa_sum'], 0)
+        SBblueScorePred = round(statboticMatchData['blue_epa_sum'], 0)
+        SBblueAutoScorePred = round(statboticMatchData['blue_auto_epa_sum'], 0)
+        SBblueTeleScorePred = round(statboticMatchData['blue_teleop_epa_sum'], 0)
+        SBblueEndgameScorePred = round(statboticMatchData['blue_endgame_epa_sum'], 0)
+        SBwinner = statboticMatchData['epa_winner']
+        SBredWinProb = statboticMatchData['epa_win_prob']
+        SBblueWinProb = 1 - SBredWinProb
+        SBredWinProb = (100 * SBredWinProb)
+        SBblueWinProb = (100 * SBblueWinProb)
 
-#     print(f"redScore: {redScorePred}, blueScore:{blueScorePred}")
-#     print(f"redAuto: {redAutoScorePred}, blueAuto:{blueAutoScorePred}")
-#     print(f"redTele: {redTeleScorePred}, blueTele:{blueTeleScorePred}")
-#     print(f"redAuto: {redEndgameScorePred}, blueAuto:{blueEndgameScorePred}")
-#     print(f"Winner: {winner}")
-#     print(f"redWinProb: {redWinProb}, blueWinProb:{blueWinProb}")
-    
     # get red alliance data from CEanalysisGraphs
     query = f"SELECT team, autoScoreMean, teleScoreMean, rampMean, autoRampMean FROM CEanalysisGraphs " \
             f"WHERE team IN ('{match[1]}', '{match[2]}', '{match[3]}') and eventID = {eventID}"
@@ -108,29 +104,37 @@ for match in futureMatches:
         bluePredAutoPts = 0
     blueTotalAuto = round((blueTotalAuto + bluePredAutoPts), 0)
     blueTotalPts = round((blueTotalAuto + blueTotalTele + blueTotalEndgame), 0)
-  
-    # print(f"195: redPred = {int(redTotalPts)}, bluePred = {int(blueTotalPts)}")
-    # print(f"SB:  redPred = {int(SBredScorePred)}, bluePred = {int(SBblueScorePred)}")
 
-    updateQuery = f"UPDATE matches SET redPredScore = {redTotalPts}, " \
-        f"bluePredScore = {blueTotalPts}, " \
-        f"redPredAuto = {redTotalAuto}, " \
-        f"bluePredAuto = {blueTotalAuto}, " \
-        f"redPredTele = {redTotalTele}, " \
-        f"bluePredTele = {blueTotalTele}, " \
-        f"redPredEndgame = {redTotalEndgame}, " \
-        f"bluePredEndgame = {blueTotalEndgame}, " \
-        f"SBredPredScore = {SBredScorePred}, " \
-        f"SBbluePredScore = {SBblueScorePred}, " \
-        f"SBredPredAuto = {SBredAutoScorePred}, " \
-        f"SBbluePredAuto = {SBblueAutoScorePred}, " \
-        f"SBredPredTele = {SBredTeleScorePred}, " \
-        f"SBbluePredTele = {SBblueTeleScorePred}, " \
-        f"SBredPredEndgame = {SBredEndgameScorePred}, " \
-        f"SBbluePredEndgame = {SBblueEndgameScorePred}, " \
-        f"SBredWinProb = {int(SBredWinProb)}, " \
-        f"SBblueWinProb = {int(SBblueWinProb)} " \
-        f"WHERE matchID = {matchID}"
+    if input_sb == 'true'
+        updateQuery = f"UPDATE matches SET redPredScore = {redTotalPts}, " \
+            f"bluePredScore = {blueTotalPts}, " \
+            f"redPredAuto = {redTotalAuto}, " \
+            f"bluePredAuto = {blueTotalAuto}, " \
+            f"redPredTele = {redTotalTele}, " \
+            f"bluePredTele = {blueTotalTele}, " \
+            f"redPredEndgame = {redTotalEndgame}, " \
+            f"bluePredEndgame = {blueTotalEndgame}, " \
+            f"SBredPredScore = {SBredScorePred}, " \
+            f"SBbluePredScore = {SBblueScorePred}, " \
+            f"SBredPredAuto = {SBredAutoScorePred}, " \
+            f"SBbluePredAuto = {SBblueAutoScorePred}, " \
+            f"SBredPredTele = {SBredTeleScorePred}, " \
+            f"SBbluePredTele = {SBblueTeleScorePred}, " \
+            f"SBredPredEndgame = {SBredEndgameScorePred}, " \
+            f"SBbluePredEndgame = {SBblueEndgameScorePred}, " \
+            f"SBredWinProb = {int(SBredWinProb)}, " \
+            f"SBblueWinProb = {int(SBblueWinProb)} " \
+            f"WHERE matchID = {matchID}"
+    else:
+        updateQuery = f"UPDATE matches SET redPredScore = {redTotalPts}, " \
+            f"bluePredScore = {blueTotalPts}, " \
+            f"redPredAuto = {redTotalAuto}, " \
+            f"bluePredAuto = {blueTotalAuto}, " \
+            f"redPredTele = {redTotalTele}, " \
+            f"bluePredTele = {blueTotalTele}, " \
+            f"redPredEndgame = {redTotalEndgame}, " \
+            f"bluePredEndgame = {blueTotalEndgame}, " \
+            f"WHERE matchID = {matchID}"
     cursor.execute(updateQuery)
     conn.commit()
 
