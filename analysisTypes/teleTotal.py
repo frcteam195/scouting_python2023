@@ -33,7 +33,7 @@ def teleTotal(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             cubeMid = matchResults[analysis.columns.index('teleCubeMid')]
             cubeLow = matchResults[analysis.columns.index('teleCubeLow')]
 
-            if team195 == 195:
+            if team195 == '195':
                 print(f"{coneHigh} {coneMid} {coneLow} {cubeHigh} {cubeMid} {cubeLow}")
 
             if coneHigh is None:
