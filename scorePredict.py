@@ -42,7 +42,7 @@ for match in futureMatches:
     matchNum = match[7]
 #     print(f"MatchID = {matchID}, MatchNum = {matchNum}, RED: {match[1]}, {match[2]}, {match[3]} BLUE: {match[4]}, {match[5]}, {match[6]} ")
     
-    if input_sb == 'true'
+    if input_sb == 'true':
         # get data from statbotic
         BAmatchID = f"{BAeventID}_qm{matchNum}"
         statboticMatchData=sb.get_match(BAmatchID)

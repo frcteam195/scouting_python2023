@@ -62,10 +62,10 @@ Day before event
     3. BA/CEteams.py -db production -host jetson/localhost
 
 Right before the event starts
-    1. BA/CEschedule.py -db production -host aws               
-    2. BA/CEschedule.py -db production -host localhost
-    3. createCEteams.py -db production -host aws                     note: populates teams and pit tables
-    4. createCEteams.py -db production -host localhost               note: populates teams and pit tables
+    1. createCEteams.py -db production -host aws                     note: populates teams and pit tables
+    2. createCEteams.py -db production -host localhost               note: populates teams and pit tables
+    3. BA/CEschedule.py -db production -host aws               
+    4. BA/CEschedule.py -db production -host localhost
     5. createMatches.py -db production -host aws               
     6. createMatches.py -db production -host localhost
     7. createMatchScoutingRecords.py -db production -host aws        note: populate L1 and L2 tables
