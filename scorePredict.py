@@ -97,8 +97,12 @@ for match in futureMatches:
         blueTotalAuto = blue1AutoPts + blue2AutoPts + blue3AutoPts
     else:
         blueTotalAuto = 0
-        print('i am here')
-    blueTotalTele = round((blue1TelePts + blue2TelePts + blue3TelePts), 0)
+        print('i am blue auto here')
+    if (blue1TelePts is not None) and (blue2TelePts is not None) and (blue3TelePts is not None):
+        blueTotalTele = round((blue1TelePts + blue2TelePts + blue3TelePts), 0)
+    else:
+        blueTotalTele = 0
+        print('i am here blue tele')
     blueTotalEndgame = round((blue1EndgamePts + blue2EndgamePts + blue3EndgamePts), 0)
     if (blue1AutoRampPts > 8 or blue2AutoRampPts > 8 or blue3AutoRampPts > 8):
         bluePredAutoPts = 12
