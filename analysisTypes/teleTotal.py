@@ -9,6 +9,7 @@ def teleTotal(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     
     for matchResults in rsRobotMatchData:
         rsCEA['team'] = matchResults[analysis.columns.index('team')]
+        team195 = matchResults[analysis.columns.index('team')]
         rsCEA['eventID'] = matchResults[analysis.columns.index('eventID')]
         preNoShow = matchResults[analysis.columns.index('preNoShow')]
         scoutingStatus = matchResults[analysis.columns.index('scoutingStatus')]
@@ -31,6 +32,9 @@ def teleTotal(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             cubeHigh = matchResults[analysis.columns.index('teleCubeHigh')]
             cubeMid = matchResults[analysis.columns.index('teleCubeMid')]
             cubeLow = matchResults[analysis.columns.index('teleCubeLow')]
+
+            if team195 == 195:
+                print(f"{coneHigh} {coneMid} {coneLow} {cubeHigh} {cubeMid} {cubeLow}")
 
             if coneHigh is None:
                 coneHigh = 0
