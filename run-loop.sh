@@ -5,7 +5,7 @@ while [ $i -le 500 ]
 do
   echo "************************************************************"
   echo "Loop $i"
-  ./run.aws.sh
+  ./run.sh
   i=$(( $i + 1 ))
   sleep 30
 done
