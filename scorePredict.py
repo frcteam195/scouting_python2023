@@ -109,7 +109,7 @@ for match in futureMatches:
     blueTotalAuto = round((blueTotalAuto + bluePredAutoPts), 0)
     blueTotalPts = round((blueTotalAuto + blueTotalTele + blueTotalEndgame), 0)
 
-    if input_sb == 'true'
+    if input_sb == 'true':
         updateQuery = f"UPDATE matches SET redPredScore = {redTotalPts}, " \
             f"bluePredScore = {blueTotalPts}, " \
             f"redPredAuto = {redTotalAuto}, " \
