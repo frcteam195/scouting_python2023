@@ -212,7 +212,7 @@ class analysis():
         for team in self.rsRobots:
             # analysisTypesDict defined at top of script
             for analysisType2analyze in analysisTypesDict:
-                # print(f"analyzing team {team} using {analysisType2analyze}")
+                print(f"analyzing team {team} using {analysisType2analyze}")
                 rsRobotMatchData = self._getTeamData(team)
                 rsRobotL2MatchData = self._getL2TeamData(team)
                 # print(rsRobotL2MatchData)
@@ -224,13 +224,13 @@ class analysis():
                     self._insertAnalysis(rsCEA)
                     self.conn.commit()
             # add one last analysisType to add BAoprs and BAranks to analysisTypeID = 80
-            # query = (f"INSERT INTO {CEA_tmpTable} (team, eventID, S1V, S1D, S2V, S2D, analysisTypeID) "
-            #          f"SELECT {BArankTable}.team, (SELECT eventID FROM events WHERE currentEvent = 1), "
-            #          f"{BAoprTable}.OPR, {BAoprTable}.OPR, {BArankTable}.rank, {BArankTable}.rank, 80 "
-            #          f"FROM {BArankTable} "
-            #          f"INNER JOIN {BAoprTable} ON {BArankTable}.team = {BAoprTable}.team "
-            #          f"WHERE {BArankTable}.team = {teamName}")
-            # self._run_query(query)
+            query = (f"INSERT INTO {CEA_tmpTable} (team, eventID, S1V, S1D, S2V, S2D, analysisTypeID) "
+                     f"SELECT {BArankTable}.team, (SELECT eventID FROM events WHERE currentEvent = 1), "
+                     f"{BAoprTable}.OPR, {BAoprTable}.OPR, {BArankTable}.rank, {BArankTable}.rank, 80 "
+                     f"FROM {BArankTable} "
+                     f"INNER JOIN {BAoprTable} ON {BArankTable}.team = {BAoprTable}.team "
+                     f"WHERE {BArankTable}.team = {teamName}")
+            self._run_query(query)
     
      # Function to insert an rsCEA record into the DB.
     def _insertAnalysis(self, rsCEA):
