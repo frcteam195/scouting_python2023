@@ -8,7 +8,8 @@ def goodOffBot(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     count = 0
 
     if rsRobotL2MatchData == 0:
-        rsCEA = {}
+        rsCEA['team'] = matchResults[analysis.L2Columns.index('team')]
+        rsCEA['eventID'] = matchResults[analysis.L2Columns.index('eventID')]
         return rsCEA
     else:
         for matchResults in rsRobotL2MatchData:
