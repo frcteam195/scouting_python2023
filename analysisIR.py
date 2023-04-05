@@ -301,7 +301,10 @@ class analysis():
         query = "DELETE FROM CEanalysis WHERE eventID = (SELECT eventID FROM events WHERE currentEvent = 1)"
         self._run_query(query)
         print('here 6')
-        query = ("INSERT INTO CEanalysis SELECT * FROM " + CEA_tmpTable)
+        query = f"DELETE FROM {CEA_tmpTable} WHERE team is NULL"
+        self._run_query(query)
+        print('here 6')
+        query = f"INSERT INTO CEanalysis SELECT * FROM {CEA_tmpTable}"
         self._run_query(query)
         print('here 7')
         self.conn.commit()
