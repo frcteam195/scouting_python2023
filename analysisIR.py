@@ -202,9 +202,11 @@ class analysis():
         self._setPitColumns([pitColumn[0] for pitColumn in list(self.cursor.description)])
         rsRobotPitData = self.cursor.fetchall()
         if rsRobotPitData:
+            print(rsRobotPitData)
             return rsRobotPitData
         else:
             rsRobotPitData = 0
+            print(rsRobotPitData)
             return rsRobotPitData
     
     # runs each of the analysisTypes and outputs the results to rsCEA
