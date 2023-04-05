@@ -104,6 +104,7 @@ class analysis():
         self.pitColumns = []
         self.rsRobots = self._getTeams()
         self._analyzeTeams()
+        print('here 4')
         self._rankTeamsAll()
         self._renameTable()
 
