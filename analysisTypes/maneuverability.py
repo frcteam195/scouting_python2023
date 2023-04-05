@@ -10,8 +10,7 @@ def maneuverability(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
     valueList = []
 
     if rsRobotL2MatchData == 0:
-        rsCEA['team'] = matchResults[analysis.L2Columns.index('team')]
-        rsCEA['eventID'] = matchResults[analysis.L2Columns.index('eventID')]
+        rsCEA = {}
         return rsCEA
     else:
         for matchResults in rsRobotL2MatchData:
