@@ -107,6 +107,7 @@ class analysis():
         print('here 4')
         # self._rankTeamsAll()
         self._renameTable()
+        print('here 5')
 
         print("Time: %0.2f seconds" % (time.time() - start_time))
 
