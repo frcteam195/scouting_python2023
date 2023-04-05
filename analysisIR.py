@@ -227,6 +227,7 @@ class analysis():
                     self._insertAnalysis(rsCEA)
                     self.conn.commit()
             # add one last analysisType to add BAoprs and BAranks to analysisTypeID = 80
+            print('here 2')
             query = (f"INSERT INTO {CEA_tmpTable} (team, eventID, S1V, S1D, S2V, S2D, analysisTypeID) "
                      f"SELECT {BArankTable}.team, (SELECT eventID FROM events WHERE currentEvent = 1), "
                      f"{BAoprTable}.OPR, {BAoprTable}.OPR, {BArankTable}.rank, {BArankTable}.rank, 80 "
@@ -234,6 +235,7 @@ class analysis():
                      f"INNER JOIN {BAoprTable} ON {BArankTable}.team = {BAoprTable}.team "
                      f"WHERE {BArankTable}.team = {teamName}")
             self._run_query(query)
+            print('here 3')
     
      # Function to insert an rsCEA record into the DB.
     def _insertAnalysis(self, rsCEA):
