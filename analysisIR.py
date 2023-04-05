@@ -104,10 +104,8 @@ class analysis():
         self.pitColumns = []
         self.rsRobots = self._getTeams()
         self._analyzeTeams()
-        print('here 4')
-        # self._rankTeamsAll()
+        self._rankTeamsAll()
         self._renameTable()
-        print('here 5')
 
         print("Time: %0.2f seconds" % (time.time() - start_time))
 
@@ -225,11 +223,9 @@ class analysis():
                 teamName = teamName.translate(str.maketrans("", "", " ,()'"))
                 if rsRobotMatchData:
                     rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData, rsRobotL2MatchData=rsRobotL2MatchData, rsRobotPitData=rsRobotPitData)
-                    print('did i get here?')
                     self._insertAnalysis(rsCEA)
                     self.conn.commit()
             # add one last analysisType to add BAoprs and BAranks to analysisTypeID = 80
-            print('here 2')
             query = (f"INSERT INTO {CEA_tmpTable} (team, eventID, S1V, S1D, S2V, S2D, analysisTypeID) "
                      f"SELECT {BArankTable}.team, (SELECT eventID FROM events WHERE currentEvent = 1), "
                      f"{BAoprTable}.OPR, {BAoprTable}.OPR, {BArankTable}.rank, {BArankTable}.rank, 80 "
@@ -237,7 +233,6 @@ class analysis():
                      f"INNER JOIN {BAoprTable} ON {BArankTable}.team = {BAoprTable}.team "
                      f"WHERE {BArankTable}.team = {teamName}")
             self._run_query(query)
-            print('here 3')
     
      # Function to insert an rsCEA record into the DB.
     def _insertAnalysis(self, rsCEA):
@@ -245,7 +240,6 @@ class analysis():
         columnHeadings = str(tuple([record[0] for record in rsCEA_records])).replace("'", "")
         values = str(tuple([record[1] for record in rsCEA_records]))
         query = "INSERT INTO " + CEA_tmpTable + " " + columnHeadings + " VALUES " + values
-        print(query)
         self._run_query(query)
         self.conn.commit()
 
@@ -300,15 +294,13 @@ class analysis():
     def _renameTable(self):
         query = "DELETE FROM CEanalysis WHERE eventID = (SELECT eventID FROM events WHERE currentEvent = 1)"
         self._run_query(query)
-        print('here 6')
+        # the next query deletes null records that can come about for teams with no L2 or pit scouting records
+        #    but have L1 records
         query = f"DELETE FROM {CEA_tmpTable} WHERE team is NULL"
         self._run_query(query)
-        print('here 6')
         query = f"INSERT INTO CEanalysis SELECT * FROM {CEA_tmpTable}"
         self._run_query(query)
-        print('here 7')
         self.conn.commit()
-        print('here 8')
 
 # This initizlzes the analysis Class and thus runs the program.
 if __name__ == '__main__':
