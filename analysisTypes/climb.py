@@ -10,9 +10,8 @@ def climb(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     valueList = []
 
     if rsRobotL2MatchData == 0:
+        rsCEA = {}
         print('here in climb')
-        rsCEA['team'] = matchResults[analysis.L2Columns.index('team')]
-        rsCEA['eventID'] = matchResults[analysis.L2Columns.index('eventID')]
         return rsCEA
     else:
         for matchResults in rsRobotL2MatchData:
