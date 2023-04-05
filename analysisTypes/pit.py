@@ -6,6 +6,7 @@ def pit(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
     if rsRobotPitData == 0:
         rsCEA = {}
+        print('i am here')
         return rsCEA
     else:
         for pitData in rsRobotPitData:
