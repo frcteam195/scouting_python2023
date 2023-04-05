@@ -300,9 +300,12 @@ class analysis():
     def _renameTable(self):
         query = "DELETE FROM CEanalysis WHERE eventID = (SELECT eventID FROM events WHERE currentEvent = 1)"
         self._run_query(query)
+        print('here 6')
         query = ("INSERT INTO CEanalysis SELECT * FROM " + CEA_tmpTable)
         self._run_query(query)
+        print('here 7')
         self.conn.commit()
+        print('here 8')
 
 # This initizlzes the analysis Class and thus runs the program.
 if __name__ == '__main__':
