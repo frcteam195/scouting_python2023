@@ -223,6 +223,7 @@ class analysis():
                 teamName = teamName.translate(str.maketrans("", "", " ,()'"))
                 if rsRobotMatchData:
                     rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData, rsRobotL2MatchData=rsRobotL2MatchData, rsRobotPitData=rsRobotPitData)
+                    print('did i get here?')
                     self._insertAnalysis(rsCEA)
                     self.conn.commit()
             # add one last analysisType to add BAoprs and BAranks to analysisTypeID = 80
