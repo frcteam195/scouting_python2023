@@ -240,7 +240,7 @@ class analysis():
         columnHeadings = str(tuple([record[0] for record in rsCEA_records])).replace("'", "")
         values = str(tuple([record[1] for record in rsCEA_records]))
         query = "INSERT INTO " + CEA_tmpTable + " " + columnHeadings + " VALUES " + values
-        print(query)
+        # print(query)
         self._run_query(query)
         self.conn.commit()
 
