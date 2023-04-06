@@ -33,7 +33,7 @@ eventData = cursor.fetchall()
 eventID = eventData[0][0]
 BAeventID = eventData[0][1]
 
-query =f"select matchID, red1, red2, red3, blue1, blue2, blue3, matchNum from matches where eventID = {eventID} and actualTime is not null"
+query =f"select matchID, red1, red2, red3, blue1, blue2, blue3, matchNum from matches where eventID = {eventID} and actualTime is null"
 cursor.execute(query)
 futureMatches = cursor.fetchall()
 for match in futureMatches:

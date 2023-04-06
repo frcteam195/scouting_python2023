@@ -7,5 +7,5 @@ do
   echo "Loop $i"
   ./run.sh
   i=$(( $i + 1 ))
-  sleep 30
+  sleep 10
 done
