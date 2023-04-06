@@ -16,6 +16,9 @@ source "$path"/venv/bin/activate
 # change to the path so relative paths are all correct
 cd "$path"
 
+echo ''; echo '***** Running analysisIR.py #1 *****'
+python "$path"/analysisIR.py -db "$db" -host "$host"
+
 echo ''; echo '***** Running BA/BAmatchData.py *****'
 python "$path"/BA/BAmatchData.py -db "$db" -host "$host"
 
@@ -42,7 +45,7 @@ echo ''; echo '***** Running syncTable to migrate pit from aws to localhost ****
 python "$path"/syncTable.py -db1 "$remoteDB" -host1 "$remoteHost" \
   -db2 "$db" -host2 "$host" -table pit -id pitID
 
-echo ''; echo '***** Running analysisIR.py *****'
+echo ''; echo '***** Running analysisIR.py #2 *****'
 python "$path"/analysisIR.py -db "$db" -host "$host"
 
 echo ''; echo '***** Running graphIR.py *****'
