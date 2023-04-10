@@ -38,5 +38,8 @@ __all__ = [
            'goodOffBot',
            'goodDefBot',
            'rampTime',
-           'pit'
+           'pit',
+           'autoLow',
+           'autoMid',
+           'autoHigh'
            ]

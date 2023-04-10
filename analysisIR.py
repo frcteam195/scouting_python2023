@@ -50,7 +50,10 @@ analysisTypesDict = {
                     "goodOffBot": goodOffBot.goodOffBot,
                     "goodDefBot": goodDefBot.goodDefBot,
                     # "rampTime": rampTime.rampTime,
-                    "pit": pit.pit
+                    "pit": pit.pit,
+                    "autoLow": autoLow.autoLow,
+                    "autoMid": autoMid.autoMid,
+                    "autoHigh": autoHigh.autoHigh
                     } 
 
 # parser to choose the database where the table will be written
