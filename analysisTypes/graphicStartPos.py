@@ -15,7 +15,7 @@ def graphicStartPos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
     # ramp = 3 = parked
     # ramp = 4 = docked
     # ramp = 5 = docked and engaged
-    print(len(rsRobotMatchData))
+    # print(len(rsRobotMatchData))
     for matchResults in rsRobotMatchData:
         team = matchResults[analysis.columns.index('team')]
         rsCEA['team'] = str(team)
