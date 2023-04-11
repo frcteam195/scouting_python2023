@@ -100,11 +100,11 @@ def graphicStartPos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
             engagedPCT = 100 * (autoRampStatusList.count(3)/attempts) #docked and engaged
         rsCEA['M4F'] = str(round(engagedPCT, 3))
         
-        print(autoRampStatusList)
-        print(f"Attempts: {attempts}")
-        print(f"Docked Count: {autoRampStatusList.count(2)}")
-        print(f"Docked Percent: {dockedPCT}")
-        print(f"Engaged Count: {autoRampStatusList.count(3)}")
-        print(f"Engaged: {engagedPCT}")
+        # print(autoRampStatusList)
+        # print(f"Attempts: {attempts}")
+        # print(f"Docked Count: {autoRampStatusList.count(2)}")
+        # print(f"Docked Percent: {dockedPCT}")
+        # print(f"Engaged Count: {autoRampStatusList.count(3)}")
+        # print(f"Engaged: {engagedPCT}")
 
     return rsCEA
