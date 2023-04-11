@@ -5,6 +5,7 @@ def startingPosition(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitD
     rsCEA = {}
     rsCEA['analysisTypeID'] = 1 
     numberOfMatchesPlayed = 0
+    i = 0
 
     # Loop through each match the robot played in.
     for matchResults in rsRobotMatchData:
@@ -17,6 +18,8 @@ def startingPosition(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitD
         elif scoutingStatus == 2:
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'UR'
         else:
+            i = i + 1
+            print(f"i = {i}")
             preStartPos = matchResults[analysis.columns.index('preStartPos')]
             if preStartPos is None:
                 preStartPos = 0
