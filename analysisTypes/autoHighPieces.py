@@ -1,6 +1,6 @@
 import statistics
 
-def autoLowPieces(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
+def autoHighPieces(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
     rsCEA = {}
     rsCEA['analysisTypeID'] = 52

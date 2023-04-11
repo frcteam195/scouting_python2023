@@ -39,7 +39,7 @@ __all__ = [
            'goodDefBot',
            'rampTime',
            'pit',
-           'autoLow',
-           'autoMid',
-           'autoHigh'
+           'autoLowPieces',
+           'autoMidPieces',
+           'autoHighPieces'
            ]
