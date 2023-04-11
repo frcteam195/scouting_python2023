@@ -59,6 +59,7 @@ def goodDefBot(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
                 rsCEA['S1D'] = str(round(statistics.mean(goodDefBotList), 1))
                 rsCEA['S2V'] = round(statistics.median(goodDefBotList), 1)
                 rsCEA['S2D'] = str(round(statistics.median(goodDefBotList), 1))
+                rsCEA['S4V'] = statistics.stdev(goodDefBotList)
             else:
                     rsCEA['S1V'] = 0
                     rsCEA['S1D'] = ''

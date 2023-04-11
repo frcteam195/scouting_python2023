@@ -46,4 +46,5 @@ def teleObstructed(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDat
         rsCEA['S1D'] = str(mean)
         rsCEA['S2V'] = median
         rsCEA['S2D'] = str(median)
+        rsCEA['S4V'] = statistics.stdev(teleObstructedList)
     return rsCEA
