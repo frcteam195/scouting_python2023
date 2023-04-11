@@ -7,6 +7,7 @@ def graphicStartPos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
     numberOfMatchesPlayed = 0
     startPositionList = []
     rampStatusList = []
+    autoRampStatusList = []
 
     # ramp = 0 = no attempt
     # ramp = 1 = failed attempt
@@ -14,7 +15,7 @@ def graphicStartPos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
     # ramp = 3 = parked
     # ramp = 4 = docked
     # ramp = 5 = docked and engaged
-
+    print(len(rsRobotMatchData))
     for matchResults in rsRobotMatchData:
         team = matchResults[analysis.columns.index('team')]
         rsCEA['team'] = str(team)
@@ -24,9 +25,12 @@ def graphicStartPos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
         if preNoShow != 1 and scoutingStatus == 1:
             startPosition = matchResults[analysis.columns.index('preStartPos')]
             rampStatus = matchResults[analysis.columns.index('ramp')]
+            autoRampStatus = matchResults[analysis.columns.index('autoRamp')]
 
             startPositionList.append(startPosition)
             rampStatusList.append(rampStatus)
+            print(autoRampStatusList)
+            autoRampStatusList.append(autoRampStatus)
             numberOfMatchesPlayed += 1
     
     if numberOfMatchesPlayed > 0:
@@ -80,4 +84,29 @@ def graphicStartPos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
         rsCEA['M3D'] = str(parkeddStr)
         rsCEA['M3F'] = 0
         
+        attempts = 0
+        for i in autoRampStatusList:
+          if i == 1 or i == 2 or i == 3:
+              attempts += 1
+
+        
+        if attempts == 0:
+            rsCEA['M4D'] = 0
+        else:
+            dockedPCT = 100* round(autoRampStatusList.count(2)/attempts,3)  #docked not engaged
+            rsCEA['M4D'] = dockedPCT
+        
+        if attempts == 0:
+            rsCEA['M4F'] = 0
+        else:
+            engagedPCT = 100* round(autoRampStatusList.count(3)/attempts,3) #docked and engaged
+            rsCEA['M4F'] = engagedPCT
+        
+        print(autoRampStatusList)
+        print("Attempts: " + str(attempts))
+        print("Docked Count: " + str(autoRampStatusList.count(2)))
+        print("Docked Percent: " + str(dockedPCT))
+        print("Engaged Count: " + str(autoRampStatusList.count(3)))
+        print("Engaged: " + str(engagedPCT))
+
     return rsCEA
