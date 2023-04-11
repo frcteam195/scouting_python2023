@@ -81,5 +81,6 @@ def teleScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
         rsCEA['S1D'] = str(round(statistics.mean(teleScoreList), 0))
         rsCEA['S2V'] = round(statistics.median(teleScoreList), 0)
         rsCEA['S2D'] = str(round(statistics.median(teleScoreList), 0))
+        rsCEA['S4V'] = statistics.stdev(teleScoreList)
         
     return rsCEA

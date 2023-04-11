@@ -148,4 +148,5 @@ def totalScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
         rsCEA['S1D'] = str(round(statistics.mean(totalScoreList), 0))
         rsCEA['S2V'] = round(statistics.median(totalScoreList), 0)
         rsCEA['S2D'] = str(round(statistics.median(totalScoreList), 0))
+        rsCEA['S4V'] = statistics.stdev(totalScoreList)
     return rsCEA

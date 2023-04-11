@@ -84,4 +84,5 @@ def teleCones(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
         rsCEA['S1D'] = str(round(statistics.mean(teleConesList), 1))
         rsCEA['S2V'] = round(statistics.median(teleConesList), 1)
         rsCEA['S2D'] = str(round(statistics.median(teleConesList), 1))
+        rsCEA['S4V'] = statistics.stdev(teleConesList)
     return rsCEA

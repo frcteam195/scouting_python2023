@@ -63,4 +63,5 @@ def ramp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
         rsCEA['S1D'] = str(round(statistics.mean(rampList), 1))
         rsCEA['S2V'] = round(statistics.median(rampList), 1)
         rsCEA['S2D'] = str(round(statistics.median(rampList), 1))
+        rsCEA['S4V'] = statistics.stdev(rampList)
     return rsCEA
