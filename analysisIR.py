@@ -185,7 +185,7 @@ class analysis():
                 "FROM (events INNER JOIN matches ON events.eventID = matches.eventID) " + \
                 "INNER JOIN matchScoutingL2 ON (matches.eventID = matchScoutingL2.eventID) " + \
                 "AND (matches.matchID = matchScoutingL2.matchID) " + \
-                "INNER JOIN teams ON (matchScoutingL2.team = teams.team) AND (matchScouting.eventID = teams.eventID) " + \
+                "INNER JOIN teams ON (matchScoutingL2.team = teams.team) AND (matchScoutingL2.eventID = teams.eventID) " + \
                 "WHERE (((matchScoutingL2.team) = " + team[0] + " AND ((events.currentEvent) = 1)) " + \
                 "AND ((scoutingStatus = 1) OR (scoutingStatus = 2) OR (scoutingStatus = 3)) " + \
                 "AND (matchScoutingL2.teamMatchNum <= 12)) " + \
