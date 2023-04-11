@@ -29,7 +29,6 @@ def graphicStartPos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
 
             startPositionList.append(startPosition)
             rampStatusList.append(rampStatus)
-            # print(autoRampStatusList)
             autoRampStatusList.append(autoRampStatus)
             numberOfMatchesPlayed += 1
     
@@ -89,20 +88,19 @@ def graphicStartPos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
           if i == 1 or i == 2 or i == 3:
               attempts += 1
 
-        
         if attempts == 0:
             rsCEA['M4D'] = 0
         else:
-            dockedPCT = 100* round(autoRampStatusList.count(2)/attempts,3)  #docked not engaged
-            rsCEA['M4D'] = dockedPCT
+            dockedPCT = 100 * (autoRampStatusList.count(2)/attempts)  #docked not engaged
+            rsCEA['M4D'] = str(round(dockedPCT, 3))
         
         if attempts == 0:
             rsCEA['M4F'] = 0
         else:
-            engagedPCT = 100* round(autoRampStatusList.count(3)/attempts,3) #docked and engaged
-            rsCEA['M4F'] = engagedPCT
+            engagedPCT = 100 * (autoRampStatusList.count(3)/attempts) #docked and engaged
+            rsCEA['M4F'] = str(round(engagedPCT, 3))
         
-        # print(autoRampStatusList)
+        print(autoRampStatusList)
         print("Attempts: " + str(attempts))
         print("Docked Count: " + str(autoRampStatusList.count(2)))
         print("Docked Percent: " + str(dockedPCT))
