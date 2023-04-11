@@ -89,16 +89,16 @@ def graphicStartPos(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
               attempts += 1
 
         if attempts == 0:
-            rsCEA['M4D'] = 0
+            dockedPCT = 0
         else:
             dockedPCT = 100 * (autoRampStatusList.count(2)/attempts)  #docked not engaged
-            rsCEA['M4D'] = str(round(dockedPCT, 3))
+        rsCEA['M4D'] = str(round(dockedPCT, 3))
         
         if attempts == 0:
-            rsCEA['M4F'] = 0
+            engagedPCT = 0
         else:
             engagedPCT = 100 * (autoRampStatusList.count(3)/attempts) #docked and engaged
-            rsCEA['M4F'] = str(round(engagedPCT, 3))
+        rsCEA['M4F'] = str(round(engagedPCT, 3))
         
         print(autoRampStatusList)
         print(f"Attempts: {attempts}")
