@@ -155,6 +155,7 @@ class analysis():
                 "HAVING (((matchScouting.team) Is Not Null))"
         self._run_query(query)
         rsRobots = self.cursor.fetchall()
+        print(len(rsRobots))
         assert len(rsRobots) > 0, "No robots found"   # assert exits with "no robots found" or returns team list
         return rsRobots
     
@@ -165,7 +166,7 @@ class analysis():
                 "FROM (events INNER JOIN matches ON events.eventID = matches.eventID) " + \
                 "INNER JOIN matchScouting ON (matches.eventID = matchScouting.eventID) " + \
                 "AND (matches.matchID = matchScouting.matchID) " + \
-                "INNER JOIN teams ON (matchScouting.team = teams.team) " + \
+                "INNER JOIN teams ON (matchScouting.team = teams.team) AND (matchScouting.eventID = teams.eventID) " + \
                 "WHERE (((matchScouting.team) = " + team[0] + " AND ((events.currentEvent) = 1)) " + \
                 "AND ((scoutingStatus = 1) OR (scoutingStatus = 2) OR (scoutingStatus = 3)) " + \
                 "AND (matchScouting.teamMatchNum <= 12)) " + \
@@ -184,7 +185,7 @@ class analysis():
                 "FROM (events INNER JOIN matches ON events.eventID = matches.eventID) " + \
                 "INNER JOIN matchScoutingL2 ON (matches.eventID = matchScoutingL2.eventID) " + \
                 "AND (matches.matchID = matchScoutingL2.matchID) " + \
-                "INNER JOIN teams ON (matchScoutingL2.team = teams.team) " + \
+                "INNER JOIN teams ON (matchScoutingL2.team = teams.team) AND (matchScouting.eventID = teams.eventID) " + \
                 "WHERE (((matchScoutingL2.team) = " + team[0] + " AND ((events.currentEvent) = 1)) " + \
                 "AND ((scoutingStatus = 1) OR (scoutingStatus = 2) OR (scoutingStatus = 3)) " + \
                 "AND (matchScoutingL2.teamMatchNum <= 12)) " + \
@@ -220,7 +221,6 @@ class analysis():
                 # print(f"analyzing team {team} using {analysisType2analyze}")
                 rsRobotMatchData = self._getTeamData(team)
                 rsRobotL2MatchData = self._getL2TeamData(team)
-                # print(rsRobotL2MatchData)
                 rsRobotPitData = self._getPitData(team)
                 teamName = str(team)
                 teamName = teamName.translate(str.maketrans("", "", " ,()'"))
