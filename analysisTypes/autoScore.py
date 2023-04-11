@@ -91,5 +91,6 @@ def autoScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
         rsCEA['S1D'] = str(mean)
         rsCEA['S2V'] = median
         rsCEA['S2D'] = str(median)
+        rsCEA['S4V'] = statistics.stdev(autoScoreList)
         
     return rsCEA

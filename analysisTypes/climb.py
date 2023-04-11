@@ -50,10 +50,11 @@ def climb(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
                 rsCEA['S1D'] = str(round(statistics.mean(valueList), 1))
                 rsCEA['S2V'] = round(statistics.median(valueList), 1)
                 rsCEA['S2D'] = str(round(statistics.median(valueList), 1))
+                rsCEA['S4V'] = statistics.stdev(valueList)
             else:
                 rsCEA['S1V'] = 0
                 rsCEA['S1D'] = ''
                 rsCEA['S2V'] = 0
-                rsCEA['S2D'] = ''        
+                rsCEA['S2D'] = ''
         
         return rsCEA

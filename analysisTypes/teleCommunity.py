@@ -58,4 +58,5 @@ def teleCommunity(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData
         rsCEA['S1D'] = str(round(statistics.mean(teleCommunityList), 1))
         rsCEA['S2V'] = round(statistics.median(teleCommunityList), 1)
         rsCEA['S2D'] = str(round(statistics.median(teleCommunityList), 1))
+        rsCEA['S4V'] = statistics.stdev(teleCommunityList)
     return rsCEA
