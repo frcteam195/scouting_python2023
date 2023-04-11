@@ -61,123 +61,129 @@ for item in futureMatches:
         SBblueWinProb = (100 * SBblueWinProb)
 
     # get red alliance data from CEanalysisGraphs
-    query = f"SELECT team, autoScoreMean, autoRampMean, teleLowMean, teleMidMean, teleHighMean, rampMean FROM CEanalysisGraphs " \
-            f"WHERE team IN ('{item[1]}', '{item[2]}', '{item[3]}') and eventID = {eventID}"
-    cursor.execute(query)
-    redAllianceData = cursor.fetchall()
-    red1AutoPts, red2AutoPts, red3AutoPts = [t[1] for t in redAllianceData]
-    red1AutoRampPts, red2AutoRampPts, red3AutoRampPts = [t[2] for t in redAllianceData]
-    red1TeleLowPieces, red2TeleLowPieces, red3TeleLowPieces = [t[3] for t in redAllianceData]
-    red1TeleMidPieces, red2TeleMidPieces, red3TeleMidPieces = [t[4] for t in redAllianceData]
-    red1TeleHighPieces, red2TeleHighPieces, red3TeleHighPieces = [t[5] for t in redAllianceData]
-    red1EndgamePts, red2EndgamePts, red3EndgamePts = [t[6] for t in redAllianceData]
+    for i in range(6):
+        print(f"i = {i}")
+        robotNum = item[i+1]
+        print(robotNum)
+        query = f"SELECT team, autoScoreMean, autoRampMean, teleLowMean, teleMidMean, teleHighMean, rampMean " \
+                f"FROM CEanalysisGraphs WHERE team = {robotNum} and eventID = {eventID}"
+        cursor.execute(query)
+        teamData = cursor.fetchall()
+        print(teamData)
+        quit()
+#         red1AutoLow, red2AutoLow, red3AutoLow = [t[1] for t in redAllianceData]
+#         red1AutoRampPts, red2AutoRampPts, red3AutoRampPts = [t[2] for t in redAllianceData]
+#         red1TeleLowPieces, red2TeleLowPieces, red3TeleLowPieces = [t[3] for t in redAllianceData]
+#         red1TeleMidPieces, red2TeleMidPieces, red3TeleMidPieces = [t[4] for t in redAllianceData]
+#         red1TeleHighPieces, red2TeleHighPieces, red3TeleHighPieces = [t[5] for t in redAllianceData]
+#         red1EndgamePts, red2EndgamePts, red3EndgamePts = [t[6] for t in redAllianceData]
     
-     # get blue alliance data from CEanalysisGraphs
-    query = f"SELECT team, autoScoreMean, teleScoreMean, rampMean, autoRampMean FROM CEanalysisGraphs " \
-            f"WHERE team IN ('{item[4]}', '{item[5]}', '{item[6]}') and eventID = {eventID}"
-    cursor.execute(query)
-    blueAllianceData = cursor.fetchall()
-    blue1AutoPts, blue2AutoPts, blue3AutoPts = [t[1] for t in blueAllianceData]
-    blue1AutoRampPts, blue2AutoRampPts, blue3AutoRampPts = [t[2] for t in blueAllianceData]
-    blue1TeleLowPieces, blue2TeleLowPieces, blue3TeleLowPieces = [t[3] for t in blueAllianceData]
-    blue1TeleMidPieces, blue2TeleMidPieces, blue3TeleMidPieces = [t[4] for t in blueAllianceData]
-    blue1TeleHighPieces, blue2TeleHighPieces, blue3TeleHighPieces = [t[5] for t in blueAllianceData]
-    blue1EndgamePts, blue2EndgamePts, blue3EndgamePts = [t[6] for t in blueAllianceData]
+#      # get blue alliance data from CEanalysisGraphs
+#     query = f"SELECT team, autoScoreMean, teleScoreMean, rampMean, autoRampMean FROM CEanalysisGraphs " \
+#             f"WHERE team IN ('{item[4]}', '{item[5]}', '{item[6]}') and eventID = {eventID}"
+#     cursor.execute(query)
+#     blueAllianceData = cursor.fetchall()
+#     blue1AutoPts, blue2AutoPts, blue3AutoPts = [t[1] for t in blueAllianceData]
+#     blue1AutoRampPts, blue2AutoRampPts, blue3AutoRampPts = [t[2] for t in blueAllianceData]
+#     blue1TeleLowPieces, blue2TeleLowPieces, blue3TeleLowPieces = [t[3] for t in blueAllianceData]
+#     blue1TeleMidPieces, blue2TeleMidPieces, blue3TeleMidPieces = [t[4] for t in blueAllianceData]
+#     blue1TeleHighPieces, blue2TeleHighPieces, blue3TeleHighPieces = [t[5] for t in blueAllianceData]
+#     blue1EndgamePts, blue2EndgamePts, blue3EndgamePts = [t[6] for t in blueAllianceData]
 
-    # calculate # of game pieces that can be scored
-    redTotalAuto = red1AutoPts + red2AutoPts + red3AutoPts
-    redTeleLowPieces = red1TeleLowPieces + red2TeleLowPieces + red3TeleLowPieces
-    redTeleMidPieces = red1TeleMidPieces + red2TeleMidPieces + red3TeleMidPieces
-    redTeleHighPieces = red1TeleHighPieces + red2TeleHighPieces + red3TeleHighPieces
-    if redTeleHighPieces > 9:
-        redHighRemainder = 9 - redTeleHighPieces
-    if redTeleMidPieces > 9:
-        redMidRemainder = 9 - redTeleMidPieces
-    if redTeleLowPieces > 9:
-        redLowRemainder = 9 - redTeleLowPieces
-    totalRemainder = redHighRemainder + redMidRemainder + redLowRemainder
-    if totalRemainder < 27:
-
-
-
-
-
-    redTotalEndgame = round((red1EndgamePts + red2EndgamePts + red3EndgamePts), 0)
-    if (red1AutoRampPts > 8 or red2AutoRampPts > 8 or red3AutoRampPts > 8):
-        redPredAutoPts = 12
-    elif (red1AutoRampPts > 4 or red2AutoRampPts > 4 or red3AutoRampPts > 4):
-        redPredAutoPts = 8
-    else:
-        redPredAutoPts = 0
-    redTotalAuto = round((redTotalAuto + redPredAutoPts), 0)
-    redTotalPts = round((redTotalAuto + redTotalTele + redTotalEndgame), 0)
-
-    if (blue1AutoPts is not None) and (blue2AutoPts is not None) and (blue3AutoPts is not None):
-        blueTotalAuto = blue1AutoPts + blue2AutoPts + blue3AutoPts
-    else:
-        blueTotalAuto = 0
-        print('i am blue auto here')
-    if (blue1TelePts is not None) and (blue2TelePts is not None) and (blue3TelePts is not None):
-        blueTotalTele = round((blue1TelePts + blue2TelePts + blue3TelePts), 0)
-    else:
-        blueTotalTele = 0
-        print('i am here blue tele')
-    if (blue1EndgamePts is not None) and (blue2EndgamePts is not None) and (blue3EndgamePts is not None):
-        blueTotalEndgame = round((blue1EndgamePts + blue2EndgamePts + blue3EndgamePts), 0)
-    else:
-        blueTotalEndgame = 0
-    if (blue1AutoRampPts > 8 or blue2AutoRampPts > 8 or blue3AutoRampPts > 8):
-        bluePredAutoPts = 12
-    elif (blue1AutoRampPts > 4 or blue2AutoRampPts > 4 or blue3AutoRampPts > 4):
-        bluePredAutoPts = 8
-    else:
-        bluePredAutoPts = 0
-    blueTotalAuto = round((blueTotalAuto + bluePredAutoPts), 0)
-    blueTotalPts = round((blueTotalAuto + blueTotalTele + blueTotalEndgame), 0)
-
-    if input_sb == 'true':
-        updateQuery = f"UPDATE matches SET redPredScore = {redTotalPts}, " \
-            f"bluePredScore = {blueTotalPts}, " \
-            f"redPredAuto = {redTotalAuto}, " \
-            f"bluePredAuto = {blueTotalAuto}, " \
-            f"redPredTele = {redTotalTele}, " \
-            f"bluePredTele = {blueTotalTele}, " \
-            f"redPredEndgame = {redTotalEndgame}, " \
-            f"bluePredEndgame = {blueTotalEndgame}, " \
-            f"SBredPredScore = {SBredScorePred}, " \
-            f"SBbluePredScore = {SBblueScorePred}, " \
-            f"SBredPredAuto = {SBredAutoScorePred}, " \
-            f"SBbluePredAuto = {SBblueAutoScorePred}, " \
-            f"SBredPredTele = {SBredTeleScorePred}, " \
-            f"SBbluePredTele = {SBblueTeleScorePred}, " \
-            f"SBredPredEndgame = {SBredEndgameScorePred}, " \
-            f"SBbluePredEndgame = {SBblueEndgameScorePred}, " \
-            f"SBredWinProb = {int(SBredWinProb)}, " \
-            f"SBblueWinProb = {int(SBblueWinProb)} " \
-            f"WHERE matchID = {matchID}"
-    else:
-        updateQuery = f"UPDATE matches SET redPredScore = {redTotalPts}, " \
-            f"bluePredScore = {blueTotalPts}, " \
-            f"redPredAuto = {redTotalAuto}, " \
-            f"bluePredAuto = {blueTotalAuto}, " \
-            f"redPredTele = {redTotalTele}, " \
-            f"bluePredTele = {blueTotalTele}, " \
-            f"redPredEndgame = {redTotalEndgame}, " \
-            f"bluePredEndgame = {blueTotalEndgame}, " \
-            f"WHERE matchID = {matchID}"
-    cursor.execute(updateQuery)
-    conn.commit()
-
-cursor.close()
-conn.close()
+#     # calculate # of game pieces that can be scored
+#     redTotalAuto = red1AutoPts + red2AutoPts + red3AutoPts
+#     redTeleLowPieces = red1TeleLowPieces + red2TeleLowPieces + red3TeleLowPieces
+#     redTeleMidPieces = red1TeleMidPieces + red2TeleMidPieces + red3TeleMidPieces
+#     redTeleHighPieces = red1TeleHighPieces + red2TeleHighPieces + red3TeleHighPieces
+#     if redTeleHighPieces > 9:
+#         redHighRemainder = 9 - redTeleHighPieces
+#     if redTeleMidPieces > 9:
+#         redMidRemainder = 9 - redTeleMidPieces
+#     if redTeleLowPieces > 9:
+#         redLowRemainder = 9 - redTeleLowPieces
+#     totalRemainder = redHighRemainder + redMidRemainder + redLowRemainder
+#     if totalRemainder < 27:
 
 
 
 
-# auto_dist = np.random.normal(loc=auto_avg, scale=auto_std, size=n_iter)
-# tele_dist = np.random.normal(loc=tele_avg, scale=tele_std, size=n_iter)
-# end_dist = np.random.normal(loc=end_avg, scale=end_std, size=n_iter)
 
-# sums = auto_dist + tele_dist + end_dist
-# mean = np.mean(sums)
-# std_dev = np.std(sums)
+#     redTotalEndgame = round((red1EndgamePts + red2EndgamePts + red3EndgamePts), 0)
+#     if (red1AutoRampPts > 8 or red2AutoRampPts > 8 or red3AutoRampPts > 8):
+#         redPredAutoPts = 12
+#     elif (red1AutoRampPts > 4 or red2AutoRampPts > 4 or red3AutoRampPts > 4):
+#         redPredAutoPts = 8
+#     else:
+#         redPredAutoPts = 0
+#     redTotalAuto = round((redTotalAuto + redPredAutoPts), 0)
+#     redTotalPts = round((redTotalAuto + redTotalTele + redTotalEndgame), 0)
+
+#     if (blue1AutoPts is not None) and (blue2AutoPts is not None) and (blue3AutoPts is not None):
+#         blueTotalAuto = blue1AutoPts + blue2AutoPts + blue3AutoPts
+#     else:
+#         blueTotalAuto = 0
+#         print('i am blue auto here')
+#     if (blue1TelePts is not None) and (blue2TelePts is not None) and (blue3TelePts is not None):
+#         blueTotalTele = round((blue1TelePts + blue2TelePts + blue3TelePts), 0)
+#     else:
+#         blueTotalTele = 0
+#         print('i am here blue tele')
+#     if (blue1EndgamePts is not None) and (blue2EndgamePts is not None) and (blue3EndgamePts is not None):
+#         blueTotalEndgame = round((blue1EndgamePts + blue2EndgamePts + blue3EndgamePts), 0)
+#     else:
+#         blueTotalEndgame = 0
+#     if (blue1AutoRampPts > 8 or blue2AutoRampPts > 8 or blue3AutoRampPts > 8):
+#         bluePredAutoPts = 12
+#     elif (blue1AutoRampPts > 4 or blue2AutoRampPts > 4 or blue3AutoRampPts > 4):
+#         bluePredAutoPts = 8
+#     else:
+#         bluePredAutoPts = 0
+#     blueTotalAuto = round((blueTotalAuto + bluePredAutoPts), 0)
+#     blueTotalPts = round((blueTotalAuto + blueTotalTele + blueTotalEndgame), 0)
+
+#     if input_sb == 'true':
+#         updateQuery = f"UPDATE matches SET redPredScore = {redTotalPts}, " \
+#             f"bluePredScore = {blueTotalPts}, " \
+#             f"redPredAuto = {redTotalAuto}, " \
+#             f"bluePredAuto = {blueTotalAuto}, " \
+#             f"redPredTele = {redTotalTele}, " \
+#             f"bluePredTele = {blueTotalTele}, " \
+#             f"redPredEndgame = {redTotalEndgame}, " \
+#             f"bluePredEndgame = {blueTotalEndgame}, " \
+#             f"SBredPredScore = {SBredScorePred}, " \
+#             f"SBbluePredScore = {SBblueScorePred}, " \
+#             f"SBredPredAuto = {SBredAutoScorePred}, " \
+#             f"SBbluePredAuto = {SBblueAutoScorePred}, " \
+#             f"SBredPredTele = {SBredTeleScorePred}, " \
+#             f"SBbluePredTele = {SBblueTeleScorePred}, " \
+#             f"SBredPredEndgame = {SBredEndgameScorePred}, " \
+#             f"SBbluePredEndgame = {SBblueEndgameScorePred}, " \
+#             f"SBredWinProb = {int(SBredWinProb)}, " \
+#             f"SBblueWinProb = {int(SBblueWinProb)} " \
+#             f"WHERE matchID = {matchID}"
+#     else:
+#         updateQuery = f"UPDATE matches SET redPredScore = {redTotalPts}, " \
+#             f"bluePredScore = {blueTotalPts}, " \
+#             f"redPredAuto = {redTotalAuto}, " \
+#             f"bluePredAuto = {blueTotalAuto}, " \
+#             f"redPredTele = {redTotalTele}, " \
+#             f"bluePredTele = {blueTotalTele}, " \
+#             f"redPredEndgame = {redTotalEndgame}, " \
+#             f"bluePredEndgame = {blueTotalEndgame}, " \
+#             f"WHERE matchID = {matchID}"
+#     cursor.execute(updateQuery)
+#     conn.commit()
+
+# cursor.close()
+# conn.close()
+
+
+
+
+# # auto_dist = np.random.normal(loc=auto_avg, scale=auto_std, size=n_iter)
+# # tele_dist = np.random.normal(loc=tele_avg, scale=tele_std, size=n_iter)
+# # end_dist = np.random.normal(loc=end_avg, scale=end_std, size=n_iter)
+
+# # sums = auto_dist + tele_dist + end_dist
+# # mean = np.mean(sums)
+# # std_dev = np.std(sums)

@@ -155,7 +155,6 @@ class analysis():
                 "HAVING (((matchScouting.team) Is Not Null))"
         self._run_query(query)
         rsRobots = self.cursor.fetchall()
-        print(len(rsRobots))
         assert len(rsRobots) > 0, "No robots found"   # assert exits with "no robots found" or returns team list
         return rsRobots
     
