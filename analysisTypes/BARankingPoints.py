@@ -61,6 +61,5 @@ def BARankingPoints(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
         rsCEA['S1D'] = str(round(statistics.mean(BARankingPointsList), 1))
         rsCEA['S2V'] = round(statistics.median(BARankingPointsList), 1)
         rsCEA['S2D'] = str(round(statistics.median(BARankingPointsList), 1))
-        rsCEA['S4V'] = statistics.stdev(BARankingPointsList)
         
     return rsCEA

@@ -53,6 +53,5 @@ def BAFoulsPts(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
         rsCEA['S1D'] = str(round(statistics.mean(foulPtsList), 1))
         rsCEA['S2V'] = round(statistics.median(foulPtsRankingList), 1)
         rsCEA['S2D'] = str(round(statistics.median(foulPtsList), 1))
-        rsCEA['S4V'] = statistics.stdev(foulPtsList)
 
     return rsCEA

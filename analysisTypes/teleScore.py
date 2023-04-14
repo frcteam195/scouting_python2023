@@ -77,10 +77,17 @@ def teleScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             numberOfMatchesPlayed += 1
 
     if numberOfMatchesPlayed > 0:
-        rsCEA['S1V'] = round(statistics.mean(teleScoreList), 0)
-        rsCEA['S1D'] = str(round(statistics.mean(teleScoreList), 0))
-        rsCEA['S2V'] = round(statistics.median(teleScoreList), 0)
-        rsCEA['S2D'] = str(round(statistics.median(teleScoreList), 0))
-        rsCEA['S4V'] = statistics.stdev(teleScoreList)
+        mean = round(statistics.mean(teleScoreList), 1)
+        median = round(statistics.median(teleScoreList), 1)
+        if len(teleScoreList) >= 2:
+            stdev = statistics.stdev(teleScoreList)
+        else:
+            stdev = 0
+
+        rsCEA['S1V'] = mean
+        rsCEA['S1D'] = str(mean)
+        rsCEA['S2V'] = median
+        rsCEA['S2D'] = str(median)
+        rsCEA['S4V'] = stdev
         
     return rsCEA

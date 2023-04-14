@@ -75,10 +75,17 @@ def teleCubes(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             teleCubesList.append(teleCubesValue)
 
     if numberOfMatchesPlayed > 0:
-        rsCEA['S1V'] = round(statistics.mean(teleCubesList), 1)
-        rsCEA['S1D'] = str(round(statistics.mean(teleCubesList), 1))
-        rsCEA['S2V'] = round(statistics.median(teleCubesList), 1)
-        rsCEA['S2D'] = str(round(statistics.median(teleCubesList), 1))
-        rsCEA['S4V'] = statistics.stdev(teleCubesList)
+        mean = round(statistics.mean(teleCubesList), 1)
+        median = round(statistics.median(teleCubesList), 1)
+        if len(teleCubesList) >= 2:
+            stdev = statistics.stdev(teleCubesList)
+        else:
+            stdev = 0
+
+        rsCEA['S1V'] = mean
+        rsCEA['S1D'] = str(mean)
+        rsCEA['S2V'] = median
+        rsCEA['S2D'] = str(median)
+        rsCEA['S4V'] = stdev
     
     return rsCEA

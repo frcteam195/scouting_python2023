@@ -85,9 +85,14 @@ def teleMid(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     if numberOfMatchesPlayed > 0:
         mean = round(statistics.mean(teleMidList), 1)
         median = round(statistics.median(teleMidList), 1)
+        if len(teleMidList) >= 2:
+            stdev = statistics.stdev(teleMidList)
+        else:
+            stdev = 0
+
         rsCEA['S1V'] = mean
         rsCEA['S1D'] = str(mean)
         rsCEA['S2V'] = median
         rsCEA['S2D'] = str(median)
-        rsCEA['S4V'] = statistics.stdev(teleMidList)
+        rsCEA['S4V'] = stdev
     return rsCEA

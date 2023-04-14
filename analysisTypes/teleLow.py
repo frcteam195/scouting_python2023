@@ -83,9 +83,16 @@ def teleLow(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             teleLowList.append(teleLowValue)
 
     if numberOfMatchesPlayed > 0:
-        rsCEA['S1V'] = round(statistics.mean(teleLowList), 1)
-        rsCEA['S1D'] = str(round(statistics.mean(teleLowList), 1))
-        rsCEA['S2V'] = round(statistics.median(teleLowList), 1)
-        rsCEA['S2D'] = str(round(statistics.median(teleLowList), 1))
-        rsCEA['S4V'] = statistics.stdev(teleLowList)
+        mean = round(statistics.mean(teleLowList), 1)
+        median = round(statistics.median(teleLowList), 1)
+        if len(teleLowList) >= 2:
+            stdev = statistics.stdev(teleLowList)
+        else:
+            stdev = 0
+
+        rsCEA['S1V'] = mean
+        rsCEA['S1D'] = str(mean)
+        rsCEA['S2V'] = median
+        rsCEA['S2D'] = str(median)
+        rsCEA['S4V'] = stdev
     return rsCEA

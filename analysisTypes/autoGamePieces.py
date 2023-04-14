@@ -59,9 +59,13 @@ def autoGamePieces(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDat
     if numberMatchesPlayed > 0:
         mean = round(statistics.mean(autoGamePiecesList), 1)
         median = round(statistics.median(autoGamePiecesList), 1)
+        if len(autoGamePiecesList) >= 2:
+            stdev = statistics.stdev(autoGamePiecesList)
+        else:
+            stdev = 0
         rsCEA['S1V'] = mean
         rsCEA['S1D'] = str(mean)
         rsCEA['S2V'] = median
         rsCEA['S2D'] = str(median)
-        rsCEA['S4V'] = statistics.stdev(autoGamePiecesList)
+        rsCEA['S4V'] = stdev
     return rsCEA

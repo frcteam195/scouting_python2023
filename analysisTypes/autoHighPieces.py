@@ -40,10 +40,14 @@ def autoHighPieces(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDat
     if numberOfMatchesPlayed > 0:
         mean = round(statistics.mean(autoPieceList), 1)
         median = round(statistics.median(autoPieceList), 1)
+        if len(autoPieceList) >- 2:
+            stdev = statistics.stdev(autoPieceList)
+        else:
+            stdev = 0
         rsCEA['S1V'] = mean
         rsCEA['S1D'] = str(mean)
         rsCEA['S2V'] = median
         rsCEA['S2D'] = str(median)
-        rsCEA['S4V'] = statistics.stdev(autoPieceList)
+        rsCEA['S4V'] = stdev
         
     return rsCEA

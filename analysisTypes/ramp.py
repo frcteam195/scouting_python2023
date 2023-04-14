@@ -59,9 +59,17 @@ def ramp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = rampColor
 
     if numberOfMatchesPlayed > 0:
-        rsCEA['S1V'] = round(statistics.mean(rampList), 1)
-        rsCEA['S1D'] = str(round(statistics.mean(rampList), 1))
-        rsCEA['S2V'] = round(statistics.median(rampList), 1)
-        rsCEA['S2D'] = str(round(statistics.median(rampList), 1))
-        rsCEA['S4V'] = statistics.stdev(rampList)
+        mean = round(statistics.mean(rampList), 1)
+        median = round(statistics.median(rampList), 1)
+        if len(rampList) >= 2:
+            stdev = statistics.stdev(rampList)
+        else:
+            stdev = 0
+
+        rsCEA['S1V'] = mean
+        rsCEA['S1D'] = str(mean)
+        rsCEA['S2V'] = median
+        rsCEA['S2D'] = str(median)
+        rsCEA['S4V'] = stdev
+
     return rsCEA

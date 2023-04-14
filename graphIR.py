@@ -67,8 +67,8 @@ conn.commit()
 
 
 # insert first record for analysisType 7 which is the first one in the CEanalysisGraphs table
-query = (f"INSERT INTO {CEAG_table} (team, eventID, teleLowMean, teleLowMedian, teleLowFormat) " \
-         f"SELECT team, eventID, S1V, S2V, S3F FROM CEanalysis WHERE analysisTypeID = 7 and eventID = {CEventID}")
+query = (f"INSERT INTO {CEAG_table} (team, eventID, teleLowMean, teleLowMedian, teleLowFormat, teleLowStd) " \
+         f"SELECT team, eventID, S1V, S2V, S3F, S4V FROM CEanalysis WHERE analysisTypeID = 7 and eventID = {CEventID}")
 
 cursor.execute(query)
 conn.commit()
@@ -109,16 +109,29 @@ analysisNameList = ["teleMidMean", \
                     "autoGamePiecesFormat", \
                     "autoRampFormat", \
                     "totalScoreFormat", \
-                    "teleScoreFormat"]
+                    "teleScoreFormat", \
+                    #
+                    "teleMidStd", \
+                    "teleHighStd", \
+                    "teleTotalStd", \
+                    "teleCommunityStd", \
+                    "teleLZPickupStd", \
+                    "rampStd", \
+                    "autoScoreStd", \
+                    "autoGamePiecesStd", \
+                    "autoRampStd", \
+                    "totalScoreStd", \
+                    "teleScoreStd"]
 
 for i in range(len(analysisTypeList)):
     query = ("UPDATE " + CEAG_table + " INNER JOIN CEanalysis ON " + CEAG_table + ".team = CEanalysis.team " \
              "AND " + CEAG_table + ".eventID = CEanalysis.eventID " \
              "SET " + analysisNameList[i] + " = CEanalysis.S1V, " \
              + analysisNameList[i+(len(analysisTypeList))] + " = CEanalysis.S2V, " \
-             + analysisNameList[i+(len(analysisTypeList))+(len(analysisTypeList))] + " = CEanalysis.S3F " \
+             + analysisNameList[i+(len(analysisTypeList))+(len(analysisTypeList))] + " = CEanalysis.S3F, " \
+             + analysisNameList[i+(len(analysisTypeList))+(len(analysisTypeList))+(len(analysisTypeList))] + " = CEanalysis.S4V " \
              "WHERE CEanalysis.analysisTypeID = " + str(analysisTypeList[i]))
-    # print(query)
+    print(query)
     cursor.execute(query)
     conn.commit()
 

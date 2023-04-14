@@ -144,9 +144,15 @@ def totalScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             totalScoreList.append(totalScoreValue)
 
     if numberOfMatchesPlayed > 0:
-        rsCEA['S1V'] = round(statistics.mean(totalScoreList), 0)
-        rsCEA['S1D'] = str(round(statistics.mean(totalScoreList), 0))
-        rsCEA['S2V'] = round(statistics.median(totalScoreList), 0)
-        rsCEA['S2D'] = str(round(statistics.median(totalScoreList), 0))
-        rsCEA['S4V'] = statistics.stdev(totalScoreList)
+        mean = round(statistics.mean(totalScoreList), 1)
+        median = round(statistics.median(totalScoreList), 1)
+        if len(totalScoreList) >= 2:
+            stdev = statistics.stdev(totalScoreList)
+        else:
+            stdev = 0
+        rsCEA['S1V'] = mean
+        rsCEA['S1D'] = str(mean)
+        rsCEA['S2V'] = median
+        rsCEA['S2D'] = str(median)
+        rsCEA['S4V'] = stdev
     return rsCEA

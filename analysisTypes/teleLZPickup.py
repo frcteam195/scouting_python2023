@@ -23,11 +23,8 @@ def teleLZPickup(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData)
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'UR'
         else:
             
-            
-            
             LZPickup = matchResults[analysis.columns.index('teleLZPickup')]
-
-            
+     
             if LZPickup is None:
                 LZPickup = 0
                 
@@ -54,9 +51,16 @@ def teleLZPickup(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData)
             teleLZPickupList.append(teleLZPickupValue)
 
     if numberOfMatchesPlayed > 0:
-        rsCEA['S1V'] = round(statistics.mean(teleLZPickupList), 1)
-        rsCEA['S1D'] = str(round(statistics.mean(teleLZPickupList), 1))
-        rsCEA['S2V'] = round(statistics.median(teleLZPickupList), 1)
-        rsCEA['S2D'] = str(round(statistics.median(teleLZPickupList), 1))
-        rsCEA['S4V'] = statistics.stdev(teleLZPickupList)
+        mean = round(statistics.mean(teleLZPickupList), 1)
+        median = round(statistics.median(teleLZPickupList), 1)
+        if len(teleLZPickupList) >= 2:
+            stdev = statistics.stdev(teleLZPickupList)
+        else:
+            stdev = 0
+
+        rsCEA['S1V'] = mean
+        rsCEA['S1D'] = str(mean)
+        rsCEA['S2V'] = median
+        rsCEA['S2D'] = str(median)
+        rsCEA['S4V'] = stdev
     return rsCEA

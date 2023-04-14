@@ -76,8 +76,14 @@ def autoRamp(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     else:
         mean = round(statistics.mean(autoRampList), 1)
         median = round(statistics.median(autoRampList), 1)
+    if len(autoRampList) >= 2:
+        stdev = statistics.stdev(autoRampList)
+    else:
+        stdev = 0
     rsCEA['S1V'] = mean
     rsCEA['S1D'] = str(mean)
     rsCEA['S2V'] = median
     rsCEA['S2D'] = str(median)
+    rsCEA['S4V'] = stdev
+
     return rsCEA

@@ -54,9 +54,17 @@ def teleCommunity(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData
             teleCommunityList.append(value)
 
     if numberOfMatchesPlayed > 0:
-        rsCEA['S1V'] = round(statistics.mean(teleCommunityList), 1)
-        rsCEA['S1D'] = str(round(statistics.mean(teleCommunityList), 1))
-        rsCEA['S2V'] = round(statistics.median(teleCommunityList), 1)
-        rsCEA['S2D'] = str(round(statistics.median(teleCommunityList), 1))
-        rsCEA['S4V'] = statistics.stdev(teleCommunityList)
+        mean = round(statistics.mean(teleCommunityList), 1)
+        median = round(statistics.median(teleCommunityList), 1)
+        if len(teleCommunityList) >= 2:
+            stdev = statistics.stdev(teleCommunityList)
+        else:
+            stdev = 0
+
+        rsCEA['S1V'] = mean
+        rsCEA['S1D'] = str(mean)
+        rsCEA['S2V'] = median
+        rsCEA['S2D'] = str(median)
+        rsCEA['S4V'] = stdev
+        
     return rsCEA
