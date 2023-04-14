@@ -5,7 +5,6 @@ import configparser
 import statbotics
 import datetime
 import time
-import numpy as np
 
 sb = statbotics.Statbotics()
 
@@ -117,29 +116,6 @@ for match in futureMatches:
     blue1EndgamePtsStd, blue2EndgamePtsStd, blue3EndgamePtsStd = [t[12] for t in blueAllianceData]
 
     # calculate scores from CEanalysisGraphs data
-    iter = 20
-
-    red1TelePtsDist = np.random.normal(loc=red1TelePts, scale=red1TelePtsStd, size=iter)
-    red2TelePtsDist = np.random.normal(loc=red2TelePts, scale=red2TelePtsStd, size=iter)
-    red3TelePtsDist = np.random.normal(loc=red3TelePts, scale=red3TelePtsStd, size=iter)
-    blue1TelePtsDist = np.random.normal(loc=blue1TelePts, scale=blue1TelePtsStd, size=iter)
-    blue2TelePtsDist = np.random.normal(loc=blue2TelePts, scale=blue2TelePtsStd, size=iter)
-    blue3TelePtsDist = np.random.normal(loc=blue3TelePts, scale=blue3TelePtsStd, size=iter)
-    redSumTelePtsDist = red1TelePtsDist + red2TelePtsDist + red3TelePtsDist
-    redMeanTelePtsDist = np.mean(redSumTelePtsDist)
-    redStdTelePtsDist = np.std(redSumTelePtsDist)
-    blueSumTelePtsDist = blue1TelePtsDist + blue2TelePtsDist + blue3TelePtsDist
-    blueMeanTelePtsDist = np.mean(blueSumTelePtsDist)
-    blueStdTelePtsDist = np.std(blueSumTelePtsDist)
-    print(f"red: {redMeanTelePtsDist} +/- {redStdTelePtsDist}, blue: {blueMeanTelePtsDist} +/- {blueStdTelePtsDist}")
-    redGreater = np.greater(redMeanTelePtsDist, blueMeanTelePtsDist)
-    count = 0
-    if redGreater == True:
-        count += 1
-    print(redGreater)
-    winPer = (count/iter)*100
-    print(f"red win probability = {winPer} percent")
-
     redTotalAuto = red1AutoPts + red2AutoPts + red3AutoPts
     redTotalTele = round((red1TelePts + red2TelePts + red3TelePts), 0)
     redTotalEndgame = round((red1EndgamePts + red2EndgamePts + red3EndgamePts), 0)
