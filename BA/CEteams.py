@@ -45,6 +45,8 @@ eventTeams = tba.event_teams(event)
 for team in sorted(eventTeams, key=sortbyteam):
 	tempNick = ''
 	location = str(team.city) + ', ' + str(team.state_prov) + ', ' + str(team.country)
+	if len(location) > 50:
+		location = location[:40]
 	teams = [team.team_number, team.nickname, location]
 	teamList.append(teams)
 	for char in team.nickname:
