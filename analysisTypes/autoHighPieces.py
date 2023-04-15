@@ -40,7 +40,7 @@ def autoHighPieces(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDat
     if numberOfMatchesPlayed > 0:
         mean = round(statistics.mean(autoPieceList), 1)
         median = round(statistics.median(autoPieceList), 1)
-        if len(autoPieceList) >- 2:
+        if len(autoPieceList) >= 2:
             stdev = statistics.stdev(autoPieceList)
         else:
             stdev = 0

@@ -22,7 +22,7 @@ def teleScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             telecubeHigh = matchResults[analysis.columns.index('teleCubeHigh')]
             telecubeMid = matchResults[analysis.columns.index('teleCubeMid')]
             telecubeLow = matchResults[analysis.columns.index('teleCubeLow')]
-            ramp = matchResults[analysis.columns.index('ramp')]
+            # ramp = matchResults[analysis.columns.index('ramp')]
             
             if teleconeHigh is None:
                 teleconeHigh = 0
@@ -43,19 +43,19 @@ def teleScore(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
             teleTotal = teleLow + teleMid + teleHigh
             linkPts = (teleTotal / 3) * 5
 
-            if ramp == 5:
-                rampPts = 10
-            elif ramp == 4:
-                rampPts = 6
-            elif ramp == 3:
-                rampPts = 2
-            elif ramp == 2:
-                rampPts = 2
-            else:
-                rampPts = 0
+            # if ramp == 5:
+            #     rampPts = 10
+            # elif ramp == 4:
+            #     rampPts = 6
+            # elif ramp == 3:
+            #     rampPts = 2
+            # elif ramp == 2:
+            #     rampPts = 2
+            # else:
+            #     rampPts = 0
             
             teleScore = 0
-            teleScore = (teleHigh * 5) + (teleMid * 3) + (teleLow * 2) + linkPts + rampPts
+            teleScore = (teleHigh * 5) + (teleMid * 3) + (teleLow * 2) + linkPts
             teleScore = round(teleScore)
 
             if teleScore <= 12:
