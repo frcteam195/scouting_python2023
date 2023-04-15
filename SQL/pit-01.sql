@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS dev1.pit (
         driveBaseTypeID INT NULL,
         driveMotorTypeID INT NULL,
         manipulatorTypeID INT NULL,
-        dedicatedGroundIntake TINYINT NULL,
+        brakeModeTypeID TINYINT NULL,
         superClimbTypeID INT NULL,
         buildTypeID INT NULL,
         centerGravityTypeID INT NULL,
