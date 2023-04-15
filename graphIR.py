@@ -131,7 +131,7 @@ for i in range(len(analysisTypeList)):
              + analysisNameList[i+(len(analysisTypeList))+(len(analysisTypeList))] + " = CEanalysis.S3F, " \
              + analysisNameList[i+(len(analysisTypeList))+(len(analysisTypeList))+(len(analysisTypeList))] + " = CEanalysis.S4V " \
              "WHERE CEanalysis.analysisTypeID = " + str(analysisTypeList[i]))
-    print(query)
+    # print(query)
     cursor.execute(query)
     conn.commit()
 
