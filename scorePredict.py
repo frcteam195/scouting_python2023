@@ -45,6 +45,7 @@ cursor.execute(query)
 futureMatches = cursor.fetchall()
 print('please be patient - statbotics API is not the fastest')
 
+qual = 1
 for match in futureMatches:
     matchID = match[0]
     matchNum = match[7]
@@ -118,7 +119,7 @@ for match in futureMatches:
     blue1EndgamePtsStd, blue2EndgamePtsStd, blue3EndgamePtsStd = [t[12] for t in blueAllianceData]
 
     # calculate scores from CEanalysisGraphs data
-    iter = 20
+    iter = 1000
 
     red1AutoPtsDist = np.random.normal(loc=red1AutoPts, scale=red1AutoPtsStd, size=iter)
     red2AutoPtsDist = np.random.normal(loc=red2AutoPts, scale=red2AutoPtsStd, size=iter)
@@ -132,7 +133,7 @@ for match in futureMatches:
     blueSumAutoPtsDist = blue1AutoPtsDist + blue2AutoPtsDist + blue3AutoPtsDist
     blueMeanAutoPts = np.mean(blueSumAutoPtsDist)
     blueStdAutoPts = np.std(blueSumAutoPtsDist)
-    print(f"red auto: {redMeanAutoPts} +/- {redStdAutoPts}, blue auto: {blueMeanAutoPts} +/- {blueStdAutoPts}")
+    # print(f"red auto: {redMeanAutoPts} +/- {redStdAutoPts}, blue auto: {blueMeanAutoPts} +/- {blueStdAutoPts}")
 
     red1AutoRampPtsDist = np.random.normal(loc=red1AutoRampPts, scale=red1AutoRampPtsStd, size=iter)
     red2AutoRampPtsDist = np.random.normal(loc=red2AutoRampPts, scale=red2AutoRampPtsStd, size=iter)
@@ -151,7 +152,7 @@ for match in futureMatches:
     blueStdAutoRampPts = np.std(blueSumAutoRampPtsDist)
     if blueMeanAutoRampPts > 12:
         blueMeanAutoRampPts = 12
-    print(f"red AutoRamp: {redMeanAutoRampPts} +/- {redStdAutoRampPts}, blue AutoRamp: {blueMeanAutoRampPts} +/- {blueStdAutoRampPts}")
+    # print(f"red AutoRamp: {redMeanAutoRampPts} +/- {redStdAutoRampPts}, blue AutoRamp: {blueMeanAutoRampPts} +/- {blueStdAutoRampPts}")
 
     red1TelePtsDist = np.random.normal(loc=red1TelePts, scale=red1TelePtsStd, size=iter)
     red2TelePtsDist = np.random.normal(loc=red2TelePts, scale=red2TelePtsStd, size=iter)
@@ -165,7 +166,7 @@ for match in futureMatches:
     blueSumTelePtsDist = blue1TelePtsDist + blue2TelePtsDist + blue3TelePtsDist
     blueMeanTelePts = np.mean(blueSumTelePtsDist)
     blueStdTelePts = np.std(blueSumTelePtsDist)
-    print(f"red tele: {redMeanTelePts} +/- {redStdTelePts}, blue tele: {blueMeanTelePts} +/- {blueStdTelePts}")
+    # print(f"red tele: {redMeanTelePts} +/- {redStdTelePts}, blue tele: {blueMeanTelePts} +/- {blueStdTelePts}")
 
     red1EndgamePtsDist = np.random.normal(loc=red1EndgamePts, scale=red1EndgamePtsStd, size=iter)
     red2EndgamePtsDist = np.random.normal(loc=red2EndgamePts, scale=red2EndgamePtsStd, size=iter)
@@ -179,16 +180,21 @@ for match in futureMatches:
     blueSumEndgamePtsDist = blue1EndgamePtsDist + blue2EndgamePtsDist + blue3EndgamePtsDist
     blueMeanEndgamePts = np.mean(blueSumEndgamePtsDist)
     blueStdEndgamePts = np.std(blueSumEndgamePtsDist)
-    print(f"red Endgame: {redMeanEndgamePts} +/- {redStdEndgamePts}, blue Endgame: {blueMeanEndgamePts} +/- {blueStdEndgamePts}")
+    # print(f"red Endgame: {redMeanEndgamePts} +/- {redStdEndgamePts}, blue Endgame: {blueMeanEndgamePts} +/- {blueStdEndgamePts}")
     
     # test = (redSumEndgamePtsDist > blueSumEndgamePtsDist).sum()
     redScoreDist = redSumAutoPtsDist + redSumAutoRampPtsDist + redSumTelePtsDist + redSumEndgamePtsDist
     blueScoreDist = blueSumAutoPtsDist + blueSumAutoRampPtsDist + blueSumTelePtsDist + blueSumEndgamePtsDist
-    redScore = np.mean(redScoreDist)
-    redScoreStd = np.std(redScoreDist)
-    blueScore = np.mean(blueScoreDist)
-    blueScoreStd = np.std(blueScoreDist)
+    redScore = round(np.mean(redScoreDist), 0)
+    redScoreStd = round(np.std(redScoreDist), 0)
+    blueScore = round(np.mean(blueScoreDist), 0)
+    blueScoreStd = round(np.std(blueScoreDist), 0)
     print(f"red: {redScore} +/- {redScoreStd}, blue: {blueScore} +/- {blueScoreStd}")
+
+    redWins = (redScoreDist > blueScoreDist).sum()
+    redWinProb = round((redWins / iter) * 100, 1)
+    print(f"Qual = {qual}, matchID = {matchID}, redWinProb = {redWinProb}")
+    qual += 1
     print()
 
 
