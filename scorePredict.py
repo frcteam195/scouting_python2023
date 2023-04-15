@@ -18,10 +18,12 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-db", "--database", help = "Choices: dev1, dev2, testing, production", required=True)
 parser.add_argument("-host", "--host", help = "Host choices: aws, localhost", required=True)
 parser.add_argument("-sb", "--statbotics", help = "Use data from statbotics: true, false", required=True)
+parser.add_argument("-pred", "--predict", help= "Predict future or past matches: future, past", required=True)
 args = parser.parse_args()
 input_db = args.database
 input_host = args.host
 input_sb = args.statbotics
+predict = args.predict
 
 config = configparser.ConfigParser()
 config.read('helpers/config.ini')
@@ -40,7 +42,13 @@ eventData = cursor.fetchall()
 eventID = eventData[0][0]
 BAeventID = eventData[0][1]
 
-query =f"select matchID, red1, red2, red3, blue1, blue2, blue3, matchNum from matches where eventID = {eventID} and actualTime is not null"
+if predict == "past":
+    query =f"select matchID, red1, red2, red3, blue1, blue2, blue3, matchNum from matches where eventID = {eventID} and actualTime is not null"
+elif predict == "future":
+    query =f"select matchID, red1, red2, red3, blue1, blue2, blue3, matchNum from matches where eventID = {eventID} and actualTime is null"
+else:
+    print("that should not happen, predict must be future or past")
+    quit()
 cursor.execute(query)
 futureMatches = cursor.fetchall()
 print('please be patient - statbotics API is not the fastest')
@@ -154,6 +162,10 @@ for match in futureMatches:
         blueMeanAutoRampPts = 12
     # print(f"red AutoRamp: {redMeanAutoRampPts} +/- {redStdAutoRampPts}, blue AutoRamp: {blueMeanAutoRampPts} +/- {blueStdAutoRampPts}")
 
+    # Sum autoramp and autoScore for total auto points
+    redPredAuto = redMeanAutoPts + redMeanAutoRampPts
+    bluePredAuto = blueMeanAutoPts + blueMeanAutoRampPts
+
     red1TelePtsDist = np.random.normal(loc=red1TelePts, scale=red1TelePtsStd, size=iter)
     red2TelePtsDist = np.random.normal(loc=red2TelePts, scale=red2TelePtsStd, size=iter)
     red3TelePtsDist = np.random.normal(loc=red3TelePts, scale=red3TelePtsStd, size=iter)
@@ -161,11 +173,11 @@ for match in futureMatches:
     blue2TelePtsDist = np.random.normal(loc=blue2TelePts, scale=blue2TelePtsStd, size=iter)
     blue3TelePtsDist = np.random.normal(loc=blue3TelePts, scale=blue3TelePtsStd, size=iter)
     redSumTelePtsDist = red1TelePtsDist + red2TelePtsDist + red3TelePtsDist
-    redMeanTelePts = np.mean(redSumTelePtsDist)
-    redStdTelePts = np.std(redSumTelePtsDist)
+    redPredTele = np.mean(redSumTelePtsDist)
+    redPredTeleStd = np.std(redSumTelePtsDist)
     blueSumTelePtsDist = blue1TelePtsDist + blue2TelePtsDist + blue3TelePtsDist
-    blueMeanTelePts = np.mean(blueSumTelePtsDist)
-    blueStdTelePts = np.std(blueSumTelePtsDist)
+    bluePredTele = np.mean(blueSumTelePtsDist)
+    bluePredTeleStd = np.std(blueSumTelePtsDist)
     # print(f"red tele: {redMeanTelePts} +/- {redStdTelePts}, blue tele: {blueMeanTelePts} +/- {blueStdTelePts}")
 
     red1EndgamePtsDist = np.random.normal(loc=red1EndgamePts, scale=red1EndgamePtsStd, size=iter)
@@ -175,24 +187,25 @@ for match in futureMatches:
     blue2EndgamePtsDist = np.random.normal(loc=blue2EndgamePts, scale=blue2EndgamePtsStd, size=iter)
     blue3EndgamePtsDist = np.random.normal(loc=blue3EndgamePts, scale=blue3EndgamePtsStd, size=iter)
     redSumEndgamePtsDist = red1EndgamePtsDist + red2EndgamePtsDist + red3EndgamePtsDist
-    redMeanEndgamePts = np.mean(redSumEndgamePtsDist)
-    redStdEndgamePts = np.std(redSumEndgamePtsDist)
+    redPredEndgame = np.mean(redSumEndgamePtsDist)
+    redPredEndgameStd = np.std(redSumEndgamePtsDist)
     blueSumEndgamePtsDist = blue1EndgamePtsDist + blue2EndgamePtsDist + blue3EndgamePtsDist
-    blueMeanEndgamePts = np.mean(blueSumEndgamePtsDist)
-    blueStdEndgamePts = np.std(blueSumEndgamePtsDist)
+    bluePredEndgame = np.mean(blueSumEndgamePtsDist)
+    bluePredEndgameStd = np.std(blueSumEndgamePtsDist)
     # print(f"red Endgame: {redMeanEndgamePts} +/- {redStdEndgamePts}, blue Endgame: {blueMeanEndgamePts} +/- {blueStdEndgamePts}")
     
-    # test = (redSumEndgamePtsDist > blueSumEndgamePtsDist).sum()
+    # finally calcualte the alliance scores
     redScoreDist = redSumAutoPtsDist + redSumAutoRampPtsDist + redSumTelePtsDist + redSumEndgamePtsDist
     blueScoreDist = blueSumAutoPtsDist + blueSumAutoRampPtsDist + blueSumTelePtsDist + blueSumEndgamePtsDist
-    redScore = round(np.mean(redScoreDist), 0)
-    redScoreStd = round(np.std(redScoreDist), 0)
-    blueScore = round(np.mean(blueScoreDist), 0)
-    blueScoreStd = round(np.std(blueScoreDist), 0)
-    print(f"red: {redScore} +/- {redScoreStd}, blue: {blueScore} +/- {blueScoreStd}")
+    redPredScore = round(np.mean(redScoreDist), 0)
+    redPredScoreStd = round(np.std(redScoreDist), 0)
+    bluePredScore = round(np.mean(blueScoreDist), 0)
+    bluePredScoreStd = round(np.std(blueScoreDist), 0)
+    print(f"red: {redPredScore} +/- {redPredScoreStd}, blue: {bluePredScore} +/- {bluePredScoreStd}")
 
     redWins = (redScoreDist > blueScoreDist).sum()
     redWinProb = round((redWins / iter) * 100, 1)
+    blueWinProb = 100 - redWinProb
     print(f"Qual = {qual}, matchID = {matchID}, redWinProb = {redWinProb}")
     qual += 1
     print()
@@ -234,49 +247,45 @@ for match in futureMatches:
     # blueTotalAuto = round((blueTotalAuto + bluePredAutoPts), 0)
     # blueTotalPts = round((blueTotalAuto + blueTotalTele + blueTotalEndgame), 0)
 
-    # if input_sb == 'true':
-    #     updateQuery = f"UPDATE matches SET redPredScore = {redTotalPts}, " \
-    #         f"bluePredScore = {blueTotalPts}, " \
-    #         f"redPredAuto = {redTotalAuto}, " \
-    #         f"bluePredAuto = {blueTotalAuto}, " \
-    #         f"redPredTele = {redTotalTele}, " \
-    #         f"bluePredTele = {blueTotalTele}, " \
-    #         f"redPredEndgame = {redTotalEndgame}, " \
-    #         f"bluePredEndgame = {blueTotalEndgame}, " \
-    #         f"SBredPredScore = {SBredScorePred}, " \
-    #         f"SBbluePredScore = {SBblueScorePred}, " \
-    #         f"SBredPredAuto = {SBredAutoScorePred}, " \
-    #         f"SBbluePredAuto = {SBblueAutoScorePred}, " \
-    #         f"SBredPredTele = {SBredTeleScorePred}, " \
-    #         f"SBbluePredTele = {SBblueTeleScorePred}, " \
-    #         f"SBredPredEndgame = {SBredEndgameScorePred}, " \
-    #         f"SBbluePredEndgame = {SBblueEndgameScorePred}, " \
-    #         f"SBredWinProb = {int(SBredWinProb)}, " \
-    #         f"SBblueWinProb = {int(SBblueWinProb)} " \
-    #         f"WHERE matchID = {matchID}"
-    # else:
-    #     updateQuery = f"UPDATE matches SET redPredScore = {redTotalPts}, " \
-    #         f"bluePredScore = {blueTotalPts}, " \
-    #         f"redPredAuto = {redTotalAuto}, " \
-    #         f"bluePredAuto = {blueTotalAuto}, " \
-    #         f"redPredTele = {redTotalTele}, " \
-    #         f"bluePredTele = {blueTotalTele}, " \
-    #         f"redPredEndgame = {redTotalEndgame}, " \
-    #         f"bluePredEndgame = {blueTotalEndgame} " \
-    #         f"WHERE matchID = {matchID}"
+    if input_sb == 'true':
+        updateQuery = f"UPDATE matches SET redPredScore = {redPredScore}, " \
+            f"bluePredScore = {bluePredScore}, " \
+            f"redPredAuto = {redPredAuto}, " \
+            f"bluePredAuto = {bluePredAuto}, " \
+            f"redPredTele = {redPredTele}, " \
+            f"bluePredTele = {bluePredTele}, " \
+            f"redPredEndgame = {redPredEndgame}, " \
+            f"bluePredEndgame = {bluePredEndgame}, " \
+            f"redWinProb = {redWinProb}, " \
+            f"blueWinProb = {blueWinProb}, " \
+            f"SBredPredScore = {SBredScorePred}, " \
+            f"SBbluePredScore = {SBblueScorePred}, " \
+            f"SBredPredAuto = {SBredAutoScorePred}, " \
+            f"SBbluePredAuto = {SBblueAutoScorePred}, " \
+            f"SBredPredTele = {SBredTeleScorePred}, " \
+            f"SBbluePredTele = {SBblueTeleScorePred}, " \
+            f"SBredPredEndgame = {SBredEndgameScorePred}, " \
+            f"SBbluePredEndgame = {SBblueEndgameScorePred}, " \
+            f"SBredWinProb = {int(SBredWinProb)}, " \
+            f"SBblueWinProb = {int(SBblueWinProb)} " \
+            f"WHERE matchID = {matchID}"
+    else:
+        updateQuery = f"UPDATE matches SET redPredScore = {redPredScore}, " \
+            f"bluePredScore = {bluePredScore}, " \
+            f"redPredAuto = {redPredAuto}, " \
+            f"bluePredAuto = {bluePredAuto}, " \
+            f"redPredTele = {redPredTele}, " \
+            f"bluePredTele = {bluePredTele}, " \
+            f"redPredEndgame = {redPredEndgame}, " \
+            f"bluePredEndgame = {bluePredEndgame}, " \
+            f"redWinProb = {redWinProb}, " \
+            f"blueWinProb = {blueWinProb} " \
+            f"WHERE matchID = {matchID}"
     # print(updateQuery)
-    # cursor.execute(updateQuery)
-    # conn.commit()
+    cursor.execute(updateQuery)
+    conn.commit()
 
 cursor.close()
 conn.close()
 
 print("Time: %0.2f seconds" % (time.time() - start_time))
-
-# auto_dist = np.random.normal(loc=auto_avg, scale=auto_std, size=n_iter)
-# tele_dist = np.random.normal(loc=tele_avg, scale=tele_std, size=n_iter)
-# end_dist = np.random.normal(loc=end_avg, scale=end_std, size=n_iter)
-
-# sums = auto_dist + tele_dist + end_dist
-# mean = np.mean(sums)
-# std_dev = np.std(sums)

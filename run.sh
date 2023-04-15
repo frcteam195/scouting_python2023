@@ -52,7 +52,7 @@ echo ''; echo '***** Running graphIR.py *****'
 python "$path"/graphIR.py -db "$db" -host "$host"
 
 echo ''; echo '***** Running scorePredict.py *****'
-python "$path"/scorePredict.py -db "$db" -host "$host" -sb true
+python "$path"/scorePredict.py -db "$db" -host "$host" -sb true -pred future
 
 echo ''; echo '***** Running syncTable to migrate matchScouting from localhost to aws *****'
 python "$path"/syncTable.py -db1 "$db" -host1 "$host" \
