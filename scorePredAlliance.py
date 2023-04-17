@@ -2,7 +2,7 @@ import mysql.connector
 import sys
 import argparse
 import configparser
-from scorePredictMatchAlgorithm import scorePredictMatchAlgorithm
+from scorePredAllianceAlgorithm import scorePredAllianceAlgorithm
 
 # parser to choose the database where the table will be written
 parser = argparse.ArgumentParser()
@@ -40,23 +40,13 @@ query = f"SELECT team, autoScoreMean, autoScoreStd, " \
         f"teleScoreMean, teleScoreStd, " \
         f"rampMean, rampStd " \
         f"FROM CEanalysisGraphs " \
-        f"WHERE team IN ('{red1}', '{red2}', '{red3}') and eventID = {eventID}"
+        f"WHERE team IN ('{team1}', '{team2}', '{team3}') and eventID = {eventID}"
 print(query)
 cursor.execute(query)
-redAllianceData = cursor.fetchall()
+allianceData = cursor.fetchall()
 
-# get blue alliance data from CEanalysisGraphs
-query = f"SELECT team, autoScoreMean, autoScoreStd, " \
-        f"autoRampMean, autoRampStd, " \
-        f"teleScoreMean, teleScoreStd, " \
-        f"rampMean, rampStd " \
-        f"FROM CEanalysisGraphs " \
-        f"WHERE team IN ('{blue1}', '{blue2}', '{blue3}') and eventID = {eventID}"
-cursor.execute(query)
-blueAllianceData = cursor.fetchall()
-
-test = scorePredictMatchAlgorithm(redAllianceData, blueAllianceData)
-print(test)
+score = scorePredAllianceAlgorithm(allianceData)
+print(score)
 
 cursor.close()
 conn.close()

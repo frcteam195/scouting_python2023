@@ -1,6 +1,6 @@
 import numpy as np
 
-def scorePredictMatchAlgorithm(redAllianceData, blueAllianceData):
+def scorePredMatchAlgorithm(redAllianceData, blueAllianceData):
     
     red1AutoPts, red2AutoPts, red3AutoPts = [t[1] for t in redAllianceData]
     red1AutoPtsStd, red2AutoPtsStd, red3AutoPtsStd = [t[2] for t in redAllianceData]
@@ -64,12 +64,11 @@ def scorePredictMatchAlgorithm(redAllianceData, blueAllianceData):
     # finally calculate the alliance score distributions and means
     redScoreDist = redSumAutoPtsDist + redSumAutoRampPtsDist + redSumTelePtsDist + redSumEndgamePtsDist
     blueScoreDist = blueSumAutoPtsDist + blueSumAutoRampPtsDist + blueSumTelePtsDist + blueSumEndgamePtsDist
-    redPredScore = round(np.mean(redScoreDist))
-    bluePredScore = round(np.mean(blueScoreDist))
+    # redPredScore = round(np.mean(redScoreDist))
+    # bluePredScore = round(np.mean(blueScoreDist))
    
     redWins = (redScoreDist > blueScoreDist).sum()
     redWinProb = round((redWins / iter) * 100, 1)
     blueWinProb = round(100 - redWinProb, 1)
 
-    return[redPredScore, redWinProb, bluePredScore, blueWinProb]
-
+    return[redWinProb, blueWinProb]

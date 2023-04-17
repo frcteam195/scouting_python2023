@@ -2,7 +2,7 @@ import mysql.connector
 import sys
 import argparse
 import configparser
-from scorePredictMatchAlgorithm import scorePredictMatchAlgorithm
+from scorePredMatchAlgorithm import scorePredMatchAlgorithm
 
 # parser to choose the database where the table will be written
 parser = argparse.ArgumentParser()
@@ -47,7 +47,6 @@ query = f"SELECT team, autoScoreMean, autoScoreStd, " \
         f"rampMean, rampStd " \
         f"FROM CEanalysisGraphs " \
         f"WHERE team IN ('{red1}', '{red2}', '{red3}') and eventID = {eventID}"
-print(query)
 cursor.execute(query)
 redAllianceData = cursor.fetchall()
 
@@ -61,8 +60,8 @@ query = f"SELECT team, autoScoreMean, autoScoreStd, " \
 cursor.execute(query)
 blueAllianceData = cursor.fetchall()
 
-test = scorePredictMatchAlgorithm(redAllianceData, blueAllianceData)
-print(test)
+winProb = scorePredMatchAlgorithm(redAllianceData, blueAllianceData)
+print(winProb)
 
 cursor.close()
 conn.close()
