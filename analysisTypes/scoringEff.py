@@ -56,4 +56,4 @@ def scoringEff(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
                     rsCEA['S2V'] = 0
                     rsCEA['S2D'] = ''
         
-        return rsCEA
+    return rsCEA
