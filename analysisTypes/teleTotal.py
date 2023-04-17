@@ -78,4 +78,5 @@ def teleTotal(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
         rsCEA['S2V'] = median
         rsCEA['S2D'] = str(median)
         rsCEA['S4V'] = stdev
+    
     return rsCEA
