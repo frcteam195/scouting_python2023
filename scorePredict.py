@@ -156,6 +156,7 @@ for match in matches:
     if redMeanAutoRampPts > 12:
         redMeanAutoRampPts = 12
     blueSumAutoRampPtsDist = blue1AutoRampPtsDist + blue2AutoRampPtsDist + blue3AutoRampPtsDist
+    blueSumAutoRampPtsDist[blueSumAutoRampPtsDist > 12] =  12
     blueMeanAutoRampPts = np.mean(blueSumAutoRampPtsDist)
     blueStdAutoRampPts = np.std(blueSumAutoRampPtsDist)
     if blueMeanAutoRampPts > 12:
@@ -244,7 +245,7 @@ for match in matches:
 
     redWins = (redScoreDist > blueScoreDist).sum()
     redWinProb = round((redWins / iter) * 100, 1)
-    blueWinProb = 100 - redWinProb
+    blueWinProb = round(100 - redWinProb, 1)
     # print(f"Qual = {qual}, matchID = {matchID}, redWinProb = {redWinProb}")
     qual += 1
 
