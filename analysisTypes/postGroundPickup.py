@@ -7,7 +7,7 @@ def postGroundPickup(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitD
     numberOfMatchesPlayed = 0
 
     # only using to test ranks, eliminate later
-    postGroundPickupList = []
+    teleGroundPickupList = []
     
     # Loop through each match the robot played in.
     for matchResults in rsRobotMatchData:
@@ -21,31 +21,32 @@ def postGroundPickup(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitD
         elif scoutingStatus == 2:
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'UR'
         else:
-            postGroundPickup = matchResults[analysis.columns.index('postGroundPickup')]
+            teleGroundPickup = matchResults[analysis.columns.index('teleGroundPickup')]
             
-            if postGroundPickup is None:
-                postGroundPickupDisplay = 999
-                postGroundPickupValue = 999
-                postGroundPickupColor = 0
-            elif postGroundPickup == 0:
-                postGroundPickupDisplay = 'N'
-                postGroundPickupValue = 0
-                postGroundPickupColor = 2
+            teleGroundPickupDisplay = str(teleGroundPickup)
+            teleGroundPickupValue = teleGroundPickup
+
+            if teleGroundPickup == 0:
+                teleGroundPickupColor = 1
+            elif teleGroundPickup <= 2:
+                teleGroundPickupColor = 2
+            elif teleGroundPickup <= 4:
+                teleGroundPickupColor = 3
+            elif teleGroundPickup <= 6:
+                teleGroundPickupColor = 4
             else:
-                postGroundPickupDisplay = 'Y'
-                postGroundPickupValue = 1
-                postGroundPickupColor = 4
+                teleGroundPickupColor = 5
             
-            postGroundPickupList.append(postGroundPickupValue)
+            teleGroundPickupList.append(teleGroundPickupValue)
         
             # Increment the number of matches played and write M#D, M#V and M#F
             numberOfMatchesPlayed += 1
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = postGroundPickupDisplay
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = postGroundPickupValue
-            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = postGroundPickupColor
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = teleGroundPickupDisplay
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'V'] = teleGroundPickupValue
+            rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'F'] = teleGroundPickupColor
 
     if numberOfMatchesPlayed > 0:
-        rsCEA['S1V'] = round(statistics.mean(postGroundPickupList), 1)
-        rsCEA['S1D'] = str(round(statistics.mean(postGroundPickupList), 1))
+        rsCEA['S1V'] = round(statistics.mean(teleGroundPickupList), 1)
+        rsCEA['S1D'] = str(round(statistics.mean(teleGroundPickupList), 1))
         
     return rsCEA
