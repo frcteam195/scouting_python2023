@@ -19,11 +19,13 @@ parser.add_argument("-db", "--database", help = "Choices: dev1, dev2, testing, p
 parser.add_argument("-host", "--host", help = "Host choices: aws, localhost", required=True)
 parser.add_argument("-sb", "--statbotics", help = "Use data from statbotics: true, false", required=True)
 parser.add_argument("-pred", "--predict", help= "Predict future or past matches: future, past", required=True)
+# parser.add_argument("-back", "--backscouting", help="Use back scouting data: true, false", required=True)
 args = parser.parse_args()
 input_db = args.database
 input_host = args.host
 input_sb = args.statbotics
 predict = args.predict
+# backscouting = args.backscouting
 
 config = configparser.ConfigParser()
 config.read('helpers/config.ini')
@@ -41,6 +43,12 @@ cursor.execute(query)
 eventData = cursor.fetchall()
 eventID = eventData[0][0]
 BAeventID = eventData[0][1]
+# set the event to one less if backscouting is true
+# if backscouting == 'true':
+#     event = eventID - 1
+#     print(event)
+# else:
+#     event = eventID
 
 if predict == "past":
     query =f"select matchID, red1, red2, red3, blue1, blue2, blue3, matchNum from matches where eventID = {eventID} and actualTime is not null"
