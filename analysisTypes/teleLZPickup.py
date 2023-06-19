@@ -1,5 +1,8 @@
 import statistics
 
+# Note: This was changed to reflect slider pkup for CT Champs, but leaving the post in the name for simplicity
+#       also changed to a simple numberic value. DB changed to insert a zero by defaut
+
 def teleLZPickup(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
     # Initialize the rsCEA record set and define variables specific to this function which lie outside the for loop
     rsCEA = {}
@@ -22,7 +25,6 @@ def teleLZPickup(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData)
         elif scoutingStatus == 2:
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'UR'
         else:
-            
             LZPickup = matchResults[analysis.columns.index('teleLZPickup')]
      
             if LZPickup is None:

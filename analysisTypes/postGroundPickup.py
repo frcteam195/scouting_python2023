@@ -1,4 +1,8 @@
 import statistics
+
+# Note: This was changed to teleOP for CT Champs, but leaving the post in the name for simplicity
+#       also changed to a simple numberic value. DB changed to insert a zero by defaut
+
 #import mysql.connector
 def postGroundPickup(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
@@ -22,19 +26,23 @@ def postGroundPickup(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitD
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'UR'
         else:
             postGroundPickup = matchResults[analysis.columns.index('postGroundPickup')]
-            
+
             if postGroundPickup is None:
-                postGroundPickupDisplay = 999
-                postGroundPickupValue = 999
-                postGroundPickupColor = 0
-            elif postGroundPickup == 0:
-                postGroundPickupDisplay = 'N'
-                postGroundPickupValue = 0
+                postGroundPickup = 0
+                
+            postGroundPickupDisplay = str(postGroundPickup)
+            postGroundPickupValue = postGroundPickup
+            
+            if postGroundPickup == 0:
+                postGroundPickupColor = 1
+            elif postGroundPickup <= 2:
                 postGroundPickupColor = 2
-            else:
-                postGroundPickupDisplay = 'Y'
-                postGroundPickupValue = 1
+            elif postGroundPickup <= 4:
+                postGroundPickupColor = 3
+            elif postGroundPickup <= 6:
                 postGroundPickupColor = 4
+            else:
+                postGroundPickupColor = 5
             
             postGroundPickupList.append(postGroundPickupValue)
         

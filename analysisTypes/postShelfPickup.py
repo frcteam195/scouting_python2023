@@ -1,4 +1,8 @@
 import statistics
+
+# Note: This was changed to teleOP for CT Champs, but leaving the post in the name for simplicity
+#       also changed to a simple numberic value. DB changed to insert a zero by defaut
+
 #import mysql.connector
 def postShelfPickup(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitData):
 
@@ -20,23 +24,24 @@ def postShelfPickup(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
         elif scoutingStatus == 2:
             rsCEA['M' + str(matchResults[analysis.columns.index('teamMatchNum')]) + 'D'] = 'UR'
         else:
-            
             postShelfPickup = matchResults[analysis.columns.index('postShelfPickup')]
             
             if postShelfPickup is None:
-                postShelfPickupDisplay = 999
-                postShelfPickupValue = 999
-                postShelfPickupColor = 0
-            elif postShelfPickup == 0:
-                postShelfPickupDisplay = 'N'
-                postShelfPickupValue = 0
-                postShelfPickupColor = 2
-            else:
-                postShelfPickupDisplay = 'Y'
-                postShelfPickupValue = 1
-                postShelfPickupColor = 4
+                postShelfPickup = 0
+                
+            postShelfPickupDisplay = str(postShelfPickup)
+            postShelfPickupValue = postShelfPickup
             
-            postShelfPickupList.append(postShelfPickupValue)
+            if postShelfPickup == 0:
+                postShelfPickupColor = 1
+            elif postShelfPickup <= 2:
+                postShelfPickupColor = 2
+            elif postShelfPickup <= 4:
+                postShelfPickupColor = 3
+            elif postShelfPickup <= 6:
+                postShelfPickupColor = 4
+            else:
+                postShelfPickupColor = 5
 
             # Increment the number of matches played and write M#D, M#V and M#F
             numberOfMatchesPlayed += 1
