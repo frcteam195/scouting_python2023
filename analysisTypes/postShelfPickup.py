@@ -43,7 +43,7 @@ def postShelfPickup(analysis, rsRobotMatchData, rsRobotL2MatchData, rsRobotPitDa
             else:
                 postShelfPickupColor = 5
 
-            postShelfPickupList.append(postShelfPickupList)
+            postShelfPickupList.append(postShelfPickup)
 
             # Increment the number of matches played and write M#D, M#V and M#F
             numberOfMatchesPlayed += 1
