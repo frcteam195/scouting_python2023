@@ -16,8 +16,8 @@ source "$path"/venv/bin/activate
 # change to the path so relative paths are all correct
 cd "$path"
 
-echo ''; echo '***** Running analysisIR.py #1 *****'
-python "$path"/analysisIR.py -db "$db" -host "$host"
+#echo ''; echo '***** Running analysisIR.py #1 *****'
+#python "$path"/analysisIR.py -db "$db" -host "$host"
 
 echo ''; echo '***** Running BA/BAmatchData.py *****'
 python "$path"/BA/BAmatchData.py -db "$db" -host "$host"
@@ -34,8 +34,8 @@ python "$path"/copyBAmatchData.py -db "$db" -host "$host"
 echo ''; echo '***** Running insertFoulsRP.py *****'
 python "$path"/insertFoulsRP.py -db "$db" -host "$host"
 
-echo ''; echo '***** Running robotImages.py on AWS *****'
-ssh -i /home/team195/scouting.pem ubuntu@scouting.team195.com /home/ubuntu/scouting_python2023/robotImages.sh
+#echo ''; echo '***** Running robotImages.py on AWS *****'
+#ssh -i /home/team195/scouting.pem ubuntu@scouting.team195.com /home/ubuntu/scouting_python2023/robotImages.sh
 
 echo ''; echo '***** Running syncTable to migrate matchScoutingL2 from aws to localhost *****'
 python "$path"/syncTable.py -db1 "$remoteDB" -host1 "$remoteHost" \
@@ -51,8 +51,8 @@ python "$path"/analysisIR.py -db "$db" -host "$host"
 echo ''; echo '***** Running graphIR.py *****'
 python "$path"/graphIR.py -db "$db" -host "$host"
 
-echo ''; echo '***** Running scorePredict.py *****'
-python "$path"/scorePredict.py -db "$db" -host "$host" -sb true -pred future
+#echo ''; echo '***** Running scorePredict.py *****'
+#python "$path"/scorePredict.py -db "$db" -host "$host" -sb true -pred future
 
 echo ''; echo '***** Running syncTable to migrate matchScouting from localhost to aws *****'
 python "$path"/syncTable.py -db1 "$db" -host1 "$host" \
