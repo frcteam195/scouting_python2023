@@ -1,4 +1,5 @@
 __all__ = [
+           'testAnalysis',
            'startingPosition',
            'autoRamp',
            'autoScore',
@@ -39,6 +40,7 @@ __all__ = [
            'goodDefBot',
            'rampTime',
            'pit',
+           'pit2',
            'autoLowPieces',
            'autoMidPieces',
            'autoHighPieces'

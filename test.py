@@ -1,18 +1,60 @@
 import mysql.connector
+import numpy as np
+import os
 import sys
-import argparse
-import configparser
-import statbotics
 import datetime
 import time
-import numpy as np
-import re
+import argparse
+import configparser
 
-sb = statbotics.Statbotics()
-
-now = datetime.datetime.now()
-print(now.strftime("%Y-%m-%d %H:%M:%S"))
-start_time = time.time()
+# import all the analysis types listed in analysisTypes/__init__.py
+# add each analysisType to the analysisTypeDict dictionary 
+from analysisTypes import *
+analysisTypesDict = {
+                    # "startingPosition": startingPosition.startingPosition,
+                    # "autoScore": autoScore.autoScore,
+                    # "autoGamePieces": autoGamePieces.autoGamePieces,
+                    # "autoRamp": autoRamp.autoRamp,
+                    # "teleHigh": teleHigh.teleHigh,
+                    # "teleMid": teleMid.teleMid,
+                    # "teleLow": teleLow.teleLow,
+                    # "teleTotal": teleTotal.teleTotal,
+                    # "teleCones": teleCones.teleCones,
+                    # "teleCubes": teleCubes.teleCubes,
+                    # "teleCommunity": teleCommunity.teleCommunity,
+                    # "teleLZPickup": teleLZPickup.teleLZPickup,
+                    # "teleObstructed": teleObstructed.teleObstructed,
+                    # "teleWasObstructed": teleWasObstructed.teleWasObstructed,
+                    # "ramp": ramp.ramp,
+                    # # "rampPos": rampPos.rampPos,
+                    # "postSubBroke": postSubBroke.postSubBroke,
+                    # "postBrokeDown": postBrokeDown.postBrokeDown,
+                    # "postShelfPickup": postShelfPickup.postShelfPickup,
+                    # "postGroundPickup": postGroundPickup.postGroundPickup,
+                    # "postTippedOver": postTippedOver.postTippedOver,
+                    # "matchVideos": matchVideos.matchVideos,
+                    # "BAFoulsPts": BAFoulsPts.BAFoulsPts,
+                    # "BARankingPoints": BARankingPoints.BARankingPoints,
+                    # "totalScore": totalScore.totalScore,
+                    # "teleScore": teleScore.teleScore,
+                    # "graphicTeleInfo": graphicTeleInfo.graphicTeleInfo,
+                    # "graphicStartPos": graphicStartPos.graphicStartPos,
+                    # "autoScorePosHigh": autoScorePosHigh.autoScorePosHigh,
+                    # "autoScorePosMid": autoScorePosMid.autoScorePosMid,
+                    # "autoScorePosLow": autoScorePosLow.autoScorePosLow,
+                    # "speed": speed.speed,
+                    # "maneuverability": maneuverability.maneuverability,
+                    # "climb": climb.climb,
+                    # "scoringEff": scoringEff.scoringEff,
+                    # "intakeEff": intakeEff.intakeEff,
+                    # "goodOffBot": goodOffBot.goodOffBot,
+                    # "goodDefBot": goodDefBot.goodDefBot,
+                    # # "rampTime": rampTime.rampTime,
+                    # "pit": pit.pit,
+                    # "autoLowPieces": autoLowPieces.autoLowPieces,
+                    # "autoMidPieces": autoMidPieces.autoMidPieces,
+                    "autoHighPieces": autoHighPieces.autoHighPieces
+                    } 
 
 # parser to choose the database where the table will be written
 parser = argparse.ArgumentParser()
@@ -22,237 +64,269 @@ args = parser.parse_args()
 input_db = args.database
 input_host = args.host
 
+CEA_tmpTable = "CEanalysisTmp"
+BAoprTable = "BAoprs"
+BArankTable = "BAranks"
+
+# Read the configuration file
 config = configparser.ConfigParser()
 config.read('helpers/config.ini')
 
+# Get the database login information from the configuration (ini) file
 host = config[input_host+"-"+input_db]['host']
 user = config[input_host+"-"+input_db]['user']
 passwd = config[input_host+"-"+input_db]['passwd']
 database = config[input_host+"-"+input_db]['database']
 
-conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=database)
-cursor = conn.cursor()
 
-query = "SELECT eventID, BAeventID FROM events WHERE currentEvent = 1"
-cursor.execute(query)
-eventData = cursor.fetchall()
-eventID = eventData[0][0]
-BAeventID = eventData[0][1]
+# Define a Class called analysis
+class analysis():
+    # Inside the class there are several functions defined:
+    #   _scoutingDBconnector = sets up the database connection and creates the cursor for running SQL queries
+    #       _run_query = runs a generic query based on string passed to the functon. Used by several other functions
+    #   _createCEanalysisTmp = drops (if exists) and builds tmp file for Current Event Analysis data
+    #   _setColumns = retrieves the column headings from the database table so we don't need to hardcode them  
+    #   _getTeams = gets the team list and sets the results to rsRobots
+    #   _getTeamData =  retrieves data records for a given team, for all their matches, and sets the results to rsRobotMatchData
+    #   _analyzeTeams = loops over teams and then loops over all analysisTypes setting the results of each inner loop to rsCEA
+    #       _insertAnalysis = inserts the rsCEA records into the CEanalysisTmp table, used within _analyzeTeams
+    #   _rankTeamsAll = loops over all analysisTypeIDs that are slated for ranking and calls the _rankTeamsSingle function
+    #       _rankTeamsSingle = ranks teams based on S1V for a given analysisTypeID using numpy
+    #   _renameTable = renames CEA_tmpTable to CEanalysis
 
-query =f"SELECT team FROM teams WHERE eventID = {eventID}"
-cursor.execute(query)
-teamList = cursor.fetchall()
-teamTmpList = teamList[0:6]
-print(teamTmpList)
+    def __init__(self):
+        now = datetime.datetime.now()
+        print(now.strftime("%Y-%m-%d %H:%M:%S"))
+        start_time = time.time()
+        print("this script takes a while, please be patient!")
 
-# print(teams)
-i = 0
-for team in range(len(teamTmpList)-1):
-    team1Num = teamTmpList[0]
-    getVals = list([val for val in team1Num if val.isalnum()])
-    team1Num = "".join(getVals)
-    teamTmpList.pop(0)
-    team2Num = teamTmpList[0]
-    getVals = list([val for val in team2Num if val.isalnum()])
-    team2Num = "".join(getVals)
-    i = 0
-    for team3 in range(len(teamTmpList)-1):
-        i += 1
-        team3Num = teamTmpList[i]
-        getVals = list([val for val in team3Num if val.isalnum()])
-        team3Num = "".join(getVals)
-        print(f"{team1Num}, {team2Num}, {team3Num}")
-        
-        query = f"SELECT team, autoScoreMean, autoScoreStd, " \
-                f"autoGamePiecesMean, autoGamePiecesStd, " \
-                f"autoRampMean, autoRampStd, " \
-                f"teleScoreMean, teleScoreStd, " \
-                f"teleTotalMean, teleTotalStd, " \
-                f"rampMean, rampStd " \
-                f"FROM CEanalysisGraphs " \
-                f"WHERE team IN ('{team1Num}', '{team2Num}', '{team3Num}') and eventID = {eventID}"
-        print(query)
-        cursor.execute(query)
-        allianceData = cursor.fetchall()
-        
-        team1AutoPts, team2AutoPts, team3AutoPts = [t[1] for t in allianceData]
-        team1AutoPtsStd, team2AutoPtsStd, team3AutoPtsStd = [t[2] for t in allianceData]
-        team1AutoGP, team2AutoGP, team3AutoGP = [t[3] for t in allianceData]
-        team1AutoGPStd, team2AutoGPStd, team3AutoGPStd = [t[4] for t in allianceData]
-        team1AutoRampPts, team2AutoRampPts, team3AutoRampPts = [t[5] for t in allianceData]
-        team1AutoRampPtsStd, team2AutoRampPtsStd, team3AutoRampPtsStd = [t[6] for t in allianceData]
-        team1TelePts, team2TelePts, team3TelePts = [t[7] for t in allianceData]
-        team1TelePtsStd, team2TelePtsStd, team3TelePtsStd = [t[8] for t in allianceData]
-        team1TeleTotal, team2TeleTotal, team3TeleTotal = [t[9] for t in allianceData]
-        team1TeleTotalStd, team2TeleTotalStd, team3TeleTotalStd = [t[10] for t in allianceData]
-        team1EndgamePts, team2EndgamePts, team3EndgamePts = [t[11] for t in allianceData]
-        team1EndgamePtsStd, team2EndgamePtsStd, team3EndgamePtsStd = [t[12] for t in allianceData]
+        self._scoutingDBconnector()
+        self._createCEanalysisTmp()
+        self.columns = []
+        self.L2Columns = []
+        self.pitColumns = []
+        self.matchScouting_dict = self._getMatchScouting()
+        self.rsRobots = self._getTeams()
+        self._analyzeTeams()
+        self._rankTeamsAll()
+        self._renameTable()
 
-    # # calculate scores from CEanalysisGraphs data
-    # iter = 1000
+        print("Time: %0.2f seconds" % (time.time() - start_time))
 
-    # red1AutoPtsDist = np.random.normal(loc=red1AutoPts, scale=red1AutoPtsStd, size=iter)
-    # red2AutoPtsDist = np.random.normal(loc=red2AutoPts, scale=red2AutoPtsStd, size=iter)
-    # red3AutoPtsDist = np.random.normal(loc=red3AutoPts, scale=red3AutoPtsStd, size=iter)
-    # blue1AutoPtsDist = np.random.normal(loc=blue1AutoPts, scale=blue1AutoPtsStd, size=iter)
-    # blue2AutoPtsDist = np.random.normal(loc=blue2AutoPts, scale=blue2AutoPtsStd, size=iter)
-    # blue3AutoPtsDist = np.random.normal(loc=blue3AutoPts, scale=blue3AutoPtsStd, size=iter)
-    # redSumAutoPtsDist = red1AutoPtsDist + red2AutoPtsDist + red3AutoPtsDist
-    # redMeanAutoPts = np.mean(redSumAutoPtsDist)
-    # redStdAutoPts = np.std(redSumAutoPtsDist)
-    # blueSumAutoPtsDist = blue1AutoPtsDist + blue2AutoPtsDist + blue3AutoPtsDist
-    # blueMeanAutoPts = np.mean(blueSumAutoPtsDist)
-    # blueStdAutoPts = np.std(blueSumAutoPtsDist)
-    # # print(f"red auto: {redMeanAutoPts} +/- {redStdAutoPts}, blue auto: {blueMeanAutoPts} +/- {blueStdAutoPts}")
-
-    # red1AutoRampPtsDist = np.random.normal(loc=red1AutoRampPts, scale=red1AutoRampPtsStd, size=iter)
-    # red2AutoRampPtsDist = np.random.normal(loc=red2AutoRampPts, scale=red2AutoRampPtsStd, size=iter)
-    # red3AutoRampPtsDist = np.random.normal(loc=red3AutoRampPts, scale=red3AutoRampPtsStd, size=iter)
-    # blue1AutoRampPtsDist = np.random.normal(loc=blue1AutoRampPts, scale=blue1AutoRampPtsStd, size=iter)
-    # blue2AutoRampPtsDist = np.random.normal(loc=blue2AutoRampPts, scale=blue2AutoRampPtsStd, size=iter)
-    # blue3AutoRampPtsDist = np.random.normal(loc=blue3AutoRampPts, scale=blue3AutoRampPtsStd, size=iter)
-    # redSumAutoRampPtsDist = red1AutoRampPtsDist + red2AutoRampPtsDist + red3AutoRampPtsDist
-    # redSumAutoRampPtsDist[redSumAutoRampPtsDist > 12] =  12
-    # redMeanAutoRampPts = np.mean(redSumAutoRampPtsDist)
-    # redStdAutoRampPts = np.std(redSumAutoRampPtsDist)
-    # if redMeanAutoRampPts > 12:
-    #     redMeanAutoRampPts = 12
-    # blueSumAutoRampPtsDist = blue1AutoRampPtsDist + blue2AutoRampPtsDist + blue3AutoRampPtsDist
-    # blueMeanAutoRampPts = np.mean(blueSumAutoRampPtsDist)
-    # blueStdAutoRampPts = np.std(blueSumAutoRampPtsDist)
-    # if blueMeanAutoRampPts > 12:
-    #     blueMeanAutoRampPts = 12
-    # # print(f"red AutoRamp: {redMeanAutoRampPts} +/- {redStdAutoRampPts}, blue AutoRamp: {blueMeanAutoRampPts} +/- {blueStdAutoRampPts}")
-
-    # # Sum autoramp and autoScore for total auto points
-    # redPredAuto = redMeanAutoPts + redMeanAutoRampPts
-    # bluePredAuto = blueMeanAutoPts + blueMeanAutoRampPts
-
-    # red1TelePtsDist = np.random.normal(loc=red1TelePts, scale=red1TelePtsStd, size=iter)
-    # red2TelePtsDist = np.random.normal(loc=red2TelePts, scale=red2TelePtsStd, size=iter)
-    # red3TelePtsDist = np.random.normal(loc=red3TelePts, scale=red3TelePtsStd, size=iter)
-    # blue1TelePtsDist = np.random.normal(loc=blue1TelePts, scale=blue1TelePtsStd, size=iter)
-    # blue2TelePtsDist = np.random.normal(loc=blue2TelePts, scale=blue2TelePtsStd, size=iter)
-    # blue3TelePtsDist = np.random.normal(loc=blue3TelePts, scale=blue3TelePtsStd, size=iter)
-    # redSumTelePtsDist = red1TelePtsDist + red2TelePtsDist + red3TelePtsDist
-    # redPredTele = np.mean(redSumTelePtsDist)
-    # redPredTeleStd = np.std(redSumTelePtsDist)
-    # blueSumTelePtsDist = blue1TelePtsDist + blue2TelePtsDist + blue3TelePtsDist
-    # bluePredTele = np.mean(blueSumTelePtsDist)
-    # bluePredTeleStd = np.std(blueSumTelePtsDist)
-    # # print(f"red tele: {redMeanTelePts} +/- {redStdTelePts}, blue tele: {blueMeanTelePts} +/- {blueStdTelePts}")
-
-    # red1EndgamePtsDist = np.random.normal(loc=red1EndgamePts, scale=red1EndgamePtsStd, size=iter)
-    # red2EndgamePtsDist = np.random.normal(loc=red2EndgamePts, scale=red2EndgamePtsStd, size=iter)
-    # red3EndgamePtsDist = np.random.normal(loc=red3EndgamePts, scale=red3EndgamePtsStd, size=iter)
-    # blue1EndgamePtsDist = np.random.normal(loc=blue1EndgamePts, scale=blue1EndgamePtsStd, size=iter)
-    # blue2EndgamePtsDist = np.random.normal(loc=blue2EndgamePts, scale=blue2EndgamePtsStd, size=iter)
-    # blue3EndgamePtsDist = np.random.normal(loc=blue3EndgamePts, scale=blue3EndgamePtsStd, size=iter)
-    # redSumEndgamePtsDist = red1EndgamePtsDist + red2EndgamePtsDist + red3EndgamePtsDist
-    # redPredEndgame = np.mean(redSumEndgamePtsDist)
-    # redPredEndgameStd = np.std(redSumEndgamePtsDist)
-    # blueSumEndgamePtsDist = blue1EndgamePtsDist + blue2EndgamePtsDist + blue3EndgamePtsDist
-    # bluePredEndgame = np.mean(blueSumEndgamePtsDist)
-    # bluePredEndgameStd = np.std(blueSumEndgamePtsDist)
-    # # print(f"red Endgame: {redMeanEndgamePts} +/- {redStdEndgamePts}, blue Endgame: {blueMeanEndgamePts} +/- {blueStdEndgamePts}")
-
-    # red1AutoGPDist = np.random.normal(loc=red1AutoGP, scale=red1AutoGPStd, size=iter)
-    # red2AutoGPDist = np.random.normal(loc=red2AutoGP, scale=red2AutoGPStd, size=iter)
-    # red3AutoGPDist = np.random.normal(loc=red3AutoGP, scale=red3AutoGPStd, size=iter)
-    # blue1AutoGPDist = np.random.normal(loc=blue1AutoGP, scale=blue1AutoGPStd, size=iter)
-    # blue2AutoGPDist = np.random.normal(loc=blue2AutoGP, scale=blue2AutoGPStd, size=iter)
-    # blue3AutoGPDist = np.random.normal(loc=blue3AutoGP, scale=blue3AutoGPStd, size=iter)
-    # redSumAutoGPDist = red1AutoGPDist + red2AutoGPDist + red3AutoGPDist
-    # redPredAutoGP = np.mean(redSumAutoGPDist)
-    # redPredAutoGPStd = np.std(redSumAutoGPDist)
-    # blueSumAutoGPDist = blue1AutoGPDist + blue2AutoGPDist + blue3AutoGPDist
-    # bluePredAutoGP = np.mean(blueSumAutoGPDist)
-    # bluePredAutoGPStd = np.std(blueSumAutoGPDist)
-    # # print(f"red AutoGP: {redMeanAutoGP} +/- {redStdAutoGP}, blue AutoGP: {blueMeanAutoGP} +/- {blueStdAutoGP}")
-
-    # red1TeleTotalDist = np.random.normal(loc=red1TeleTotal, scale=red1TeleTotalStd, size=iter)
-    # red2TeleTotalDist = np.random.normal(loc=red2TeleTotal, scale=red2TeleTotalStd, size=iter)
-    # red3TeleTotalDist = np.random.normal(loc=red3TeleTotal, scale=red3TeleTotalStd, size=iter)
-    # blue1TeleTotalDist = np.random.normal(loc=blue1TeleTotal, scale=blue1TeleTotalStd, size=iter)
-    # blue2TeleTotalDist = np.random.normal(loc=blue2TeleTotal, scale=blue2TeleTotalStd, size=iter)
-    # blue3TeleTotalDist = np.random.normal(loc=blue3TeleTotal, scale=blue3TeleTotalStd, size=iter)
-    # redSumTeleTotalDist = red1TeleTotalDist + red2TeleTotalDist + red3TeleTotalDist
-    # redPredTeleTotal = np.mean(redSumTeleTotalDist)
-    # redPredTeleTotalStd = np.std(redSumTeleTotalDist)
-    # blueSumTeleTotalDist = blue1TeleTotalDist + blue2TeleTotalDist + blue3TeleTotalDist
-    # bluePredTeleTotal = np.mean(blueSumTeleTotalDist)
-    # bluePredTeleTotalStd = np.std(blueSumTeleTotalDist)
-    # # print(f"red TeleTotal: {redMeanTeleTotal} +/- {redStdTeleTotal}, blue TeleTotal: {blueMeanTeleTotal} +/- {blueStdTeleTotal}")
+    # Connect to database and setup cursor
+    def _scoutingDBconnector(self):
+        self.conn = mysql.connector.connect(user=user, passwd=passwd, host=host, database=database)
+        self.cursor = self.conn.cursor()
     
-    # # finally calculate the alliance scores
-    # redScoreDist = redSumAutoPtsDist + redSumAutoRampPtsDist + redSumTelePtsDist + redSumEndgamePtsDist
-    # blueScoreDist = blueSumAutoPtsDist + blueSumAutoRampPtsDist + blueSumTelePtsDist + blueSumEndgamePtsDist
-    # redGPtotalDist = redSumAutoGPDist + redSumTeleTotalDist
-    # blueGPtotalDist = blueSumAutoGPDist + blueSumTeleTotalDist
-    # redPredScore = round(np.mean(redScoreDist))
-    # redPredScoreStd = np.std(redScoreDist)
-    # bluePredScore = round(np.mean(blueScoreDist))
-    # bluePredScoreStd = np.std(blueScoreDist)
-    # redGPtotal = round(np.mean(redGPtotalDist), 1)
-    # redGPtotalStd = np.std(redGPtotalDist)
-    # blueGPtotal = round(np.mean(blueGPtotalDist), 1)
-    # blueGPtotalStd = np.std(blueGPtotalDist)
-    # # 1 std = 68% likelihood, 1.645 std = 90% likelihood, 2 std = 95% liklihood, 3 std = 99.7% likelihood
-    # redGPstring = f"{round(redGPtotal - (1.645 * redGPtotalStd), 1)} min,   {redGPtotal} mean,   {round(redGPtotal + (1.645 * redGPtotalStd), 1)} max"
-    # blueGPstring = f"{round(blueGPtotal - (1.645 * blueGPtotalStd), 1)} min,   {blueGPtotal} mean,   {round(blueGPtotal + (1.645 * blueGPtotalStd), 1)} max"
-    # # print(f"({redGPstring}), ({blueGPstring})")
-    # # print(f"red: {redPredScore} +/- {redPredScoreStd}, blue: {bluePredScore} +/- {bluePredScoreStd}")
-    # # print(f"redGP = {redGPtotal} +/- {redGPtotalStd}, blueGP = {blueGPtotal} +/- {blueGPtotalStd}")
+    # Function to run a query - the query string must be passed to the function
+    def _run_query(self, query):
+        self.cursor.execute(query)
+        
+    # Function to drop existing CEanalysisTmp table if it exists (it should not) and rebuild table
+    def _createCEanalysisTmp(self):
+        self._run_query("DROP TABLE IF EXISTS CEanalysisTmp")
+        try:
+            SQLfile = open('CEanalysisTmp.sql','r')
+        except IOError:
+            print("CEanalysisTmp file could not be opened, aborting!")
+            sys.exit(1)
+        query = SQLfile.read()
+        self._run_query(query)
 
-    # redWins = (redScoreDist > blueScoreDist).sum()
-    # redWinProb = round((redWins / iter) * 100, 1)
-    # blueWinProb = 100 - redWinProb
-    # # print(f"Qual = {qual}, matchID = {matchID}, redWinProb = {redWinProb}")
-    # qual += 1
+    # Function to determine the DB table column headers
+    def _setColumns(self, columns):
+        self.columns = columns
+        print(columns)
+    
+    def _setL2Columns(self, L2Columns):
+        self.L2Columns = L2Columns
+        # print(L2Columns)
 
-    # if input_sb == 'true':
-    #     updateQuery = f"UPDATE matches SET redPredScore = {redPredScore}, " \
-    #         f"bluePredScore = {bluePredScore}, " \
-    #         f"redPredAuto = {redPredAuto}, " \
-    #         f"bluePredAuto = {bluePredAuto}, " \
-    #         f"redPredTele = {redPredTele}, " \
-    #         f"bluePredTele = {bluePredTele}, " \
-    #         f"redPredEndgame = {redPredEndgame}, " \
-    #         f"bluePredEndgame = {bluePredEndgame}, " \
-    #         f"redWinProb = {redWinProb}, " \
-    #         f"blueWinProb = {blueWinProb}, " \
-    #         f"redGPtotal = '{redGPstring}', " \
-    #         f"blueGPtotal = '{blueGPstring}', " \
-    #         f"SBredPredScore = {SBredScorePred}, " \
-    #         f"SBbluePredScore = {SBblueScorePred}, " \
-    #         f"SBredPredAuto = {SBredAutoScorePred}, " \
-    #         f"SBbluePredAuto = {SBblueAutoScorePred}, " \
-    #         f"SBredPredTele = {SBredTeleScorePred}, " \
-    #         f"SBbluePredTele = {SBblueTeleScorePred}, " \
-    #         f"SBredPredEndgame = {SBredEndgameScorePred}, " \
-    #         f"SBbluePredEndgame = {SBblueEndgameScorePred}, " \
-    #         f"SBredWinProb = {int(SBredWinProb)}, " \
-    #         f"SBblueWinProb = {int(SBblueWinProb)} " \
-    #         f"WHERE matchID = {matchID}"
-    # else:
-    #     updateQuery = f"UPDATE matches SET redPredScore = {redPredScore}, " \
-    #         f"bluePredScore = {bluePredScore}, " \
-    #         f"redPredAuto = {redPredAuto}, " \
-    #         f"bluePredAuto = {bluePredAuto}, " \
-    #         f"redPredTele = {redPredTele}, " \
-    #         f"bluePredTele = {bluePredTele}, " \
-    #         f"redPredEndgame = {redPredEndgame}, " \
-    #         f"bluePredEndgame = {bluePredEndgame}, " \
-    #         f"redWinProb = {redWinProb}, " \
-    #         f"blueWinProb = {blueWinProb}, " \
-    #         f"redGPtotal = '{redGPstring}', " \
-    #         f"blueGPtotal = '{blueGPstring}' " \
-    #         f"WHERE matchID = {matchID}"
-    # # print(updateQuery)
-    # cursor.execute(updateQuery)
-    # conn.commit()
+    def _setPitColumns(self, pitColumns):
+        self.pitColumns = pitColumns
+        # print(pitColumns)
 
-cursor.close()
-conn.close()
+    # Funciton to get match scouting data and store it as a Python dictionary
+    def _getMatchScouting(self):
+        query = "SELECT matchScouting.* FROM (matchScouting " + \
+                "INNER JOIN matches ON matchScouting.matchID = matches.matchID) " + \
+                "INNER JOIN events ON matches.eventID = events.eventID " + \
+                "WHERE (((events.currentEvent) = 1)) " + \
+                "GROUP BY CAST(matchScouting.team AS INT), matchScouting.team " + \
+                "HAVING (((matchScouting.team) Is Not Null))"
+        self._run_query(query)
+        matchScouting = self.cursor.fetchall()
+        print(type(matchScouting))
+        assert len(matchScouting) > 0, "No robots found"   # assert exits with "no robots found" or returns data dictionary
+        matchScouting_dict = []
+        column_names = [desc[0] for desc in self.cursor.description]
+        for row in matchScouting:
+            matchScouting_data = dict(zip(column_names, row))
+            matchScouting_dict.append(matchScouting_data)
+        # print(matchScouting_dict)
+        return matchScouting_dict
+    
 
-print("Time: %0.2f seconds" % (time.time() - start_time))
+    # Function to get the team list and set it to rsRobots. Uses the _run_query function defined above.
+    def _getTeams(self):
+        query = "SELECT matchScouting.team FROM (matchScouting " + \
+                "INNER JOIN matches ON matchScouting.matchID = matches.matchID) " + \
+                "INNER JOIN events ON matches.eventID = events.eventID " + \
+                "WHERE (((events.currentEvent) = 1)) " + \
+                "GROUP BY CAST(matchScouting.team AS INT), matchScouting.team " + \
+                "HAVING (((matchScouting.team) Is Not Null))"
+        self._run_query(query)
+        rsRobots = self.cursor.fetchall()
+        assert len(rsRobots) > 0, "No robots found"   # assert exits with "no robots found" or returns team list
+        return rsRobots
+    
+
+    # Function to retrieve L1 data records for a given team for all their matches and set it to rsRobotMatchData
+    def _getTeamData(self, team):
+        query = "SELECT matchScouting.*, matches.matchNum " + \
+                "FROM (events INNER JOIN matches ON events.eventID = matches.eventID) " + \
+                "INNER JOIN matchScouting ON (matches.eventID = matchScouting.eventID) " + \
+                "AND (matches.matchID = matchScouting.matchID) " + \
+                "INNER JOIN teams ON (matchScouting.team = teams.team) AND (matchScouting.eventID = teams.eventID) " + \
+                "WHERE (((matchScouting.team) = " + team[0] + " AND ((events.currentEvent) = 1)) " + \
+                "AND ((scoutingStatus = 1) OR (scoutingStatus = 2) OR (scoutingStatus = 3)) " + \
+                "AND (matchScouting.teamMatchNum <= 12)) " + \
+                "ORDER BY matchScouting.teamMatchNum"
+        self._run_query(query)
+        self._setColumns([column[0] for column in list(self.cursor.description)])
+        rsRobotMatchData = self.cursor.fetchall()
+        if rsRobotMatchData:
+            return rsRobotMatchData
+        else:
+            return None
+    
+    # Function to retrieve L2 data records for a given team for all their matches and set it to rsRobotMatchData
+    def _getL2TeamData(self, team):
+        query = "SELECT matchScoutingL2.*, matches.matchNum " + \
+                "FROM (events INNER JOIN matches ON events.eventID = matches.eventID) " + \
+                "INNER JOIN matchScoutingL2 ON (matches.eventID = matchScoutingL2.eventID) " + \
+                "AND (matches.matchID = matchScoutingL2.matchID) " + \
+                "INNER JOIN teams ON (matchScoutingL2.team = teams.team) AND (matchScoutingL2.eventID = teams.eventID) " + \
+                "WHERE (((matchScoutingL2.team) = " + team[0] + " AND ((events.currentEvent) = 1)) " + \
+                "AND ((scoutingStatus = 1) OR (scoutingStatus = 2) OR (scoutingStatus = 3)) " + \
+                "AND (matchScoutingL2.teamMatchNum <= 12)) " + \
+                "ORDER BY matchScoutingL2.teamMatchNum"
+        self._run_query(query)
+        self._setL2Columns([L2column[0] for L2column in list(self.cursor.description)])
+        rsRobotL2MatchData = self.cursor.fetchall()
+        if rsRobotL2MatchData:
+            return rsRobotL2MatchData
+        else: 
+            rsRobotL2MatchData = 0
+            return rsRobotL2MatchData
+
+    # Function to retrieve pit data records for a given team
+    def _getPitData(self, team):
+        query = f"SELECT pit.* FROM pit JOIN events ON pit.eventID = events.eventID WHERE pit.team = {team[0]} AND events.currentEvent = 1"
+        self._run_query(query)
+        self._setPitColumns([pitColumn[0] for pitColumn in list(self.cursor.description)])
+        rsRobotPitData = self.cursor.fetchall()
+        if rsRobotPitData:
+            # print(rsRobotPitData)
+            return rsRobotPitData
+        else:
+            rsRobotPitData = 0
+            # print(rsRobotPitData)
+            return rsRobotPitData
+    
+    # runs each of the analysisTypes and outputs the results to rsCEA
+    def _analyzeTeams(self):
+        for team in self.rsRobots:
+
+            # analysisTypesDict defined at top of script
+            for analysisType2analyze in analysisTypesDict:
+                # print(f"analyzing team {team} using {analysisType2analyze}")
+                rsRobotMatchData = self._getTeamData(team)
+                rsRobotL2MatchData = self._getL2TeamData(team)
+                rsRobotPitData = self._getPitData(team)
+                teamName = str(team)
+                teamName = teamName.translate(str.maketrans("", "", " ,()'"))
+                if rsRobotMatchData:
+                    rsCEA = analysisTypesDict[analysisType2analyze](analysis=self, rsRobotMatchData=rsRobotMatchData, rsRobotL2MatchData=rsRobotL2MatchData, rsRobotPitData=rsRobotPitData)
+                    self._insertAnalysis(rsCEA)
+                    self.conn.commit()
+            # add one last analysisType to add BAoprs and BAranks to analysisTypeID = 80
+            query = (f"INSERT INTO {CEA_tmpTable} (team, eventID, S1V, S1D, S2V, S2D, analysisTypeID) "
+                     f"SELECT {BArankTable}.team, (SELECT eventID FROM events WHERE currentEvent = 1), "
+                     f"{BAoprTable}.OPR, {BAoprTable}.OPR, {BArankTable}.rank, {BArankTable}.rank, 80 "
+                     f"FROM {BArankTable} "
+                     f"INNER JOIN {BAoprTable} ON {BArankTable}.team = {BAoprTable}.team "
+                     f"WHERE {BArankTable}.team = {teamName}")
+            self._run_query(query)
+    
+     # Function to insert an rsCEA record into the DB.
+    def _insertAnalysis(self, rsCEA):
+        rsCEA_records = rsCEA.items()
+        columnHeadings = str(tuple([record[0] for record in rsCEA_records])).replace("'", "")
+        values = str(tuple([record[1] for record in rsCEA_records]))
+        query = "INSERT INTO " + CEA_tmpTable + " " + columnHeadings + " VALUES " + values
+        self._run_query(query)
+        self.conn.commit()
+
+    # Function to retrieve S1V values for a given analysisType and use numpy to determine percentiles
+    def _rankTeamsSingle(self, analysis_type):
+        query = "SELECT team, S1V FROM " + CEA_tmpTable + " WHERE analysisTypeID = " + str(analysis_type)
+        self._run_query(query)
+        team_sum1 = self.cursor.fetchall() # List of tuples (team, S1V)
+        if len(team_sum1) > 0:
+            team_sum1 = [team_tup for team_tup in team_sum1 if team_tup[1] is not None]
+            sum1 = [item[1] for item in team_sum1]
+            percentiles = np.percentile(sum1, [25, 50, 75, 90])
+
+            # team_coloring = {}
+            for team in team_sum1:
+                if team[1] <= percentiles[0]:
+                    team_color = 1
+                    team_display = 10
+                elif team[1] <= percentiles[1]:
+                    team_color = 2
+                    team_display = 25
+                elif team[1] <= percentiles[2]:
+                    team_color = 3
+                    team_display = 50
+                elif team[1] <= percentiles[3]:
+                    team_color = 4
+                    team_display = 75
+                else:
+                    team_color = 5
+                    team_display = 90
+
+                query = "UPDATE " + CEA_tmpTable + " SET " + CEA_tmpTable + ".S3F = " \
+                        + str(team_color) + ", " + CEA_tmpTable + ".S3D = "\
+                        + str(team_display) + ", " + CEA_tmpTable + ".S3V = " + str(team_display) \
+                        + " WHERE " + CEA_tmpTable + ".team = '" + str(team[0]) \
+                        + "' AND " + CEA_tmpTable + ".analysisTypeID = " + str(analysis_type)
+                self._run_query(query)
+                self.conn.commit()
+        else:
+            print(f"Ranking data was not found in the db for analysisTypeID = {analysis_type}")
+
+    # run the _rankTeamsSingle for all analysis types in the analysisTypeList defined in this function
+    def _rankTeamsAll(self):
+        query = "SELECT analysisTypeID FROM analysisTypes WHERE runRank = 1"
+        self._run_query(query)
+        analysisTypeList = self.cursor.fetchall()
+        for analysisType in analysisTypeList:
+            analysisType = str(analysisType)
+            analysisType = analysisType.translate(str.maketrans("", "", " ,()'"))
+            self._rankTeamsSingle(analysisType)
+
+    def _renameTable(self):
+        query = "DELETE FROM CEanalysis WHERE eventID = (SELECT eventID FROM events WHERE currentEvent = 1)"
+        self._run_query(query)
+        # the next query deletes null records that can come about for teams with no L2 or pit scouting records
+        #    but have L1 records
+        query = f"DELETE FROM {CEA_tmpTable} WHERE team is NULL"
+        self._run_query(query)
+        query = f"INSERT INTO CEanalysis SELECT * FROM {CEA_tmpTable}"
+        self._run_query(query)
+        self.conn.commit()
+
+# This initizlzes the analysis Class and thus runs the program.
+if __name__ == '__main__':
+    myAnalysis = analysis()
